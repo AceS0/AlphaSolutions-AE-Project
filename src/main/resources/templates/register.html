@@ -14,22 +14,22 @@
 
 <main class="content">
     <h1>Sign Up</h1>
-    <form action="/users/register" method="post">
+    <form th:action="@{/users/register}" method="post">
         <div th:if="${error}" style="color: red;">
             <p th:text="${error}"></p>
         </div>
 
         <p class="textbox">
             <label>Username:</label>
-            <input name="uid" type="text" autofocus>
+            <input name="uid" type="text" required  autofocus>
         </p>
         <p class="textbox">
             <label>Email:</label>
-            <input name="eid" type="text">
+            <input name="eid" type="text" required>
         </p>
         <p>
             <label>Password:</label>
-            <input name="pw" type="password">
+            <input name="pw" type="password" required>
         </p>
         <div class="actions">
             <a class="button secondary-button" th:href="@{/}">Cancel</a>

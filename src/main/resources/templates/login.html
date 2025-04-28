@@ -14,7 +14,7 @@
 
 <main class="content">
     <h1>Login</h1>
-    <form action="/users/login" method="post">
+    <form th:action="@{/users/login}" method="post">
         <p th:if="${wrongCredentials}" class="error">Forkert brugerid eller password</p>
         <p class="textbox">
             <label>Email:</label>
