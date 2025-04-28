@@ -1,4 +1,4 @@
-package model;
+package com.example.alphasolutionsaeproject.model;
 
 public class Project {
 

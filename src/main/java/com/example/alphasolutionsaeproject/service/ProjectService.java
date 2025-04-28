@@ -1,8 +1,7 @@
-package service;
-import model.Project;
-import org.springframework.beans.factory.annotation.Autowired;
+package com.example.alphasolutionsaeproject.service;
+import com.example.alphasolutionsaeproject.model.Project;
 import org.springframework.stereotype.Service;
-import repository.ProjectRepository;
+import com.example.alphasolutionsaeproject.repository.ProjectRepository;
 
 import java.util.List;
 

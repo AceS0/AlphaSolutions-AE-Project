@@ -1,4 +1,4 @@
-package model;
+package com.example.alphasolutionsaeproject.model;
 
 public class Subproject {
     private int id;

@@ -1,7 +1,7 @@
-package repository;
+package com.example.alphasolutionsaeproject.repository;
 
 
-import model.Subproject;
+import com.example.alphasolutionsaeproject.model.Subproject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

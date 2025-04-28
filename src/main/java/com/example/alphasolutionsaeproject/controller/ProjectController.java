@@ -1,11 +1,10 @@
-package controller;
+package com.example.alphasolutionsaeproject.controller;
 
-import model.Project;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.alphasolutionsaeproject.model.Project;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.ProjectService;
+import com.example.alphasolutionsaeproject.service.ProjectService;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package controller;
-import model.Subproject;
+package com.example.alphasolutionsaeproject.controller;
+import com.example.alphasolutionsaeproject.model.Subproject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.SubprojectService;
+import com.example.alphasolutionsaeproject.service.SubprojectService;
 import java.util.List;
 
 @Controller
@@ -21,14 +21,14 @@ public class SubprojectController {
     public String listSubprojects(Model model) {
         List<Subproject> subprojects = subprojectService.getAllSubprojects();
         model.addAttribute("subprojects", subprojects);
-        return "subprojects"; // Thymeleaf side: subprojects.html
+        return "subprojects";
     }
 
     // 2. Vis form for at tilføje et subproject
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("subproject", new Subproject());
-        return "addSubproject"; // Thymeleaf side: addSubproject.html
+        return "addSubproject";
     }
 
     // 3. Gem nyt subproject
@@ -43,7 +43,7 @@ public class SubprojectController {
     public String showEditForm(@PathVariable int id, Model model) {
         Subproject subproject = subprojectService.getSubprojectById(id);
         model.addAttribute("subproject", subproject);
-        return "editSubproject"; // Thymeleaf side: editSubproject.html
+        return "editSubproject";
     }
 
     // 5. Gem ændringer på eksisterende subproject

@@ -1,5 +1,5 @@
-package repository;
-import model.Project;
+package com.example.alphasolutionsaeproject.repository;
+import com.example.alphasolutionsaeproject.model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

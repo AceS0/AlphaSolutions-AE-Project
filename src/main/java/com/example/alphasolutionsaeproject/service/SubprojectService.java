@@ -1,9 +1,7 @@
-package service;
-
-
-import model.Subproject;
+package com.example.alphasolutionsaeproject.service;
+import com.example.alphasolutionsaeproject.model.Subproject;
 import org.springframework.stereotype.Service;
-import repository.SubprojectRepository;
+import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
 
 import java.util.List;
 
