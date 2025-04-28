@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" th:href="@{/index.css}">
   <title>Alpha Solutions</title>
 </head>
 <body>
@@ -12,9 +12,10 @@
       <div class="logo">
         <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
       </div>
+
       <div class="login">
-        <button class="button">Log in</button>
-        <button class="button">Sign up</button>
+        <a th:href="@{/users/login}" class="button">Log in</a>
+        <a th:href="@{/users/register}" class="button">Sign up</a>
       </div>
     </header>
 
