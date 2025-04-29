@@ -51,4 +51,4 @@ jobs:
           app-name: 'AlphaSolutionsAEProject'
           slot-name: 'Production'
           package: '*.jar'  
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FE74AB657EA346AE8ABF55151B8D3DA2 }} 
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE}} 
