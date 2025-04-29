@@ -7,7 +7,7 @@ import com.example.alphasolutionsaeproject.service.SubprojectService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/subprojects")
+@RequestMapping("projects/id/subprojects")
 public class SubprojectController {
 
     private final SubprojectService subprojectService;
