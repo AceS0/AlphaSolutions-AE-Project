@@ -1,5 +1,7 @@
 package com.example.alphasolutionsaeproject.service;
 import com.example.alphasolutionsaeproject.model.Project;
+import com.example.alphasolutionsaeproject.model.User;
+import com.example.alphasolutionsaeproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.ProjectRepository;
 
@@ -9,9 +11,11 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
 
     // Hent alle projekter
@@ -38,5 +42,29 @@ public class ProjectService {
     public void deleteProject(int id) {
         projectRepository.deleteById(id);
     }
+
+    public List<Project> getAllProjectsByUserId(int id){
+        return projectRepository.getAllProjectsByUserId(id);
+    }
+
+    public String getProjectCreatedByUsername(int projectId) {
+        // Fetch the project by its ID
+        Project project = projectRepository.findById(projectId);
+
+        // Retrieve the user based on the createdBy ID
+        User user = userRepository.findUserById(project.getCreatedBy());
+
+        // Return the username of the user
+        return user.getUsername();
+
+    }
+
+    public void toggleChecked(int id) {
+        Project project = projectRepository.findById(id);
+        if (project != null) {
+            projectRepository.updateChecked(id, !project.getChecked());
+        }
+    }
+
 }
 

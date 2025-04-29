@@ -1,52 +1,72 @@
 package com.example.alphasolutionsaeproject.model;
 
 public class User {
-    private String eid;
-    private String uid;
-    private String pw;
+    private int id;
+    private String email;
+    private String username;
+    private String password;
     private Role role;
 
 
-    public User(String eid, String uid, String pw, Role role){
-        this.eid = eid;
-        this.uid = uid;
-        this.pw = pw;
+    public User(int id, String email, String username, String password, Role role){
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
         this.role = role;
     }
 
     public User(){}
 
 
-    public String getEid() {
-        return eid;
+    public int getId() {
+        return id;
     }
 
-    public void setEid(String eid) {
-        this.eid = eid;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUid() {
-        return uid;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUid(String uid){
-        this.uid = uid;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPw(){
-        return pw;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPw(String pw){
-        this.pw = pw;
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "Users{" +
-                "eid='" + eid + '\'' +
-                "uid='" + uid + '\'' +
-                ", pw='" + pw + '\'' +
+                "id='" + id + '\'' +
+                "email='" + email + '\'' +
+                "username='" + username + '\'' +
+                "password='" + password + '\'' +
+                "role='" + role + '\'' +
                 '}';
     }
 }
