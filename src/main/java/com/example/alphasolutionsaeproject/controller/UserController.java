@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String viewLogin(){
-        return "login";  // Viser login-siden
+        return "/UserAuth/login";  // Viser login-siden
     }
 
     @PostMapping("/login")
@@ -32,12 +32,12 @@ public class UserController {
         }
 
         model.addAttribute("wrongCredentials", true);  // Fejl ved login
-        return "login";  // Vender tilbage til login-siden
+        return "/UserAuth/login";  // Vender tilbage til login-siden
     }
 
     @GetMapping("/register")
     public String viewRegister(){
-        return "register";  // Viser registreringssiden
+        return "/UserAuth/register";  // Viser registreringssiden
     }
 
     @PostMapping("/register")

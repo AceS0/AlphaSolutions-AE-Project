@@ -8,7 +8,7 @@ import com.example.alphasolutionsaeproject.service.TaskService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/tasks")
+@RequestMapping("projects/id/subprojects/subid/columns/tasks")
 public class TaskController {
 
     private final TaskService taskService;

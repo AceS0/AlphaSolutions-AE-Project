@@ -1,5 +1,6 @@
 package com.example.alphasolutionsaeproject.service;
 
+import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -44,10 +45,11 @@ public class UserService {
     // Registrerer en ny bruger
     public boolean register(String eid, String uid, String pw){
         User user = userRepository.getUser(eid);
+        Role role = Role.EMPLOYEE;
         if (user != null || !isUsernameValid(uid) || !isEmailValid(eid)) {
             return false;  // Hvis email allerede findes eller input er ugyldigt, returneres false
         }
-        userRepository.registerUser(eid, uid, pw);  // Opretter bruger i databasen
+        userRepository.registerUser(eid, uid, pw, role);  // Opretter bruger i databasen
         return true;  // Hvis alt er okay, returneres true
     }
 }

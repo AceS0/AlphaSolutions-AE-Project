@@ -4,12 +4,14 @@ public class User {
     private String eid;
     private String uid;
     private String pw;
+    private Role role;
 
 
-    public User(String eid, String uid, String pw){
+    public User(String eid, String uid, String pw, Role role){
         this.eid = eid;
         this.uid = uid;
         this.pw = pw;
+        this.role = role;
     }
 
     public User(){}

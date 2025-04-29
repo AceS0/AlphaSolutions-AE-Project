@@ -1,5 +1,6 @@
 package com.example.alphasolutionsaeproject.repository;
 
+import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,9 +27,9 @@ public class UserRepository{
     }
 
     // Registrerer ny bruger
-    public void registerUser(String eid, String uid, String pw){
-        String sql = "INSERT INTO USER (email, username, password) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, eid, uid, pw);  // Indsætter bruger i databasen
+    public void registerUser(String eid, String uid, String pw, Role role){
+        String sql = "INSERT INTO USER (email, username, password, role) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, eid, uid, pw, role.name());  // Indsætter bruger i databasen
     }
 
     // Mapper ResultSet til User objekt
@@ -36,7 +37,8 @@ public class UserRepository{
         return (rs, rowNum) -> new User(
                 rs.getString("email"),
                 rs.getString("username"),
-                rs.getString("password")
+                rs.getString("password"),
+                Role.valueOf(rs.getString("role").toUpperCase())
         );
     }
 }

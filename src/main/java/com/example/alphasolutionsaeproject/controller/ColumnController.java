@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/columns")
+@RequestMapping("projects/id/subprojects/subid/columns")
 public class ColumnController {
 
     private final ColumnService columnService;
