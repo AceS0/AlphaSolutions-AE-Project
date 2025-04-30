@@ -47,16 +47,8 @@ public class ProjectService {
         return projectRepository.getAllProjectsByUserId(id);
     }
 
-    public String getProjectCreatedByUsername(int projectId) {
-        // Fetch the project by its ID
-        Project project = projectRepository.findById(projectId);
-
-        // Retrieve the user based on the createdBy ID
-        User user = userRepository.findUserById(project.getCreatedBy());
-
-        // Return the username of the user
-        return user.getUsername();
-
+    public List<Project> getSharedProjectsByUserId(int id){
+        return projectRepository.getSharedProjectsByUserId(id);
     }
 
     public void toggleChecked(int id) {

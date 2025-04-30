@@ -9,6 +9,7 @@ public class Project {
     private int duration;
     private int createdBy;
     private boolean checked;
+    private String projectManager;
 
 
     public Project() {
@@ -81,5 +82,13 @@ public class Project {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public String getProjectManager() {
+        return projectManager;
+    }
+
+    public void setProjectManager(String projectManager) {
+        this.projectManager = projectManager;
     }
 }

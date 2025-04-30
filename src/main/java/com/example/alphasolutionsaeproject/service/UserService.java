@@ -31,7 +31,7 @@ public class UserService {
 
     // Tjekker om brugernavnet er gyldigt
     private boolean isUsernameValid(String username){
-        String regex = "^[a-zA-Z0-9_]{3,15}$"; // minimum format abc
+        String regex = "^[a-zA-Z0-9_ ]{3,50}$"; // minimum format abc
         return username.matches(regex);
     }
 
@@ -42,18 +42,28 @@ public class UserService {
     }
 
     // Registrerer en ny bruger
-    public boolean register(String email, String username, String password){
-        User user = userRepository.getUser(email);
-        Role role = Role.EMPLOYEE;
-        if (user != null || !isUsernameValid(username) || !isEmailValid(email)) {
-            return false;  // Hvis email allerede findes eller input er ugyldigt, returneres false
+    public boolean register(String email, String username, String password) {
+        if (userRepository.getUser(email) != null ||
+                !isUsernameValid(username) ||
+                !isEmailValid(email)) {
+            return false; // Email exists or input invalid
         }
-        userRepository.registerUser(email, username, password, role);  // Opretter bruger i databasen
-        return true;  // Hvis alt er okay, returneres true
+
+        Role role = Role.EMPLOYEE;
+        userRepository.registerUser(email, username, password, role);
+        return true; // Successful registration
     }
 
     public int getUserIdByMail(String email){
         User user = userRepository.getUser(email);
         return user.getId();
+    }
+
+    public User getUserById(int id){
+        return userRepository.getUser(id);
+    }
+
+    public User getUserByMail(String email){
+        return userRepository.getUser(email);
     }
 }

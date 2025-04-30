@@ -26,6 +26,15 @@ public class UserRepository{
         }
     }
 
+    public User getUser(int id){
+        try{
+            String sql = "SELECT * FROM user WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, mapUsers(), id); // Henter bruger ud fra en liste af bruger
+        } catch (EmptyResultDataAccessException e){
+            return null;  // Hvis ingen bruger findes, returneres null
+        }
+    }
+
 
     // Registrerer ny bruger
     public void registerUser(String eid, String uid, String pw, Role role){

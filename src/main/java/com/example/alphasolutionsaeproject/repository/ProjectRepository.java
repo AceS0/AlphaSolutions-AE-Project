@@ -1,29 +1,27 @@
 package com.example.alphasolutionsaeproject.repository;
 import com.example.alphasolutionsaeproject.model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
 public class ProjectRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    public ProjectRepository(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     // Hent alle projekter
     public List<Project> findAll() {
         String sql = "SELECT * FROM project";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Project project = new Project();
-            project.setId(rs.getInt("id"));
-            project.setTitle(rs.getString("title"));
-            project.setDescription(rs.getString("description"));
-            project.setCreatedBy(rs.getInt("createdBy"));
-            return project;
-        });
+        return jdbcTemplate.query(sql,mapProjects());
     }
 
     // Hent projekt baseret på ID
@@ -31,6 +29,7 @@ public class ProjectRepository {
         String sql = "SELECT * FROM project WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, mapProjects(), id);
     }
+
 
     // Gem et nyt projekt
     public void save(Project project) {
@@ -55,6 +54,11 @@ public class ProjectRepository {
     public List<Project> getAllProjectsByUserId(int id){
         String sql = "SELECT * FROM project WHERE createdBy = ?";
         return jdbcTemplate.query(sql, mapProjects(), id);
+    }
+
+    public List<Project> getSharedProjectsByUserId(int userId) {
+        String sql = "SELECT p.* FROM project p JOIN project_user pu ON p.id = pu.project_id WHERE pu.user_id = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Project.class), userId);
     }
 
     public void updateChecked(int id, boolean newValue) {

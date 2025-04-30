@@ -24,7 +24,7 @@
         <th class="th">Project Manager</th>
         <th class="th">Actions</th>
     </tr>
-    <tr th:each="Project : ${projects}">
+    <tr th:each="Project : ${allProjects}">
         <td class="td checked">
             <form th:action="@{'/projects/toggleChecked/' + ${Project.id}}" method="post">
                 <input type="checkbox"
@@ -38,7 +38,7 @@
         <td class="td title" th:text="${Project.title}"></td>
         <td class="td deadline" th:text="${Project.deadline}"></td>
         <td class="td duration" th:text="${Project.duration}"></td>
-        <td class="td createdBy" th:text="${createdByUsername}"></td>
+        <td class="td createdBy" th:text="${Project.projectManager}"></td>
         <td>
             <a class="links-button" th:href="@{'/projects/' + ${Project.id}}">Choose</a>
             <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
