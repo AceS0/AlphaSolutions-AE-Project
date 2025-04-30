@@ -17,14 +17,24 @@ public class UserRepository{
     }
 
     // Henter bruger baseret på email
-    public User getUser(String eid){
+    public User getUser(String email){
         try{
             String sql = "SELECT * FROM user WHERE email = ?";
-            return jdbcTemplate.queryForObject(sql, mapUsers(), eid); // Henter bruger ud fra en liste af bruger
+            return jdbcTemplate.queryForObject(sql, mapUsers(), email); // Henter bruger ud fra en liste af bruger
         } catch (EmptyResultDataAccessException e){
             return null;  // Hvis ingen bruger findes, returneres null
         }
     }
+
+    public User getUser(int id){
+        try{
+            String sql = "SELECT * FROM user WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, mapUsers(), id); // Henter bruger ud fra en liste af bruger
+        } catch (EmptyResultDataAccessException e){
+            return null;  // Hvis ingen bruger findes, returneres null
+        }
+    }
+
 
     // Registrerer ny bruger
     public void registerUser(String eid, String uid, String pw, Role role){
@@ -32,9 +42,17 @@ public class UserRepository{
         jdbcTemplate.update(sql, eid, uid, pw, role.name());  // Indsætter bruger i databasen
     }
 
+    public User findUserById(int userId) {
+        String sql = "SELECT * FROM user WHERE id = ?";
+
+        // Execute the query and return the username
+        return jdbcTemplate.queryForObject(sql, mapUsers(), userId);
+    }
+
     // Mapper ResultSet til User objekt
     private RowMapper<User> mapUsers(){
         return (rs, rowNum) -> new User(
+                rs.getInt("id"),
                 rs.getString("email"),
                 rs.getString("username"),
                 rs.getString("password"),

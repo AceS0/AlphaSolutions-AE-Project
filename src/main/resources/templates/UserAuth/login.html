@@ -18,14 +18,14 @@
         <p th:if="${wrongCredentials}" class="error">Forkert brugerid eller password</p>
         <p class="textbox">
             <label>Email:</label>
-            <input name="uid" type="text" autofocus>
+            <input name="email" type="text" autofocus>
         </p>
         <p>
             <label>Password:</label>
-            <input name="pw" type="password">
+            <input name="password" type="password">
         </p>
         <div class="actions">
-            <a class="button secondary-button" th:href="@{/static}">Cancel</a>
+            <a class="button secondary-button" th:href="@{/}">Cancel</a>
             <button type="submit" class="button">Login</button>
         </div>
     </form>
