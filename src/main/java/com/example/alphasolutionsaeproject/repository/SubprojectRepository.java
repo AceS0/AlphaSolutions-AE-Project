@@ -1,6 +1,7 @@
 package com.example.alphasolutionsaeproject.repository;
 
 
+import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -46,6 +47,11 @@ public class SubprojectRepository {
         jdbcTemplate.update(sql, id);
     }
 
+    public List<Subproject> getAllProjectsByProjectId(int id){
+        String sql = "SELECT * FROM subproject WHERE projectId = ?";
+        return jdbcTemplate.query(sql, mapSubprojects(), id);
+    }
+
     private RowMapper<Subproject> subprojectRowMapper = (rs, rowNum) -> {
         Subproject subproject = new Subproject();
         subproject.setId(rs.getInt("id"));
@@ -53,4 +59,16 @@ public class SubprojectRepository {
         subproject.setTitle(rs.getString("title"));
         return subproject;
     };
+
+    private RowMapper<Subproject> mapSubprojects(){
+        return (rs, rowNum) -> new Subproject(
+                rs.getInt("id"),
+                rs.getInt("projectId"),
+                rs.getString("title"),
+                rs.getInt("priority"),
+                rs.getString("deadline"),
+                rs.getInt("duration"),
+                rs.getBoolean("checked")
+        );
+    }
 }

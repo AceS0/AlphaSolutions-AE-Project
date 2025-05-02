@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Users</title>
+  <link rel="stylesheet" th:href="@{/projects.css}">
+</head>
+<body>
+<header>
+  <a class="signoutbutton" th:href="@{/}">Sign out</a>
+  <div class="logo">
+    <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
+  </div>
+</header>
+
+<h1 class="header1">All Users</h1>
+
+<div class="flex-center">
+  <a class="add-wish" href="/users/create">Create User</a>
+</div>
+
+<table class="table">
+  <tr>
+    <th class="th">Username</th>
+    <th class="th">Email</th>
+    <th class="th">Role</th>
+    <th class="th">Actions</th>
+  </tr>
+  <tr th:each="user : ${users}">
+    <td class="td" th:text="${user.username}"></td>
+    <td class="td" th:text="${user.email}"></td>
+    <td class="td" th:text="${user.role}"></td>
+    <td>
+      <a class="links-button" th:href="@{'admin/users/edit/' + ${user.id}}">Edit</a>
+      <form th:action="@{'admin/users/delete/' + ${user.id}}" method="post" style="display: inline">
+        <button class="links-buttondelete" type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+</table>
+
+<div style="margin-top: 20px; text-align: left;">
+  <a class="links-button" th:href="@{'/admin'}">← Back</a>
+</div>
+
+</body>
+</html>

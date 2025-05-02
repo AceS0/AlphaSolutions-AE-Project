@@ -5,6 +5,7 @@ import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -65,5 +66,9 @@ public class UserService {
 
     public User getUserByMail(String email){
         return userRepository.getUser(email);
+    }
+
+    public List<User> getAllUsers(){
+        return userRepository.getAllUsers();
     }
 }

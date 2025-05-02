@@ -1,5 +1,7 @@
 package com.example.alphasolutionsaeproject.controller;
 
+import com.example.alphasolutionsaeproject.model.Role;
+import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -7,9 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("")
 public class UserController {
     private final UserService userService;
 
@@ -17,17 +21,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
+    @GetMapping("/users/login")
     public String viewLogin(){
         return "/UserAuth/login";  // Viser login-siden
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password,
                         HttpSession session, Model model){
         if (userService.login(email, password)){
-            session.setAttribute("email", email);  // Gemmer email i sessionen
+            session.setAttribute("email", email); // Gemmer email i sessionen
             session.setMaxInactiveInterval(600);  // Timeout efter 10 minutter
+            User user = userService.getUserByMail(email);
+            if (user.getRole().equals(Role.ADMIN)){
+                return "redirect:/admin";
+            }
             return "redirect:/projects";  // Omdirigerer til projects-siden
         }
 
@@ -35,12 +43,12 @@ public class UserController {
         return "/UserAuth/login";  // Vender tilbage til login-siden
     }
 
-    @GetMapping("/register")
+    @GetMapping("/users/register")
     public String viewRegister(){
         return "/UserAuth/register";  // Viser registreringssiden
     }
 
-    @PostMapping("/register")
+    @PostMapping("/users/register")
     public String register(@RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password,
                            RedirectAttributes redirectAttributes){
 
@@ -66,5 +74,16 @@ public class UserController {
         }
 
         return "redirect:/users/login";  // Omdirigerer til login-siden
+    }
+
+    @GetMapping("/admin/users")
+    public String showAdminUserPage(Model model, HttpSession session){
+        if(session.getAttribute("email") == null){
+            return "redirect:/users/login";
+        }
+
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "Admin/adminUsersPage";
     }
 }
