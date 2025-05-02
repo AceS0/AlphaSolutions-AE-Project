@@ -83,9 +83,9 @@ public class SubprojectController {
     }
 
     // 6. Slet et subproject
-    @GetMapping("projects/{pid}/subprojects/delete/{spid}")
-    public String deleteSubproject(@PathVariable int spid) {
-        subprojectService.deleteSubproject(spid);
-        return "redirect:/subprojects";
+    @PostMapping("/projects/{pid}/subprojects/delete/{spid}")
+    public String deleteSubproject(@PathVariable int pid, @PathVariable int spid) {
+        subprojectService.deleteSubproject(pid, spid);
+        return "redirect:/projects/{pid}/subprojects";
     }
 }
