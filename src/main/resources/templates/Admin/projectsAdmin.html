@@ -7,6 +7,7 @@
 </head>
 <body>
 <header>
+    <a class="signoutbutton" th:href="@{/}">Sign out</a>
     <div class="logo">
         <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
     </div>
@@ -40,7 +41,7 @@
         <td class="td duration" th:text="${Project.duration}"></td>
         <td class="td createdBy" th:text="${Project.projectManager}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${Project.id}}">Choose</a>
+            <a class="links-button" th:href="@{'/projects/' + ${Project.id} + '/subprojects'}">Choose</a>
             <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
             <form th:action="@{'/projects/delete' + ${Project.id}}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Delete</button>
@@ -48,5 +49,8 @@
         </td>
     </tr>
 </table>
+<div style="margin-top: 20px; text-align: left;">
+    <a class="links-button" th:href="@{'/admin'}">← Back</a>
+</div>
 </body>
 </html>

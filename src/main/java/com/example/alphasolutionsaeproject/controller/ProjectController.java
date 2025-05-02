@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/projects")
+@RequestMapping("")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -30,7 +30,22 @@ public class ProjectController {
         return session.getAttribute("email") != null;
     }
 
-    @GetMapping
+    @GetMapping("/")
+    public String showHomePage(HttpSession session) {
+        session.invalidate();
+        return "index";
+    }
+
+    @GetMapping("/admin")
+    public String showAdminPage(HttpSession session){
+        if(!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+        return "Admin/adminPage";
+    }
+
+
+    @GetMapping("/projects")
     public String listProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
@@ -74,41 +89,41 @@ public class ProjectController {
         return "Admin/projectsAdmin";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/projects/add")
     public String showAddForm(Model model) {
         model.addAttribute("project", new Project());
         return "addProject";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/projects/add")
     public String addProject(@ModelAttribute("project") Project project) {
         projectService.addProject(project);
         return "redirect:/projects";
     }
 
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable int id, Model model) {
-        Project project = projectService.getProjectById(id);
+    @GetMapping("/projects/edit/{pid}")
+    public String showEditForm(@PathVariable int pid, Model model) {
+        Project project = projectService.getProjectById(pid);
         model.addAttribute("project", project);
         return "editProject";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editProject(@PathVariable int id, @ModelAttribute("project") Project project) {
-        project.setId(id);
+    @PostMapping("/projects/edit/{pid}")
+    public String editProject(@PathVariable int pid, @ModelAttribute("project") Project project) {
+        project.setId(pid);
         projectService.updateProject(project);
         return "redirect:/projects";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteProject(@PathVariable int id) {
-        projectService.deleteProject(id);
+    @GetMapping("/projects/delete/{pid}")
+    public String deleteProject(@PathVariable int pid) {
+        projectService.deleteProject(pid);
         return "redirect:/projects";
     }
 
-    @PostMapping("/toggleChecked/{id}")
-    public String toggleChecked(@PathVariable int id) {
-        projectService.toggleChecked(id);
+    @PostMapping("/projects/toggleChecked/{pid}")
+    public String toggleChecked(@PathVariable int pid) {
+        projectService.toggleChecked(pid);
         return "redirect:/projects";  // Redirect back to the projects list
     }
 }

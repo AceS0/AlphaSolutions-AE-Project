@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.service;
+import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
@@ -32,5 +33,10 @@ public class SubprojectService {
 
     public void deleteSubproject(int id) {
         subprojectRepository.delete(id);
+    }
+
+
+    public List<Subproject> getAllSubprojectsByProjectId(int id){
+        return subprojectRepository.getAllProjectsByProjectId(id);
     }
 }

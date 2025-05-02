@@ -38,9 +38,18 @@
         <td class="td duration" th:text="${Project.duration}"></td>
         <td class="td createdBy" th:text="${Project.projectManager}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${Project.id}}">Choose</a>
+            <a class="links-button" th:href="@{'/projects/' + ${Project.id} + '/subprojects'}">Choose</a>
+            <details class="description-container">
+                <summary class="links-button">Description</summary>
+                <p th:text="${Project.description}"></p>
+            </details>
         </td>
     </tr>
 </table>
+
+<div style="margin-top: 20px; text-align: left;">
+    <a class="links-button" th:href="@{/}">← Back</a>
+</div>
+
 </body>
 </html>

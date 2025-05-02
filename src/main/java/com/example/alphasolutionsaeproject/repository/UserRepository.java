@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class UserRepository{
@@ -30,6 +32,15 @@ public class UserRepository{
         try{
             String sql = "SELECT * FROM user WHERE id = ?";
             return jdbcTemplate.queryForObject(sql, mapUsers(), id); // Henter bruger ud fra en liste af bruger
+        } catch (EmptyResultDataAccessException e){
+            return null;  // Hvis ingen bruger findes, returneres null
+        }
+    }
+
+    public List<User> getAllUsers(){
+        try{
+            String sql = "SELECT * FROM user";
+            return jdbcTemplate.query(sql, mapUsers()); // Henter alle brugere
         } catch (EmptyResultDataAccessException e){
             return null;  // Hvis ingen bruger findes, returneres null
         }

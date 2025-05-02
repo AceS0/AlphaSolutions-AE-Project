@@ -127,7 +127,7 @@ h1.header1 {
     border-radius: 6px;
     cursor: default;
     color: white;
-    background-color: #6c63ff; /* Default purple tone */
+    background-color: #6c63ff;
     transition: background-color 0.3s ease;
 }
 
@@ -140,13 +140,47 @@ h1.header1 {
 }
 
 .status-button.checked {
-    background-color: #4CAF50; /* Green for true (✔) */
+    background-color: #4CAF50;
 }
 
 .status-button.unchecked {
-    background-color: #f44336; /* Red for false (✖) */
+    background-color: #f44336;
 }
 
+.description-container {
+    display: inline-block;
+    margin-left: 6px; /* Optional spacing between buttons */
+}
+
+.description-container summary {
+    display: inline-block;
+    cursor: pointer;
+    list-style: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #4B3EAE;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.description-container summary:hover {
+    background-color: #362D7E;
+}
+
+.description-container summary::-webkit-details-marker {
+    display: none;
+}
+
+.description-container p {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #4B3EAE;
+    margin-top: 8px;
+    border-radius: 6px;
+}
 
 .logo {
     width: 150px;
