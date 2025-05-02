@@ -115,7 +115,7 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    @GetMapping("/projects/delete/{pid}")
+    @PostMapping("/projects/delete/{pid}")
     public String deleteProject(@PathVariable int pid) {
         projectService.deleteProject(pid);
         return "redirect:/projects";
