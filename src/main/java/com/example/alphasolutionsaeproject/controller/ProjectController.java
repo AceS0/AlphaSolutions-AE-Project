@@ -90,13 +90,22 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/add")
-    public String showAddForm(Model model) {
+    public String showAddForm(Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+        List<User> users = userService.getAllPms("PM");
+        model.addAttribute("users",users);
         model.addAttribute("project", new Project());
-        return "addProject";
+        return "Admin/addProject";
     }
 
-    @PostMapping("/projects/add")
+    @PostMapping("/projects/save")
     public String addProject(@ModelAttribute("project") Project project) {
+        String getCreatedBy = project.getProjectManager();
+        int createdBy = projectService.getProjectManagerId(getCreatedBy);
+        project.setCreatedBy(createdBy);
+        project.setChecked(false);
         projectService.addProject(project);
         return "redirect:/projects";
     }

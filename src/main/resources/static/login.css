@@ -100,7 +100,7 @@ label {
     text-align: left;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="date"] {
     width: 100%;
     padding: 14px;
     border: 1px solid #ddd;
@@ -109,10 +109,11 @@ input[type="text"], input[type="password"] {
     transition: border-color 0.3s;
 }
 
-input[type="text"]:focus, input[type="password"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus {
     border-color: #4B3EAE;
     outline: none;
 }
+
 
 .actions {
     display: flex;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.alphasolutionsaeproject.service.SubprojectService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,16 +55,26 @@ public class SubprojectController {
 
     // 2. Vis form for at tilføje et subproject
     @GetMapping("projects/{pid}/subprojects/add")
-    public String showAddForm(Model model) {
+    public String showAddForm(@PathVariable int pid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+
         model.addAttribute("subproject", new Subproject());
-        return "addSubproject";
+        return "Admin/addSubproject";
     }
 
     // 3. Gem nyt subproject
-    @PostMapping("projects/{pid}/subprojects/add")
-    public String addSubproject(@ModelAttribute Subproject subproject) {
+    @PostMapping("projects/{pid}/subprojects/save")
+    public String addSubproject(@ModelAttribute("subproject") Subproject subproject, @PathVariable int pid, RedirectAttributes redirectAttributes) {
+        subproject.setProjectId(pid);
+        subproject.setChecked(false);
+        if (subproject.getPriority() > 5){
+            redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
+            return "redirect:/projects/{pid}/subprojects/add";
+        }
         subprojectService.addSubproject(subproject);
-        return "redirect:/subprojects";
+        return "redirect:/projects/{pid}/subprojects";
     }
 
     // 4. Vis form for at redigere et subproject

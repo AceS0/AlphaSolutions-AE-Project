@@ -51,6 +51,10 @@ public class ProjectService {
         return projectRepository.getSharedProjectsByUserId(id);
     }
 
+    public int getProjectManagerId(String getCreatedBy){
+        return userRepository.getProjectManagerId(getCreatedBy);
+    }
+
     public void toggleChecked(int id) {
         Project project = projectRepository.findById(id);
         if (project != null) {

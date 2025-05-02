@@ -33,7 +33,7 @@ public class ProjectRepository {
 
     // Gem et nyt projekt
     public void save(Project project) {
-        String sql = "INSERT INTO project (title, description, deadline, duration, createdBy, checked) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO project (title, description, deadline, duration, createdBy, checked) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, project.getTitle(), project.getDescription(), project.getDeadline(),
                 project.getDuration(), project.getCreatedBy(), project.getChecked());
     }
@@ -60,6 +60,7 @@ public class ProjectRepository {
         String sql = "SELECT p.* FROM project p JOIN project_user pu ON p.id = pu.project_id WHERE pu.user_id = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Project.class), userId);
     }
+
 
     public void updateChecked(int id, boolean newValue) {
         String sql = "UPDATE project SET checked = ? WHERE id = ?";

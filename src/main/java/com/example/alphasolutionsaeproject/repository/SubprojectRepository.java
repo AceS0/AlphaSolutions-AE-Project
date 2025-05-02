@@ -31,8 +31,9 @@ public class SubprojectRepository {
 
     // Tilføj nyt subproject
     public void save(Subproject subproject) {
-        String sql = "INSERT INTO subproject (projectId, title) VALUES (?, ?)";
-        jdbcTemplate.update(sql, subproject.getProjectId(), subproject.getTitle());
+        String sql = "INSERT INTO subproject (projectId, title, priority, deadline, duration, checked) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, subproject.getProjectId(), subproject.getTitle(), subproject.getPriority(),
+                subproject.getDeadline(), subproject.getDuration(), subproject.getChecked());
     }
 
     // Opdater eksisterende subproject

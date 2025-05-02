@@ -71,4 +71,8 @@ public class UserService {
     public List<User> getAllUsers(){
         return userRepository.getAllUsers();
     }
+
+    public List<User> getAllPms(String role){
+        return userRepository.getAllUsersByRole(role);
+    }
 }

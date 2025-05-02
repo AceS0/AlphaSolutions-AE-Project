@@ -73,7 +73,7 @@ public class Subproject {
         this.duration = duration;
     }
 
-    public boolean isChecked() {
+    public boolean getChecked() {
         return checked;
     }
 
