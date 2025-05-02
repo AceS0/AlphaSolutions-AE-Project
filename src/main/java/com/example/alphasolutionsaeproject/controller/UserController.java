@@ -19,48 +19,48 @@ public class UserController {
 
     @GetMapping("/login")
     public String viewLogin(){
-        return "login";  // Viser login-siden
+        return "/UserAuth/login";  // Viser login-siden
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("eid") String eid, @RequestParam("uid") String uid, @RequestParam("pw") String pw,
+    public String login(@RequestParam("email") String email, @RequestParam("password") String password,
                         HttpSession session, Model model){
-        if (userService.login(eid, pw)){
-            session.setAttribute("email", eid);  // Gemmer email i sessionen
+        if (userService.login(email, password)){
+            session.setAttribute("email", email);  // Gemmer email i sessionen
             session.setMaxInactiveInterval(600);  // Timeout efter 10 minutter
             return "redirect:/projects";  // Omdirigerer til projects-siden
         }
 
         model.addAttribute("wrongCredentials", true);  // Fejl ved login
-        return "login";  // Vender tilbage til login-siden
+        return "/UserAuth/login";  // Vender tilbage til login-siden
     }
 
     @GetMapping("/register")
     public String viewRegister(){
-        return "register";  // Viser registreringssiden
+        return "/UserAuth/register";  // Viser registreringssiden
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam("eid") String eid, @RequestParam("uid") String uid, @RequestParam("pw") String pw,
+    public String register(@RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password,
                            RedirectAttributes redirectAttributes){
 
         // Validerer input (email, brugernavn, password)
-        if (!eid.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
             redirectAttributes.addFlashAttribute("error", "Email isn't correct.");
             return "redirect:/users/register";
         }
 
-        if (uid.length() < 3){
+        if (username.length() < 3){
             redirectAttributes.addFlashAttribute("error", "Username is too short.");
             return "redirect:/users/register";
         }
 
-        if (pw.length() < 8){
+        if (password.length() < 8){
             redirectAttributes.addFlashAttribute("error","Password is too short.");
             return "redirect:/users/register";
         }
 
-        if (!userService.register(eid, uid, pw)) {
+        if (!userService.register(email, username, password)) {
             redirectAttributes.addFlashAttribute("error", "Account already exists.");
             return "redirect:/users/register";
         }
