@@ -43,7 +43,7 @@
         <td>
             <a class="links-button" th:href="@{'/projects/' + ${Project.id} + '/subprojects'}">Choose</a>
             <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
-            <form th:action="@{'/projects/delete' + ${Project.id}}" method="post" style="display: inline">
+            <form th:action="@{'/projects/delete/' + ${Project.id}}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Delete</button>
             </form>
         </td>
