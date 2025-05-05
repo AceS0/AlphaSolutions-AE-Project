@@ -20,13 +20,13 @@ public class SubprojectRepository {
     // Find alle subprojects
     public List<Subproject> findAll() {
         String sql = "SELECT * FROM subproject";
-        return jdbcTemplate.query(sql, subprojectRowMapper);
+        return jdbcTemplate.query(sql, mapSubprojects());
     }
 
     // Find subproject by id
     public Subproject findById(int id) {
         String sql = "SELECT * FROM subproject WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, subprojectRowMapper, id);
+        return jdbcTemplate.queryForObject(sql, mapSubprojects(), id);
     }
 
     // Tilføj nyt subproject
@@ -38,8 +38,9 @@ public class SubprojectRepository {
 
     // Opdater eksisterende subproject
     public void update(Subproject subproject) {
-        String sql = "UPDATE subproject SET projectId = ?, title = ? WHERE id = ?";
-        jdbcTemplate.update(sql, subproject.getProjectId(), subproject.getTitle(), subproject.getId());
+        String sql = "UPDATE subproject SET projectId = ?, title = ?, priority = ?, deadline = ?, duration = ?, checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql, subproject.getProjectId(), subproject.getTitle(), subproject.getPriority(),
+                subproject.getDeadline(), subproject.getDuration(), subproject.getChecked(), subproject.getId());
     }
 
     // Slet subproject
@@ -52,14 +53,6 @@ public class SubprojectRepository {
         String sql = "SELECT * FROM subproject WHERE projectId = ?";
         return jdbcTemplate.query(sql, mapSubprojects(), id);
     }
-
-    private RowMapper<Subproject> subprojectRowMapper = (rs, rowNum) -> {
-        Subproject subproject = new Subproject();
-        subproject.setId(rs.getInt("id"));
-        subproject.setProjectId(rs.getInt("projectId"));
-        subproject.setTitle(rs.getString("title"));
-        return subproject;
-    };
 
     private RowMapper<Subproject> mapSubprojects(){
         return (rs, rowNum) -> new Subproject(
