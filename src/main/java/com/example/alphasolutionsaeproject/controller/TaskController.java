@@ -56,8 +56,8 @@ public class TaskController {
     }
 
     // 6. Slet en task
-    @GetMapping("projects/id/subprojects/subid/tasks/delete/{tid}")
-    public String deleteTask(@PathVariable int tid) {
+    @GetMapping("projects/{pid}/subprojects/{subid}/tasks/delete/{tid}")
+    public String deleteTask(@PathVariable int pid, @PathVariable int subid, @PathVariable int tid) {
         taskService.deleteTask(tid);
         return "redirect:/tasks";
     }

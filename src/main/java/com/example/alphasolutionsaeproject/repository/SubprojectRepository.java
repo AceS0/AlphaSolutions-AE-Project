@@ -42,7 +42,7 @@ public class SubprojectRepository {
     }
 
     // Slet subproject
-    public void delete(int pid, int spid) {
+    public void delete(int spid) {
         String sql = "DELETE FROM subproject WHERE id = ?";
         jdbcTemplate.update(sql,  spid);
     }

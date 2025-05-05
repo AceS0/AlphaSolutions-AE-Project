@@ -31,8 +31,8 @@ public class SubprojectService {
         subprojectRepository.update(subproject);
     }
 
-    public void deleteSubproject(int pid, int spid) {
-        subprojectRepository.delete(pid, spid);
+    public void deleteSubproject(int spid) {
+        subprojectRepository.delete(spid);
     }
 
 

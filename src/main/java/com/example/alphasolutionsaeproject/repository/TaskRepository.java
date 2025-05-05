@@ -55,9 +55,9 @@ public class TaskRepository {
     }
 
     // Slet task
-    public void delete(int id) {
+    public void delete(int tid) {
         String sql = "DELETE FROM task WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, tid);
     }
 
     private RowMapper<Task> taskRowMapper = (rs, rowNum) -> {

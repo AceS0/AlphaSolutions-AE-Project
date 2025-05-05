@@ -43,7 +43,9 @@
         <td>
             <a class="links-button" th:href="@{'/projects/' + ${Project.id} + '/subprojects'}">Choose</a>
             <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
-            <form th:action="@{'/projects/delete/' + ${Project.id}}" method="post" style="display: inline">
+            <form th:action="@{'/projects/delete/' + ${Project.id}}"
+                  method="post" style="display: inline"
+                  th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${Project.id} + ')?\')'">
                 <button class="links-buttondelete" type="submit">Delete</button>
             </form>
         </td>
