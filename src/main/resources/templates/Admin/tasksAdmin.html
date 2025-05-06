@@ -34,7 +34,7 @@
         <input type="checkbox"
                name="checked"
                th:checked="${task.checked}"
-               onchange="this.form.submit()" />
+               onchange="this.form.submit()">
       </form>
     </td>
 
@@ -55,7 +55,7 @@
   </tr>
 </table>
 <div style="margin-top: 20px; text-align: left;">
-  <a class="links-button" th:href="@{'/projects'}">← Back</a>
+  <a class="links-button" th:href="@{'/projects/' + ${pid} + '/subprojects'}">← Back</a>
 </div>
 </body>
 </html>

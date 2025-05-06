@@ -1,5 +1,10 @@
 package com.example.alphasolutionsaeproject.controller;
+import com.example.alphasolutionsaeproject.model.Role;
+import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
+import com.example.alphasolutionsaeproject.model.User;
+import com.example.alphasolutionsaeproject.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,17 +17,36 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final UserService userService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, UserService userService) {
         this.taskService = taskService;
+        this.userService = userService;
+    }
+
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("email") != null;
     }
 
     // 1. Vis alle tasks
     @GetMapping("projects/{pid}/subprojects/{spid}/tasks")
-    public String listTasks(@PathVariable int pid, @PathVariable int spid ,Model model) {
-        List<Task> tasks = taskService.getAllTasks();
-        model.addAttribute("tasks", tasks);
-        return "Admin/tasksAdmin"; // Thymeleaf side: tasks.html
+    public String listTasks(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/users/login";
+        }
+        String mail = (String) session.getAttribute("email");
+        User user = userService.getUserByMail(mail);
+        List<Task> tasks = taskService.getAllTasksBySubProjectId(spid);
+        model.addAttribute("Tasks", tasks);
+        if (user.getRole().equals(Role.EMPLOYEE)) {
+            return "Employee/subprojects";
+        }
+
+        if (user.getRole().equals(Role.PM)) {
+            return "PM/projectsPM";
+        }
+
+        return "Admin/subprojectsAdmin";
     }
 
     // 2. Vis form for at tilføje en task

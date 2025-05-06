@@ -1,5 +1,6 @@
 package com.example.alphasolutionsaeproject.repository;
-import com.example.alphasolutionsaeproject.model.Task;
+import com.example.alphasolutionsaeproject.model.*;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,39 +19,36 @@ public class TaskRepository {
     // Find alle tasks
     public List<Task> findAll() {
         String sql = "SELECT * FROM task";
-        return jdbcTemplate.query(sql, taskRowMapper);
+        return jdbcTemplate.query(sql, mapTasks());
     }
 
     // Find task by id
     public Task findById(int id) {
         String sql = "SELECT * FROM task WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, taskRowMapper, id);
+        return jdbcTemplate.queryForObject(sql, mapTasks(), id);
     }
 
     // Tilføj ny task
     public void save(Task task) {
-        String sql = "INSERT INTO task (columnId, title, description, assignedTo, status, priority, attachments) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO task (title, description, assignedTo, status, priority) VALUES ( ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                task.getColumnId(),
                 task.getTitle(),
                 task.getDescription(),
                 task.getAssignedTo(),
                 task.getStatus(),
-                task.getPriority(),
-                task.getAttachments());
+                task.getPriority());
+
     }
 
     // Opdater eksisterende task
     public void update(Task task) {
-        String sql = "UPDATE task SET columnId = ?, title = ?, description = ?, assignedTo = ?, status = ?, priority = ?, attachments = ? WHERE id = ?";
+        String sql = "UPDATE task SET title = ?, description = ?, assignedTo = ?, status = ?, priority = ? WHERE id = ?";
         jdbcTemplate.update(sql,
-                task.getColumnId(),
                 task.getTitle(),
                 task.getDescription(),
                 task.getAssignedTo(),
                 task.getStatus(),
                 task.getPriority(),
-                task.getAttachments(),
                 task.getId());
     }
 
@@ -60,16 +58,26 @@ public class TaskRepository {
         jdbcTemplate.update(sql, tid);
     }
 
-    private RowMapper<Task> taskRowMapper = (rs, rowNum) -> {
-        Task task = new Task();
-        task.setId(rs.getInt("id"));
-        task.setColumnId(rs.getInt("columnId"));
-        task.setTitle(rs.getString("title"));
-        task.setDescription(rs.getString("description"));
-        task.setAssignedTo((Integer) rs.getObject("assignedTo"));
-        task.setStatus(rs.getString("status"));
-        task.setPriority(rs.getString("priority"));
-        task.setAttachments(rs.getString("attachments"));
-        return task;
-    };
+
+    public List<Task> getAllTasksBySpid(int id){
+        String sql = "SELECT * FROM task WHERE subprojectId = ?";
+        return jdbcTemplate.query(sql, mapTasks(), id);
+    }
+
+    private RowMapper<Task> mapTasks(){
+        return (rs, rowNum) -> new Task(
+                rs.getInt("id"),
+                rs.getInt("subprojectId"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getString("deadline"),
+                rs.getInt("duration"),
+                Status.valueOf(rs.getString("status").toUpperCase()),
+                Priority.valueOf(rs.getString("priority").toUpperCase()),
+                rs.getBoolean("checked")
+        );
+    }
+
+
 }
+
