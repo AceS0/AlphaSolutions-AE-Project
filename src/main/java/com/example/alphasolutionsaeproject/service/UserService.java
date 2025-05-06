@@ -72,6 +72,10 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
+    public List<User> getAllPms(String role){
+        return userRepository.getAllUsersByRole(role);
+    }
+
     public void deleteusers(int id) {
         userRepository.deleteById(id);
     }

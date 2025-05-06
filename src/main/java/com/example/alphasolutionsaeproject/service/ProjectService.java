@@ -34,8 +34,8 @@ public class ProjectService {
     }
 
     // Opdater eksisterende projekt
-    public void updateProject(Project project) {
-        projectRepository.update(project);
+    public void updateProject(Project project, int pid) {
+        projectRepository.update(project, pid);
     }
 
     // Slet projekt
@@ -49,6 +49,10 @@ public class ProjectService {
 
     public List<Project> getSharedProjectsByUserId(int id){
         return projectRepository.getSharedProjectsByUserId(id);
+    }
+
+    public int getProjectManagerId(String getCreatedBy){
+        return userRepository.getProjectManagerId(getCreatedBy);
     }
 
     public void toggleChecked(int id) {

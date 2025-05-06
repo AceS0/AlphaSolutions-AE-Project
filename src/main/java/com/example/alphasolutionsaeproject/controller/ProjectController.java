@@ -90,28 +90,47 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/add")
-    public String showAddForm(Model model) {
+    public String showAddForm(Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+        List<User> users = userService.getAllPms("PM");
+        model.addAttribute("users",users);
         model.addAttribute("project", new Project());
-        return "addProject";
+        return "CommonProjects/addProject";
     }
 
-    @PostMapping("/projects/add")
+    @PostMapping("/projects/save")
     public String addProject(@ModelAttribute("project") Project project) {
+        String getCreatedBy = project.getProjectManager();
+        int createdBy = projectService.getProjectManagerId(getCreatedBy);
+        project.setCreatedBy(createdBy);
+        project.setChecked(false);
         projectService.addProject(project);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects/edit/{pid}")
-    public String showEditForm(@PathVariable int pid, Model model) {
+    public String showEditForm(@PathVariable int pid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+
+        List<User> users = userService.getAllPms("PM");
+        model.addAttribute("users",users);
+
         Project project = projectService.getProjectById(pid);
         model.addAttribute("project", project);
-        return "editProject";
+        return "CommonProjects/editProject";
     }
 
     @PostMapping("/projects/edit/{pid}")
     public String editProject(@PathVariable int pid, @ModelAttribute("project") Project project) {
-        project.setId(pid);
-        projectService.updateProject(project);
+        String getCreatedBy = project.getProjectManager();
+        int createdBy = projectService.getProjectManagerId(getCreatedBy);
+        project.setCreatedBy(createdBy);
+        project.setChecked(false);
+        projectService.updateProject(project, pid);
         return "redirect:/projects";
     }
 

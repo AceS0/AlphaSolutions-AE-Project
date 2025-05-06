@@ -48,6 +48,10 @@
                   th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${Project.id} + ')?\')'">
                 <button class="links-buttondelete" type="submit">Delete</button>
             </form>
+            <details class="description-container">
+                <summary class="links-button">Description</summary>
+                <p th:text="${Project.description}"></p>
+            </details>
         </td>
     </tr>
 </table>

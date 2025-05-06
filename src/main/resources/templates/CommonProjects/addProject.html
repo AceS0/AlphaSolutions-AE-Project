@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Project</title>
+  <link rel="stylesheet" th:href="@{/login.css}">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
+  </div>
+</header>
+
+<main class="content">
+  <h1>Add Project</h1>
+
+  <form action="#" th:action="@{/projects/save}" th:object="${project}" method="post">
+    <p class="textbox">
+      <label for="title">Project name:</label>
+      <input type="text" id="title" th:field="*{title}" placeholder="Project-abc" required>
+    </p>
+    <p class="textbox">
+      <label for="description">Description:</label>
+      <input type="text" id="description" th:field="*{description}" placeholder="Project-abc is a..." required>
+    </p>
+    <p class="textbox">
+      <label for="deadline">Deadline:</label>
+      <input type="text" id="deadline" th:field="*{deadline}" placeholder="yyyy-MM-dd"  required>
+    </p>
+    <p class="textbox">
+      <label for="duration">Duration:</label>
+      <input type="text" id="duration" th:field="*{duration}" required>
+    </p>
+    <p class="textbox">
+      <label for="PM">Project Manager:</label>
+      <select class="textbox" id="PM" th:field="*{projectManager}" required>
+        <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
+      </select>
+    </p>
+
+    <div class="actions">
+      <a th:href="@{/projects}" class="button secondary-button">Cancel</a>
+      <button type="submit" class="button">Save</button>
+    </div>
+  </form>
+</main>
+
+</body>
+</html>
