@@ -40,7 +40,7 @@
         <td class="td duration" th:text="${subproject.duration}"></td>
         <td class="td createdBy" th:text="${subproject.priority}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${subproject.id}}">Choose</a>
+            <a class="links-button" th:href="@{'/projects/' + ${pid} + '/subprojects/' + ${subproject.id} + '/tasks'}">Choose</a>
             <a class="links-button" th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects/edit/' + ${subproject.id}}">Edit</a>
             <form th:action="@{'/projects/' + ${subproject.projectId} + '/subprojects/delete/' + ${subproject.id}}"
                   method="post" style="display: inline"
@@ -51,7 +51,7 @@
     </tr>
 </table>
 <div style="margin-top: 20px; text-align: left;">
-    <a class="links-button" th:href="@{'/projects'}">← Back</a>
+    <a class="links-button" th:href="@{'/projects/subprojects'}">← Back</a>
 </div>
 </body>
 </html>

@@ -43,7 +43,7 @@ public class SubprojectController {
         }
 
         if (user.getRole().equals(Role.PM)){
-            return "PM/subprojectsPM";
+            return "PM/projectsPM";
         }
 
         return "Admin/subprojectsAdmin";
