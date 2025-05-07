@@ -30,11 +30,10 @@ public class TaskRepository {
 
     // Tilføj ny task
     public void save(Task task) {
-        String sql = "INSERT INTO task (title, description, assignedTo, status, priority) VALUES ( ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO task (title, description, status, priority) VALUES ( ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 task.getTitle(),
                 task.getDescription(),
-                task.getAssignedTo(),
                 task.getStatus(),
                 task.getPriority());
 
@@ -42,11 +41,10 @@ public class TaskRepository {
 
     // Opdater eksisterende task
     public void update(Task task) {
-        String sql = "UPDATE task SET title = ?, description = ?, assignedTo = ?, status = ?, priority = ? WHERE id = ?";
+        String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?";
         jdbcTemplate.update(sql,
                 task.getTitle(),
                 task.getDescription(),
-                task.getAssignedTo(),
                 task.getStatus(),
                 task.getPriority(),
                 task.getId());
@@ -59,9 +57,9 @@ public class TaskRepository {
     }
 
 
-    public List<Task> getAllTasksBySpid(int id){
+    public List<Task> getAllTasksBySpid(int spid){
         String sql = "SELECT * FROM task WHERE subprojectId = ?";
-        return jdbcTemplate.query(sql, mapTasks(), id);
+        return jdbcTemplate.query(sql, mapTasks(), spid);
     }
 
     private RowMapper<Task> mapTasks(){
@@ -77,6 +75,7 @@ public class TaskRepository {
                 rs.getBoolean("checked")
         );
     }
+
 
 
 }

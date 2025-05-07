@@ -15,44 +15,44 @@
 </header>
 <h1 class="header1">Your Tasks: </h1>
 <div class="flex-center">
-  <a class="add-wish" th:href="@{'/subprojects/' + ${spid} + '/tasks/add'}">Add task</a>
+  <a class="add" th:href="@{'/projects/' + ${pid} '/subprojects/' + ${spid} + '/tasks/add'}">Add task</a>
 </div>
 <table class="table">
   <tr>
     <th class="th">Done</th>
     <th class="th">Title</th>
-    <th class="th">Description</th>
     <th class="th">Deadline</th>
     <th class="th">Duration</th>
     <th class="th">Priority</th>
     <th class="th">Status</th>
+    <th class="th">AssignedTo</th>
     <th class="th">Actions</th>
   </tr>
-  <tr th:each="task : ${tasks}">
+  <tr th:each="task:${tasks}">
     <td class="td checked">
-      <form th:action="@{'/subprojects/' + ${spid} + '/tasks/toggleChecked/' + ${task.id}}" method="post">
+      <form th:action="@{'/subprojects/' + ${task.subprojectId} + '/tasks/toggleChecked/' + ${task.id}}" method="post">
         <input type="checkbox"
                name="checked"
                th:checked="${task.checked}"
                onchange="this.form.submit()">
       </form>
     </td>
-
     <td class="td title" th:text="${task.title}"></td>
     <td class="td description" th:text="${task.description}"></td>
     <td class="td deadline" th:text="${task.deadline}"></td>
     <td class="td duration" th:text="${task.duration}"></td>
-    <td class="td priority" th:text="${task.priority}"></td>
     <td class="td status" th:text="${task.status}"></td>
+    <td class="td priority" th:text="${task.priority}"></td>
     <td>
       <a class="links-button" th:href="@{'/subprojects/' + ${spid} + '/tasks/edit/' + ${task.id}}">Edit</a>
       <form th:action="@{'/subprojects/' + ${spid} + '/tasks/delete/' + ${task.id}}"
             method="post" style="display: inline"
-            th:onsubmit="'return confirm(\'Do you really want to delete the task: ' + ${task.title} + ' (ID: ' + ${task.id} + ')?\')'">
+            th:onsubmit="'return confirm(\'Do you really want to delete the task: (ID: ' + ${task.id} + ')?\')'">
         <button class="links-buttondelete" type="submit">Delete</button>
       </form>
     </td>
   </tr>
+
 </table>
 <div style="margin-top: 20px; text-align: left;">
   <a class="links-button" th:href="@{'/projects/' + ${pid} + '/subprojects'}">← Back</a>

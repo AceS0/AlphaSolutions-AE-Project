@@ -49,7 +49,7 @@ h1.header1 {
     margin-bottom: 20px;
 }
 
-.add-wish {
+.add{
     background-color: #4B3EAE;
     color: white;
     padding: 10px 20px;
@@ -59,7 +59,7 @@ h1.header1 {
     transition: background-color 0.3s;
 }
 
-.add-wish:hover {
+.add:hover {
     background-color: #362D7E;
 }
 

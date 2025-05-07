@@ -15,7 +15,7 @@
 </header>
 <h1 class="header1">Your Subprojects: </h1>
 <div class="flex-center">
-    <a class="add-wish" th:href="@{'/projects/' + ${pid} + '/subprojects/add'}">Add subproject</a>
+    <a class="add" th:href="@{'/projects/' + ${pid} + '/subprojects/add'}">Add subproject</a>
 </div>
 <table class="table">
     <tr>
@@ -52,7 +52,7 @@
     </tr>
 </table>
 <div style="margin-top: 20px; text-align: left;">
-    <a class="links-button" th:href="@{'/projects/subprojects'}">← Back</a>
+    <a class="links-button" th:href="@{'/projects'}">← Back</a>
 </div>
 </body>
 </html>

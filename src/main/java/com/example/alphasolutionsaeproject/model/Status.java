@@ -1,7 +1,7 @@
 package com.example.alphasolutionsaeproject.model;
 
 public enum Status {
-    ToDo,
-    INPROGRESS,
+    TODO,
+    IN_PROGRESS,
     DONE
 }

@@ -38,8 +38,8 @@ public class TaskService {
         taskRepository.delete(tid);
     }
 
-    public List<Task> getAllTasksBySubProjectId(int id){
-        return taskRepository.getAllTasksBySpid(id);
+    public List<Task> getAllTasksBySubProjectId(int spid){
+        return taskRepository.getAllTasksBySpid(spid);
     }
 }
 

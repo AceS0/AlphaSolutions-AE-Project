@@ -37,35 +37,36 @@ public class TaskController {
         String mail = (String) session.getAttribute("email");
         User user = userService.getUserByMail(mail);
         List<Task> tasks = taskService.getAllTasksBySubProjectId(spid);
-        model.addAttribute("Tasks", tasks);
+        model.addAttribute("tasks", tasks);
+
         if (user.getRole().equals(Role.EMPLOYEE)) {
-            return "Employee/subprojects";
+            return "Employee/tasksEmployee";
         }
 
         if (user.getRole().equals(Role.PM)) {
-            return "PM/projectsPM";
+            return "PM/tasksPM";
         }
 
-        return "Admin/subprojectsAdmin";
+        return "Admin/tasksAdmin";
     }
 
     // 2. Vis form for at tilføje en task
     @GetMapping("projects/{pid}/subprojects/{spid}/tasks/add")
-    public String showAddForm(Model model) {
+    public String showAddForm(@PathVariable String pid, @PathVariable String spid, Model model) {
         model.addAttribute("task", new Task());
-        return "addTask"; // Thymeleaf side: addTask.html
+        return "CommonProjects/addtask";
     }
 
     // 3. Gem ny task
     @PostMapping("projects/{pid}/subprojects/{spid}/tasks/add")
-    public String addTask(@ModelAttribute Task task) {
+    public String addTask(@PathVariable String pid, @PathVariable String spid, @ModelAttribute Task task) {
         taskService.addTask(task);
         return "redirect:/tasks";
     }
 
     // 4. Vis form for at redigere en task
     @GetMapping("projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
-    public String showEditForm(@PathVariable int tid, Model model) {
+    public String showEditForm(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, Model model) {
         Task task = taskService.getTaskById(tid);
         model.addAttribute("task", task);
         return "editTask"; // Thymeleaf side: editTask.html
@@ -73,7 +74,7 @@ public class TaskController {
 
     // 5. Gem ændringer på eksisterende task
     @PostMapping("projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
-    public String editTask(@PathVariable int tid, @ModelAttribute Task task) {
+    public String editTask(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, @ModelAttribute Task task) {
         task.setId(tid);
         taskService.updateTask(task);
         return "redirect:/tasks";
