@@ -1,7 +1,9 @@
 package com.example.alphasolutionsaeproject.service;
 
 
+import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
+import com.example.alphasolutionsaeproject.model.User;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
 
@@ -32,8 +34,12 @@ public class TaskService {
         taskRepository.update(task);
     }
 
-    public void deleteTask(int id) {
-        taskRepository.delete(id);
+    public void deleteTask(int tid ) {
+        taskRepository.delete(tid);
+    }
+
+    public List<Task> getAllTasksBySubProjectId(int spid){
+        return taskRepository.getAllTasksBySpid(spid);
     }
 }
 

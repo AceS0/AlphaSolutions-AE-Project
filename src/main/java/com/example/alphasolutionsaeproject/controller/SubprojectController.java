@@ -43,7 +43,7 @@ public class SubprojectController {
         }
 
         if (user.getRole().equals(Role.PM)){
-            return "PM/subprojectsPM";
+            return "PM/projectsPM";
         }
 
         return "Admin/subprojectsAdmin";
@@ -100,9 +100,9 @@ public class SubprojectController {
     }
 
     // 6. Slet et subproject
-    @GetMapping("projects/{pid}/subprojects/delete/{spid}")
-    public String deleteSubproject(@PathVariable int spid) {
+    @PostMapping("/projects/{pid}/subprojects/delete/{spid}")
+    public String deleteSubproject(@PathVariable int pid, @PathVariable int spid) {
         subprojectService.deleteSubproject(spid);
-        return "redirect:/subprojects";
+        return "redirect:/projects/{pid}/subprojects";
     }
 }

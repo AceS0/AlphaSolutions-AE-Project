@@ -1,8 +1,16 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>addTask</title>
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Subproject</title>
+    <title>Add Project</title>
     <link rel="stylesheet" th:href="@{/login.css}">
     <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
@@ -15,19 +23,16 @@
 </header>
 
 <main class="content">
-    <h1>Edit Subproject</h1>
+    <h1>Add Project</h1>
 
-    <form action="#" th:action="@{'/projects/' + ${pid} + '/subprojects/edit/' + ${spid} + '/save'}" th:object="${subproject}" method="post">
-        <div th:if="${error}" style="color: red;">
-            <p th:text="${error}"></p>
-        </div>
+    <form action="#" th:action="@{/projects/save}" th:object="${project}" method="post">
         <p class="textbox">
             <label for="title">Project name:</label>
-            <input type="text" id="title" th:field="*{title}" placeholder="Subproject-abc" required>
+            <input type="text" id="title" th:field="*{title}" placeholder="Project-abc" required>
         </p>
         <p class="textbox">
-            <label for="priority">Priority:</label>
-            <input type="text" id="priority" th:field="*{priority}" placeholder="1-5" required>
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" placeholder="Project-abc is a..." required>
         </p>
         <p class="textbox">
             <label for="deadline">Deadline:</label>
@@ -37,13 +42,22 @@
             <label for="duration">Duration:</label>
             <input type="text" id="duration" th:field="*{duration}" required>
         </p>
+        <p class="textbox">
+            <label for="PM">Project Manager:</label>
+            <select class="textbox" id="PM" th:field="*{projectManager}" required>
+                <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
+            </select>
+        </p>
 
         <div class="actions">
-            <a th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects'}" class="button secondary-button">Cancel</a>
+            <a th:href="@{/projects}" class="button secondary-button">Cancel</a>
             <button type="submit" class="button">Save</button>
         </div>
     </form>
 </main>
+
+</body>
+</html>
 
 </body>
 </html>

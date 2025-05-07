@@ -90,4 +90,9 @@ public class UserRepository{
                 Role.valueOf(rs.getString("role").toUpperCase())
         );
     }
+
+    public void deleteById(int id) {
+        String sql = "DELETE FROM user WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }

@@ -3,26 +3,29 @@ package com.example.alphasolutionsaeproject.model;
 
 public class Task {
     private int id;
-    private int columnId;
+    private int subprojectId;
     private String title;
     private String description;
-    private Integer assignedTo;
-    private String status;
-    private String priority;
-    private String attachments;
+    private String deadline;
+    private int duration;
+    private Status status;
+    private Priority priority;
+    private boolean checked;
+
 
     public Task() {
     }
 
-    public Task(int id, int columnId, String title, String description, Integer assignedTo, String status, String priority, String attachments) {
+    public Task(int id,int subprojectId,String title, String description,String deadline,int duration ,Status status, Priority priority, boolean checked) {
         this.id = id;
-        this.columnId = columnId;
+        this.subprojectId = subprojectId;
         this.title = title;
         this.description = description;
-        this.assignedTo = assignedTo;
+        this.deadline = deadline;
+        this.duration = duration;
         this.status = status;
         this.priority = priority;
-        this.attachments = attachments;
+        this.checked = checked;
     }
 
     // Getters og setters
@@ -34,12 +37,12 @@ public class Task {
         this.id = id;
     }
 
-    public int getColumnId() {
-        return columnId;
+    public int getSubprojectId() {
+        return subprojectId;
     }
 
-    public void setColumnId(int columnId) {
-        this.columnId = columnId;
+    public void setSubprojectId(int subprojectId) {
+        this.subprojectId = subprojectId;
     }
 
     public String getTitle() {
@@ -58,35 +61,43 @@ public class Task {
         this.description = description;
     }
 
-    public Integer getAssignedTo() {
-        return assignedTo;
+    public String getDeadline() {
+        return deadline;
     }
 
-    public void setAssignedTo(Integer assignedTo) {
-        this.assignedTo = assignedTo;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
-    public String getStatus() {
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
-    public String getAttachments() {
-        return attachments;
+    public boolean isChecked() {
+        return checked;
     }
 
-    public void setAttachments(String attachments) {
-        this.attachments = attachments;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

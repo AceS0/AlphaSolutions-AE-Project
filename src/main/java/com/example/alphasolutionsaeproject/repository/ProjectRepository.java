@@ -46,9 +46,9 @@ public class ProjectRepository {
     }
 
     // Slet et projekt
-    public void deleteById(int id) {
+    public void deleteById(int pid) {
         String sql = "DELETE FROM project WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, pid);
     }
 
     public List<Project> getAllProjectsByUserId(int id){

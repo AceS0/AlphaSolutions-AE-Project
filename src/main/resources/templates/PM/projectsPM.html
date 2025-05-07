@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Projects</title>
     <link rel="stylesheet" th:href="@{/projects.css}">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
 <body>
 <header>
@@ -14,7 +15,7 @@
 </header>
 <h1 class="header1">Your Projects: </h1>
 <div class="flex-center">
-    <a class="add-wish" href="/projects/add">Add project</a>
+    <a class="add" href="/projects/add">Add project</a>
 </div>
 <table class="table">
     <tr>
@@ -43,7 +44,9 @@
         <td>
             <a class="links-button" th:href="@{'/projects/' + ${Project.id}}">Choose</a>
             <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
-            <form th:action="@{'/projects/delete' + ${Project.id}}" method="post" style="display: inline">
+            <form th:action="@{'/projects/delete/' + ${Project.id}}"
+                  method="post" style="display: inline"
+                  th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${Project.id} + ')?\')'">
                 <button class="links-buttondelete" type="submit">Delete</button>
             </form>
         </td>

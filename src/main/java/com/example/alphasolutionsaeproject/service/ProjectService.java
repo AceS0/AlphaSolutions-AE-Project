@@ -39,8 +39,8 @@ public class ProjectService {
     }
 
     // Slet projekt
-    public void deleteProject(int id) {
-        projectRepository.deleteById(id);
+    public void deleteProject(int pid) {
+        projectRepository.deleteById(pid);
     }
 
     public List<Project> getAllProjectsByUserId(int id){

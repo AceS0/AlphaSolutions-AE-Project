@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Users</title>
   <link rel="stylesheet" th:href="@{/projects.css}">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
 <body>
 <header>
@@ -16,7 +17,7 @@
 <h1 class="header1">All Users</h1>
 
 <div class="flex-center">
-  <a class="add-wish" href="/users/create">Create User</a>
+  <a class="add" href="/users/create">Create User</a>
 </div>
 
 <table class="table">
@@ -31,8 +32,8 @@
     <td class="td" th:text="${user.email}"></td>
     <td class="td" th:text="${user.role}"></td>
     <td>
-      <a class="links-button" th:href="@{'admin/users/edit/' + ${user.id}}">Edit</a>
-      <form th:action="@{'admin/users/delete/' + ${user.id}}" method="post" style="display: inline">
+      <a class="links-button" th:href="@{'/admin/users/edit/' + ${user.id}}">Edit</a>
+      <form th:action="@{'/admin/users/delete/' + ${user.id}}" method="post" style="display: inline">
         <button class="links-buttondelete" type="submit">Delete</button>
       </form>
     </td>
