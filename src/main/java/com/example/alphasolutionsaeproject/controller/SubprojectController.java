@@ -1,5 +1,4 @@
 package com.example.alphasolutionsaeproject.controller;
-import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.User;
@@ -9,10 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.alphasolutionsaeproject.service.SubprojectService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("")
@@ -54,30 +52,49 @@ public class SubprojectController {
 
     // 2. Vis form for at tilføje et subproject
     @GetMapping("projects/{pid}/subprojects/add")
-    public String showAddForm(Model model) {
+    public String showAddForm(@PathVariable int pid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+
         model.addAttribute("subproject", new Subproject());
-        return "addSubproject";
+        return "CommonProjects/addSubproject";
     }
 
     // 3. Gem nyt subproject
-    @PostMapping("projects/{pid}/subprojects/add")
-    public String addSubproject(@ModelAttribute Subproject subproject) {
+    @PostMapping("projects/{pid}/subprojects/save")
+    public String addSubproject(@ModelAttribute("subproject") Subproject subproject, @PathVariable int pid, RedirectAttributes redirectAttributes) {
+        subproject.setProjectId(pid);
+        subproject.setChecked(false);
+        if (subproject.getPriority() > 5){
+            redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
+            return "redirect:/projects/{pid}/subprojects/add";
+        }
         subprojectService.addSubproject(subproject);
-        return "redirect:/subprojects";
+        return "redirect:/projects/{pid}/subprojects";
     }
 
     // 4. Vis form for at redigere et subproject
     @GetMapping("projects/{pid}/subprojects/edit/{spid}")
-    public String showEditForm(@PathVariable int spid, Model model) {
+    public String showEditForm(@PathVariable int spid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+
         Subproject subproject = subprojectService.getSubprojectById(spid);
         model.addAttribute("subproject", subproject);
-        return "editSubproject";
+        return "CommonProjects/editSubproject";
     }
 
     // 5. Gem ændringer på eksisterende subproject
-    @PostMapping("projects/{pid}/subprojects/edit/{spid}")
-    public String editSubproject(@PathVariable int spid, @ModelAttribute Subproject subproject) {
-        subproject.setId(spid);
+    @PostMapping("projects/{pid}/subprojects/edit/{spid}/save")
+    public String editSubproject(@PathVariable int pid,@PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
+        subproject.setChecked(false);
+        if (subproject.getPriority() > 5){
+            redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
+            return "redirect:/projects/{pid}/subprojects/edit/{spid}";
+        }
+
         subprojectService.updateSubproject(subproject);
         return "redirect:/subprojects";
     }

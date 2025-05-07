@@ -27,7 +27,7 @@
     </tr>
     <tr th:each="subproject : ${subprojects}">
         <td class="td checked">
-            <form th:action="@{'/projects/' + ${pid} + '/subprojects/toggleChecked/' + ${subproject.id}}" method="post">
+            <form th:action="@{'/projects/' + ${subproject.projectId} + '/subprojects/toggleChecked/' + ${subproject.id}}" method="post">
                 <input type="checkbox"
                        name="checked"
                        th:checked="${subproject.checked}"
@@ -40,9 +40,9 @@
         <td class="td duration" th:text="${subproject.duration}"></td>
         <td class="td createdBy" th:text="${subproject.priority}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${subproject.id}}">Choose</a>
-            <a class="links-button" th:href="@{'projects/' + ${pid} + '/subprojects/edit/' + ${spid}}">Edit</a>
-            <form th:action="@{'projects/' + ${pid} + '/subprojects/delete/' + ${spid}}" method="post" style="display: inline">
+            <a class="links-button" th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects/' + ${subproject.id}}">Choose</a>
+            <a class="links-button" th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects/edit/' + ${subproject.id}}">Edit</a>
+            <form th:action="@{'/projects/' + ${subproject.projectId} + '/subprojects/delete/' + ${subproject.id}}" method="post" style="display: inline">
                 <button class="links-buttondelete" type="submit">Delete</button>
             </form>
         </td>
