@@ -38,7 +38,7 @@
         <td class="td duration" th:text="${subproject.duration}"></td>
         <td class="td createdBy" th:text="${subproject.priority}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${subproject.id}}">Choose</a>
+            <a class="links-button" th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects/' + ${subproject.id} + '/tasks'}">Choose</a>
         </td>
     </tr>
 </table>
