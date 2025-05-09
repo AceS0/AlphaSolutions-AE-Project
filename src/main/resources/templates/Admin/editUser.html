@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit session</title>
+    <link rel="stylesheet" th:href="@{/login.css}">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
+    </div>
+</header>
+
+<main class="content">
+    <h1>Edit User</h1>
+    <form th:action="@{admin/users/edit/{uid}(uid=${uid})}" th:object="${user}" method="post">
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
+        <p class="textbox">
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}" required  autofocus>
+        </p>
+        <p class="textbox">
+            <label for="email">Email:</label>
+            <input id="email" type="text" th:field="*{email}" required>
+        </p>
+        <p class="textbox">
+            <label for="password">Password:</label>
+            <input id="password" type="text" th:field="*{password}" required>
+        </p>
+        <p class="textbox">
+            <label for="role">Role:</label>
+            <select class="textbox" id="role" th:field="*{role}" required>
+                <option th:value="'ADMIN'" th:text="'Admin'"></option>
+                <option th:value="'PM'" th:text="'PM'"></option>
+                <option th:value="'EMPLOYEE'" th:text="'Employee'"></option>
+            </select>
+        </p>
+        <div class="actions">
+            <a class="button secondary-button" th:href="@{/admin/users}">Cancel</a>
+            <button type="submit" class="button">Submit</button>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

@@ -37,10 +37,10 @@ public class SubprojectRepository {
     }
 
     // Opdater eksisterende subproject
-    public void update(Subproject subproject) {
-        String sql = "UPDATE subproject SET projectId = ?, title = ?, priority = ?, deadline = ?, duration = ?, checked = ? WHERE id = ?";
-        jdbcTemplate.update(sql, subproject.getProjectId(), subproject.getTitle(), subproject.getPriority(),
-                subproject.getDeadline(), subproject.getDuration(), subproject.getChecked(), subproject.getId());
+    public void update(Subproject subproject, int spid) {
+        String sql = "UPDATE subproject SET title = ?, priority = ?, deadline = ?, duration = ?, checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql,  subproject.getTitle(), subproject.getPriority(),
+                subproject.getDeadline(), subproject.getDuration(), subproject.getChecked(), spid);
     }
 
     // Slet subproject
@@ -52,6 +52,11 @@ public class SubprojectRepository {
     public List<Subproject> getAllProjectsByProjectId(int id){
         String sql = "SELECT * FROM subproject WHERE projectId = ?";
         return jdbcTemplate.query(sql, mapSubprojects(), id);
+    }
+
+    public void updateChecked(int id, boolean newValue) {
+        String sql = "UPDATE subproject SET checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newValue, id);
     }
 
     private RowMapper<Subproject> mapSubprojects(){

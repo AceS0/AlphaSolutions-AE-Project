@@ -8,15 +8,15 @@ public class Task {
     private String description;
     private String deadline;
     private int duration;
-    private Status status;
-    private Priority priority;
+    private String status;
+    private String priority;
     private boolean checked;
 
 
     public Task() {
     }
 
-    public Task(int id,int subprojectId,String title, String description,String deadline,int duration ,Status status, Priority priority, boolean checked) {
+    public Task(int id, int subprojectId, String title, String description, String deadline, int duration, String status, String priority, boolean checked) {
         this.id = id;
         this.subprojectId = subprojectId;
         this.title = title;
@@ -77,23 +77,23 @@ public class Task {
         this.duration = duration;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Priority getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
-    public boolean isChecked() {
+    public boolean getChecked() {
         return checked;
     }
 

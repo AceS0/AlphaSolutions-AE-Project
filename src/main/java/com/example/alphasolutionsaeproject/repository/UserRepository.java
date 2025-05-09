@@ -1,6 +1,7 @@
 package com.example.alphasolutionsaeproject.repository;
 
 import com.example.alphasolutionsaeproject.model.Role;
+import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -62,6 +63,11 @@ public class UserRepository{
     public void registerUser(String eid, String uid, String pw, Role role){
         String sql = "INSERT INTO USER (email, username, password, role) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, eid, uid, pw, role.name());  // Indsætter bruger i databasen
+    }
+
+    public void updateUser(User user) {
+        String sql = "UPDATE user SET email = ?, username = ?, password = ?, role = ? WHERE id = ?";
+        jdbcTemplate.update(sql,mapUsers(),user.getId());
     }
 
     public int getProjectManagerId(String getCreatedBy) {

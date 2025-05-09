@@ -1,16 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>addTask</title>
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-</head>
-<body>
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Project</title>
+    <title>Add Subproject</title>
     <link rel="stylesheet" th:href="@{/login.css}">
     <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
@@ -23,16 +15,23 @@
 </header>
 
 <main class="content">
-    <h1>Add Project</h1>
+    <h1>Add Task</h1>
 
-    <form action="#" th:action="@{/projects/save}" th:object="${project}" method="post">
+    <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/save(pid=${pid}, spid=${spid})}" th:object="${task}" method="post">
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
         <p class="textbox">
-            <label for="title">Project name:</label>
-            <input type="text" id="title" th:field="*{title}" placeholder="Project-abc" required>
+            <label for="title">Task name:</label>
+            <input type="text" id="title" th:field="*{title}" placeholder="Task-abc" required>
         </p>
         <p class="textbox">
             <label for="description">Description:</label>
-            <input type="text" id="description" th:field="*{description}" placeholder="Project-abc is a..." required>
+            <input type="text" id="description" th:field="*{description}" placeholder="Task-desc-abc" required>
+        </p>
+        <p class="textbox">
+            <label for="priority">Priority:</label>
+            <input type="text" id="priority" th:field="*{priority}" placeholder="Low, Medium or High" required>
         </p>
         <p class="textbox">
             <label for="deadline">Deadline:</label>
@@ -43,21 +42,18 @@
             <input type="text" id="duration" th:field="*{duration}" required>
         </p>
         <p class="textbox">
-            <label for="PM">Project Manager:</label>
-            <select class="textbox" id="PM" th:field="*{projectManager}" required>
-                <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
-            </select>
+            <label for="status">Status:</label>
+            <input type="text" id="status" th:field="*{status}" placeholder="To Do, In Progress or Done" required>
         </p>
 
+
+
         <div class="actions">
-            <a th:href="@{/projects}" class="button secondary-button">Cancel</a>
+            <a th:href="@{/projects/{pid}/subprojects/{spid}/tasks(pid=${pid}, spid=${spid})}" class="button secondary-button">Cancel</a>
             <button type="submit" class="button">Save</button>
         </div>
     </form>
 </main>
-
-</body>
-</html>
 
 </body>
 </html>
