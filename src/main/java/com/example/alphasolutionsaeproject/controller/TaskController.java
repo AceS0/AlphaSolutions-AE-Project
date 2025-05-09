@@ -1,6 +1,5 @@
 package com.example.alphasolutionsaeproject.controller;
 import com.example.alphasolutionsaeproject.model.Role;
-import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.service.UserService;
@@ -44,10 +43,10 @@ public class TaskController {
         }
 
         if (user.getRole().equals(Role.PM)) {
-            return "PM/tasksPM";
+            return "CommonProjects/tasks";
         }
 
-        return "Admin/tasksAdmin";
+        return "CommonProjects/tasks";
     }
 
     // 2. Vis form for at tilføje en task
@@ -81,10 +80,10 @@ public class TaskController {
     }
 
     // 6. Slet en task
-    @GetMapping("projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
+    @PostMapping("projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
     public String deleteTask(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
         taskService.deleteTask(tid);
-        return "redirect:/tasks";
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 }
 
