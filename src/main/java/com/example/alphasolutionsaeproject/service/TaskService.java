@@ -1,9 +1,7 @@
 package com.example.alphasolutionsaeproject.service;
 
 
-import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
-import com.example.alphasolutionsaeproject.model.User;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
 
@@ -26,8 +24,8 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public void addTask(Task task) {
-        taskRepository.save(task);
+    public void addTask(Task task, int spid) {
+        taskRepository.save(task, spid);
     }
 
     public void updateTask(Task task) {

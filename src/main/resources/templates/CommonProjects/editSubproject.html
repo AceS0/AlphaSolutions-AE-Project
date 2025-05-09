@@ -17,7 +17,7 @@
 <main class="content">
     <h1>Edit Subproject</h1>
 
-    <form action="#" th:action="@{'/projects/' + ${pid} + '/subprojects/edit/' + ${spid} + '/save'}" th:object="${subproject}" method="post">
+    <form action="#" th:action="@{/projects/{pid}/subprojects/edit/{spid}/save(pid=${pid}, spid=${spid})}" th:object="${subproject}" method="post">
         <div th:if="${error}" style="color: red;">
             <p th:text="${error}"></p>
         </div>
@@ -39,7 +39,7 @@
         </p>
 
         <div class="actions">
-            <a th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects'}" class="button secondary-button">Cancel</a>
+            <a th:href="@{/projects/{pid}/subprojects(pid=${pid})}" class="button secondary-button">Cancel</a>
             <button type="submit" class="button">Save</button>
         </div>
     </form>
