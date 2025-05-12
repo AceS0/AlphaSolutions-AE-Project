@@ -29,7 +29,7 @@ public class SubprojectController {
         return session.getAttribute("email") != null;
     }
 
-    @GetMapping("projects/{pid}/subprojects")
+    @GetMapping("/projects/{pid}/subprojects")
     public String listSubprojects(@PathVariable int pid, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
@@ -51,7 +51,7 @@ public class SubprojectController {
 
 
     // 2. Vis form for at tilføje et subproject
-    @GetMapping("projects/{pid}/subprojects/add")
+    @GetMapping("/projects/{pid}/subprojects/add")
     public String showAddForm(@PathVariable int pid, Model model, HttpSession session) {
         if (!isLoggedIn(session)){
             return "redirect:/users/login";
@@ -62,7 +62,7 @@ public class SubprojectController {
     }
 
     // 3. Gem nyt subproject
-    @PostMapping("projects/{pid}/subprojects/save")
+    @PostMapping("/projects/{pid}/subprojects/save")
     public String addSubproject(@ModelAttribute("subproject") Subproject subproject, @PathVariable int pid, RedirectAttributes redirectAttributes) {
         subproject.setProjectId(pid);
         subproject.setChecked(false);
@@ -75,7 +75,7 @@ public class SubprojectController {
     }
 
     // 4. Vis form for at redigere et subproject
-    @GetMapping("projects/{pid}/subprojects/edit/{spid}")
+    @GetMapping("/projects/{pid}/subprojects/edit/{spid}")
     public String showEditForm(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
         if (!isLoggedIn(session)){
             return "redirect:/users/login";
@@ -87,7 +87,7 @@ public class SubprojectController {
     }
 
     // 5. Gem ændringer på eksisterende subproject
-    @PostMapping("projects/{pid}/subprojects/edit/{spid}/save")
+    @PostMapping("/projects/{pid}/subprojects/edit/{spid}/save")
     public String editSubproject(@PathVariable int pid,@PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
         subproject.setChecked(false);
         if (subproject.getPriority() > 5){

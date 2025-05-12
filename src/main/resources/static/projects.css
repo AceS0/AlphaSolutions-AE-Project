@@ -89,7 +89,8 @@ h1.header1 {
 }
 
 .links-button,
-.links-buttondelete {
+.links-buttondelete,
+.links-button-assign {
     display: inline-block;
     padding: 8px 14px;
     border-radius: 6px;
@@ -119,6 +120,16 @@ h1.header1 {
 .links-buttondelete:hover {
     background-color: #B52B27;
 }
+
+.links-button-assign {
+    background-color: #42c567;
+    color: white;
+}
+
+.links-button-assign:hover {
+    background-color: #25602d;
+}
+
 .status-button {
     padding: 8px 14px;
     font-size: 16px;

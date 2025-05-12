@@ -2,9 +2,12 @@ package com.example.alphasolutionsaeproject.service;
 
 
 import com.example.alphasolutionsaeproject.model.Task;
+import com.example.alphasolutionsaeproject.model.TaskUser;
+import com.example.alphasolutionsaeproject.model.User;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,8 +39,38 @@ public class TaskService {
         taskRepository.delete(tid);
     }
 
-    public List<Task> getAllTasksBySubProjectId(int spid){
-        return taskRepository.getAllTasksBySpid(spid);
+
+    public void assignUserToTask(int taskId, int userId){
+        taskRepository.assignUserToTask(taskId,userId);
+    }
+
+    public void unassignUserToTask(int taskId, int userId){
+        taskRepository.unassignUserToTask(taskId,userId);
+    }
+
+    public List<User> getUsersUnassignedTo(int taskId){
+        return taskRepository.getUsersUnassignedTo(taskId);
+    }
+    public List<User> getUsersAssignedTo(int taskId){
+        return taskRepository.getUsersAssignedTo(taskId);
+    }
+
+    public List<TaskUser> getTaskUser(int spid){
+        List<TaskUser> taskUserList = new ArrayList<>();
+        List<Task> taskList = taskRepository.getAllTasksBySpid(spid);
+
+        for (Task task : taskList){
+            TaskUser taskUser = new TaskUser(task,
+                    taskRepository.getUsersAssignedTo(task.getId()),
+                    taskRepository.getUsersUnassignedTo(task.getId()));
+            taskUserList.add(taskUser);
+        }
+        return taskUserList;
+    }
+
+
+    public List<TaskUser> getAllTasksBySubProjectId(int spid){
+        return getTaskUser(spid);
     }
 }
 
