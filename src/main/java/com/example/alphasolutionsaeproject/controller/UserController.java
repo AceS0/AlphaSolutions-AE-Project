@@ -96,8 +96,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/users/edit/{uid}")
-    public String editUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
+    public String editUser(@ModelAttribute("user") User user, @PathVariable int uid) {
+        userService.updateUser(user, uid);
         return "redirect:/admin/users";
     }
 

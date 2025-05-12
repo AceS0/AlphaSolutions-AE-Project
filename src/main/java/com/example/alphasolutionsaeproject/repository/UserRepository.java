@@ -65,9 +65,10 @@ public class UserRepository{
         jdbcTemplate.update(sql, eid, uid, pw, role.name());  // Indsætter bruger i databasen
     }
 
-    public void updateUser(User user) {
+    public void updateUser(User user, int uid) {
         String sql = "UPDATE user SET email = ?, username = ?, password = ?, role = ? WHERE id = ?";
-        jdbcTemplate.update(sql,mapUsers(),user.getId());
+        jdbcTemplate.update(sql, user.getEmail(),
+                user.getUsername(), user.getPassword(), user.getRole().name(), uid);
     }
 
     public int getProjectManagerId(String getCreatedBy) {

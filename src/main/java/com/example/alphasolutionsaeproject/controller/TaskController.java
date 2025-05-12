@@ -59,10 +59,6 @@ public class TaskController {
             return "Employee/tasksEmployee";
         }
 
-        if (user.getRole().equals(Role.PM)) {
-            return "PM/tasksPM";
-        }
-
         return "CommonProjects/tasks";
     }
 
@@ -96,6 +92,7 @@ public class TaskController {
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
     public String editTask(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, @ModelAttribute Task task) {
         task.setId(tid);
+        task.setChecked(false);
         taskService.updateTask(task);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
@@ -150,7 +147,7 @@ public class TaskController {
     }
 
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}")
-    public String toggleTasksChecked(@PathVariable String pid, @PathVariable int spid, @PathVariable int tid) {
+    public String toggleTasksChecked(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
         taskService.toggleCheckedAndCascadeUp(tid);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }

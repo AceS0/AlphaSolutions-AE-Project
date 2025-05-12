@@ -71,12 +71,8 @@ public class ProjectController {
 
 
         model.addAttribute("projects", allUserProjects);
-        if (user.getRole().equals(Role.EMPLOYEE)){
+        if (user.getRole().equals(Role.EMPLOYEE) || user.getRole().equals(Role.PM)){
             return "Employee/projects";
-        }
-
-        if (user.getRole().equals(Role.PM)){
-            return "PM/projectsPM";
         }
 
         List<Project> allProjects = projectService.getAllProjects();

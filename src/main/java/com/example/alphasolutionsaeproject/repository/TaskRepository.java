@@ -41,8 +41,9 @@ public class TaskRepository {
 
     // Opdater eksisterende task
     public void update(Task task) {
-        String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?";
-        jdbcTemplate.update(sql, mapTasks(), task.getId());
+        String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ?, deadline = ?, duration = ? WHERE id = ?";
+        jdbcTemplate.update(sql, task.getTitle(), task.getDescription(), task.getStatus(),
+                    task.getPriority(), task.getDeadline(), task.getDuration(), task.getId());
     }
 
     // Slet task
@@ -51,14 +52,58 @@ public class TaskRepository {
         jdbcTemplate.update(sql, tid);
     }
 
-    public void assignUserToTask(int taskId, int userId){
-        String sql = "INSERT INTO task_user (task_id, user_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql,taskId,userId);
+    public void updateChecked(int id, boolean newValue) {
+        String sql = "UPDATE task SET checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newValue, id);
     }
 
+    public void assignUserToTask(int taskId, int userId){
+            jdbcTemplate.update("INSERT INTO task_user (task_id, user_id) VALUES (?, ?)", taskId, userId);
+
+            String sql = """
+            INSERT IGNORE INTO project_user (project_id, user_id)
+            SELECT p.id, ?
+            FROM project p
+            JOIN subproject sp ON sp.projectId = p.id
+            JOIN task t ON t.subprojectId = sp.id
+            WHERE t.id = ?
+            """;
+            jdbcTemplate.update(sql, userId, taskId);
+        }
+
     public void unassignUserToTask(int taskId, int userId){
+        // Unassign from the task
         String sql = "DELETE FROM task_user WHERE task_id = ? AND user_id = ?";
         jdbcTemplate.update(sql,taskId,userId);
+
+        //  Check if user is assigned to any other tasks in the same project
+        String deleteProjectUserSql = """
+        DELETE FROM project_user
+        WHERE project_id = (
+            SELECT p.id
+            FROM project p
+            JOIN subproject sp ON sp.projectId = p.id
+            JOIN task t ON t.subprojectId = sp.id
+            WHERE t.id = ?
+        )
+        AND user_id = ?
+        AND NOT EXISTS (
+            SELECT 1
+            FROM task_user tu
+            JOIN task t2 ON tu.task_id = t2.id
+            JOIN subproject sp2 ON t2.subprojectId = sp2.id
+            WHERE tu.user_id = ?
+              AND sp2.projectId = (
+                  SELECT p.id
+                  FROM project p
+                  JOIN subproject sp ON sp.projectId = p.id
+                  JOIN task t ON t.subprojectId = sp.id
+                  WHERE t.id = ?
+              )
+        )
+    """;
+
+        jdbcTemplate.update(deleteProjectUserSql, taskId, userId, userId, taskId);
     }
 
     public List<User> getUsersAssignedTo(int taskId){
@@ -86,6 +131,8 @@ public class TaskRepository {
         String sql = "UPDATE task SET checked = ? WHERE id = ?";
         jdbcTemplate.update(sql, newValue, id);
     }
+
+
 
     private RowMapper<Task> mapTasks(){
         return (rs, rowNum) -> new Task(
