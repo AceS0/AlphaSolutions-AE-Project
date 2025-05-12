@@ -57,11 +57,7 @@ public class TaskController {
             return "Employee/tasksEmployee";
         }
 
-        if (user.getRole().equals(Role.PM)) {
-            return "PM/tasksPM";
-        }
-
-        return "Admin/tasksAdmin";
+        return "CommonProjects/tasks";
     }
 
     // 2. Vis form for at tilføje en task
@@ -94,15 +90,16 @@ public class TaskController {
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
     public String editTask(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, @ModelAttribute Task task) {
         task.setId(tid);
+        task.setChecked(false);
         taskService.updateTask(task);
-        return "redirect:/tasks";
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
     // 6. Slet en task
-    @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
+    @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
     public String deleteTask(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
         taskService.deleteTask(tid);
-        return "redirect:/tasks";
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/{tid}/assign")
@@ -145,6 +142,12 @@ public class TaskController {
                              @PathVariable("tid") int taskId) {
         taskService.unassignUserToTask(taskId, userId);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks"; // Redirect to the task page after assignment
+    }
+
+    @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}")
+    public String toggleChecked(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
+        taskService.toggleChecked(tid);
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";  // Redirect back to the projects list
     }
 }
 
