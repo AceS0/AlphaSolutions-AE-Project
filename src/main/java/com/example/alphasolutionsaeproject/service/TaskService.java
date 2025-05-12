@@ -4,6 +4,8 @@ package com.example.alphasolutionsaeproject.service;
 import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.TaskUser;
 import com.example.alphasolutionsaeproject.model.User;
+import com.example.alphasolutionsaeproject.repository.ProjectRepository;
+import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
 
@@ -14,9 +16,15 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+    private final SubprojectRepository subprojectRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+
+    public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository, SubprojectRepository subprojectRepository) {
         this.taskRepository = taskRepository;
+        this.subprojectRepository = subprojectRepository;
+        this.projectRepository = projectRepository;
+
     }
 
     public List<Task> getAllTasks() {
@@ -72,5 +80,23 @@ public class TaskService {
     public List<TaskUser> getAllTasksBySubProjectId(int spid){
         return getTaskUser(spid);
     }
+
+    public void toggleCheckedAndCascadeUp(int taskId) {
+        Task task = taskRepository.findById(taskId);
+        if (task == null) return;
+
+        boolean newChecked = !task.getChecked();
+        taskRepository.updateChecked(taskId, newChecked);
+
+        // Hvis task er unchecked, så uncheck også subproject og project
+        if (!newChecked) {
+            int subprojectId = task.getSubprojectId();
+            subprojectRepository.updateChecked(subprojectId, false);
+
+            int projectId = subprojectRepository.findById(subprojectId).getProjectId();
+            projectRepository.updateChecked(projectId, false);
+        }
+    }
+
 }
 

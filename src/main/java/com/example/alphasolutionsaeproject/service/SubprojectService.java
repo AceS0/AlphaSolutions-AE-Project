@@ -1,6 +1,8 @@
 package com.example.alphasolutionsaeproject.service;
 import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
+import com.example.alphasolutionsaeproject.model.Task;
+import com.example.alphasolutionsaeproject.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
 
@@ -10,9 +12,11 @@ import java.util.List;
 public class SubprojectService {
 
     private final SubprojectRepository subprojectRepository;
+    private final TaskRepository taskRepository;
 
-    public SubprojectService(SubprojectRepository subprojectRepository) {
+    public SubprojectService(SubprojectRepository subprojectRepository, TaskRepository taskRepository) {
         this.subprojectRepository = subprojectRepository;
+        this.taskRepository = taskRepository;
     }
 
     public List<Subproject> getAllSubprojects() {
@@ -40,10 +44,24 @@ public class SubprojectService {
         return subprojectRepository.getAllProjectsByProjectId(id);
     }
 
-    public void toggleChecked(int id) {
-        Subproject subproject = subprojectRepository.findById(id);
-        if (subproject != null) {
-            subprojectRepository.updateChecked(id, !subproject.getChecked());
+//    public void toggleChecked(int id) {
+//        Subproject subproject = subprojectRepository.findById(id);
+//        if (subproject != null) {
+//            subprojectRepository.updateChecked(id, !subproject.getChecked());
+//        }
+//    }
+
+    public void toggleCheckedAndCascade(int spid) {
+        Subproject subproject = subprojectRepository.findById(spid);
+        boolean newChecked = !subproject.getChecked();
+        subprojectRepository.updateChecked(spid, newChecked);
+
+        List<Task> tasks = taskRepository.getAllTasksBySpid(spid);
+        for (Task task : tasks) {
+            taskRepository.updateChecked(task.getId(), newChecked);
         }
     }
+
+
+
 }

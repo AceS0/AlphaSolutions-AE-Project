@@ -32,7 +32,7 @@
   </tr>
   <tr th:each="taskUser, taskUserIndex :${tasks}">
     <td class="td checked">
-      <form th:action="@{projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}" method="post">
+      <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}" method="post">
         <input type="checkbox"
                name="checked"
                th:checked="${taskUser.task.checked}"

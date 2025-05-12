@@ -106,9 +106,18 @@ public class SubprojectController {
         return "redirect:/projects/{pid}/subprojects";
     }
 
+//    @PostMapping("/projects/{pid}/subprojects/toggleChecked/{spid}")
+//    public String toggleChecked(@PathVariable int pid, @PathVariable int spid) {
+//        subprojectService.toggleChecked(spid);
+//        return "redirect:/projects/{pid}/subprojects";  // Redirect back to the projects list
+//    }
+
     @PostMapping("/projects/{pid}/subprojects/toggleChecked/{spid}")
-    public String toggleChecked(@PathVariable int pid, @PathVariable int spid) {
-        subprojectService.toggleChecked(spid);
-        return "redirect:/projects/{pid}/subprojects";  // Redirect back to the projects list
+    public String toggleSubprojectChecked(@PathVariable String pid, @PathVariable int spid) {
+        subprojectService.toggleCheckedAndCascade(spid);
+        return "redirect:/projects/{pid}/subprojects";
     }
+
+
+
 }

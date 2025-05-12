@@ -4,6 +4,7 @@ import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.TaskUser;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
+import com.example.alphasolutionsaeproject.service.SubprojectService;
 import com.example.alphasolutionsaeproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,12 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserService userService;
+    private final SubprojectService subprojectService;
 
-
-    public TaskController(TaskService taskService, UserService userService, TaskRepository taskRepository) {
+    public TaskController(TaskService taskService, UserService userService, TaskRepository taskRepository, SubprojectService subprojectService) {
         this.taskService = taskService;
         this.userService = userService;
+        this.subprojectService = subprojectService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -95,11 +97,11 @@ public class TaskController {
     public String editTask(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, @ModelAttribute Task task) {
         task.setId(tid);
         taskService.updateTask(task);
-        return "redirect:/tasks";
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
     // 6. Slet en task
-    @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
+    @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
     public String deleteTask(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
         taskService.deleteTask(tid);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
@@ -146,5 +148,12 @@ public class TaskController {
         taskService.unassignUserToTask(taskId, userId);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks"; // Redirect to the task page after assignment
     }
+
+    @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}")
+    public String toggleTasksChecked(@PathVariable String pid, @PathVariable int spid, @PathVariable int tid) {
+        taskService.toggleCheckedAndCascadeUp(tid);
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
+    }
+
 }
 
