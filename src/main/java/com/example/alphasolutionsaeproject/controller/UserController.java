@@ -63,22 +63,22 @@ public class UserController {
         // Validerer input (email, brugernavn, password)
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
             redirectAttributes.addFlashAttribute("error", "Email isn't correct.");
-            return "redirect:/users/create";
+            return "redirect:/admin/users/create";
         }
 
         if (username.length() < 3){
             redirectAttributes.addFlashAttribute("error", "Username is too short.");
-            return "redirect:/users/create";
+            return "redirect:/admin/users/create";
         }
 
         if (password.length() < 8){
             redirectAttributes.addFlashAttribute("error","Password is too short.");
-            return "redirect:/users/create";
+            return "redirect:/admin/users/create";
         }
 
         if (!userService.register(email, username, password, role)) {
             redirectAttributes.addFlashAttribute("error", "Account already exists.");
-            return "redirect:/users/create";
+            return "redirect:/admin/users/create";
         }
 
         return "redirect:/admin/users"  ;  // Omdirigerer til Admin siden af users.

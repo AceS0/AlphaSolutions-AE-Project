@@ -25,41 +25,53 @@
     <th class="th">Duration</th>
     <th class="th">Status</th>
     <th class="th">Priority</th>
-    <th class="th">Assigned To</th>
+    <th class="th">Assign</th>
     <th class="th">Actions</th>
   </tr>
-  <tr th:each="task:${tasks}">
+  <tr th:each="taskUser, taskUserIndex :${tasks}">
     <td class="td checked">
-      <form th:action="@{projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}(pid=${pid},spid=${task.subprojectId},tid=${task.id})}" method="post">
+      <form th:action="@{projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}" method="post">
         <input type="checkbox"
                name="checked"
-               th:checked="${task.checked}"
+               th:checked="${taskUser.task.checked}"
                onchange="this.form.submit()">
       </form>
     </td>
-    <td class="td title" th:text="${task.title}"></td>
-    <td class="td deadline" th:text="${task.deadline}"></td>
-    <td class="td duration" th:text="${task.duration}"></td>
-    <td class="td status" th:text="${task.status}"></td>
-    <td class="td priority" th:text="${task.priority}"></td>
-    <td class="td assignedTo" th:text="${}"></td>
+    <td class="td title" th:text="${taskUser.task.title}"></td>
+    <td class="td deadline" th:text="${taskUser.task.deadline}"></td>
+    <td class="td duration" th:text="${taskUser.task.duration}"></td>
+    <td class="td status" th:text="${taskUser.task.status}"></td>
+    <td class="td priority" th:text="${taskUser.task.priority}"></td>
     <td>
-      <a class="links-button" th:href="@{projects/{pid}/subprojects/{spid}/tasks/edit/{tid}(pid=${pid},spid=${task.subprojectId},tid=${task.id})}">Edit</a>
-      <form th:action="@{projects/{pid}/subprojects/{spid}/tasks/delete/{tid}(pid=${pid},spid=${task.subprojectId},tid=${task.id})}"
+      <a class="links-button-assign" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/{tid}/assign(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}">Assign</a>
+      <details class="description-container">
+        <summary class="links-button">Assigned</summary>
+        <ul>
+          <li th:each="user : ${assignedUsersMap[taskUser.task.id]}">
+            <span th:text="${user.username + ' (' + user.email + ')'}"></span>
+          </li>
+        </ul>
+      </details>
+
+      <a class="links-buttondelete" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}">Unassign</a>
+    </td>
+    <td>
+      <a class="links-button" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}">Edit</a>
+      <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}"
             method="post" style="display: inline"
-            th:onsubmit="'return confirm(\'Do you really want to delete the task: (ID: ' + ${task.id} + ')?\')'">
+            th:onsubmit="'return confirm(\'Do you really want to delete the task: (ID: ' + ${taskUser.task.id} + ')?\')'">
         <button class="links-buttondelete" type="submit">Delete</button>
       </form>
       <details class="description-container">
         <summary class="links-button">Description</summary>
-        <p th:text="${task.description}"></p>
+        <p th:text="${taskUser.task.description}"></p>
       </details>
     </td>
   </tr>
 
 </table>
 <div style="margin-top: 20px; text-align: left;">
-  <a class="links-button" th:href="@{'/projects/' + ${pid} + '/subprojects'}">← Back</a>
+  <a class="links-button" th:href="@{/projects/{pid}/subprojects(pid=${pid})}">← Back</a>
 </div>
 </body>
 </html>

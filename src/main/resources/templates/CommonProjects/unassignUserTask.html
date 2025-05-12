@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>unassign Users</title>
+    <link rel="stylesheet" th:href="@{/projects.css}">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+<header>
+    <a class="signoutbutton" th:href="@{/}">Sign out</a>
+    <div class="logo">
+        <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
+    </div>
+</header>
+
+<h1 class="header1">Unassign Users from Task</h1>
+
+<table class="table">
+    <tr>
+        <th class="th">Username</th>
+        <th class="th">Email</th>
+        <th class="th">Actions</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td class="td" th:text="${user.username}"></td>
+        <td class="td" th:text="${user.email}"></td>
+        <td>
+            <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign/{userId}(pid=${pid}, spid=${spid}, tid=${tid}, userId=${user.id})}" method="post">
+                <input type="hidden" name="userId" th:value="${user.id}" />
+                <button type="submit" class="links-buttondelete">Unassign</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<div class="actions">
+    <a th:href="@{/projects/{pid}/subprojects/{spid}/tasks(pid=${pid}, spid=${spid})}" class="links-button">← Back</a>
+</div>
+
+</body>
+</html>
