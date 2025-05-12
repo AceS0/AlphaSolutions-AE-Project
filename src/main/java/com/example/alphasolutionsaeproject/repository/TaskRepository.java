@@ -41,8 +41,9 @@ public class TaskRepository {
 
     // Opdater eksisterende task
     public void update(Task task) {
-        String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?";
-        jdbcTemplate.update(sql, mapTasks(), task.getId());
+        String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ?, deadline = ?, duration = ? WHERE id = ?";
+        jdbcTemplate.update(sql, task.getTitle(), task.getDescription(), task.getStatus(),
+                    task.getPriority(), task.getDeadline(), task.getDuration(), task.getId());
     }
 
     // Slet task
@@ -51,10 +52,26 @@ public class TaskRepository {
         jdbcTemplate.update(sql, tid);
     }
 
-    public void assignUserToTask(int taskId, int userId){
-        String sql = "INSERT INTO task_user (task_id, user_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql,taskId,userId);
+    public void updateChecked(int id, boolean newValue) {
+        String sql = "UPDATE task SET checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newValue, id);
     }
+
+    public void assignUserToTask(int taskId, int userId){
+            // 1. Assign user to task
+            jdbcTemplate.update("INSERT INTO task_user (task_id, user_id) VALUES (?, ?)", taskId, userId);
+
+            // 2. Assign user to project if not already assigned
+            String sql = """
+            INSERT IGNORE INTO project_user (project_id, user_id)
+            SELECT p.id, ?
+            FROM project p
+            JOIN subproject sp ON sp.projectId = p.id
+            JOIN task t ON t.subprojectId = sp.id
+            WHERE t.id = ?
+            """;
+            jdbcTemplate.update(sql, userId, taskId);
+        }
 
     public void unassignUserToTask(int taskId, int userId){
         String sql = "DELETE FROM task_user WHERE task_id = ? AND user_id = ?";
@@ -81,6 +98,8 @@ public class TaskRepository {
         String sql = "SELECT * FROM task WHERE subprojectId = ?";
         return jdbcTemplate.query(sql, mapTasks(), spid);
     }
+
+
 
 
     private RowMapper<Task> mapTasks(){

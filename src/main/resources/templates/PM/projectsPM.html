@@ -42,9 +42,9 @@
         <td class="td duration" th:text="${Project.duration}"></td>
         <td class="td createdBy" th:text="${Project.projectManager}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${Project.id}}">Choose</a>
-            <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
-            <form th:action="@{'/projects/delete/' + ${Project.id}}"
+            <a class="links-button" th:href="@{/projects/{pid}/subprojects(pid=${Project.id})}">Choose</a>
+            <a class="links-button" th:href="@{/projects/edit/{pid}(pid=${Project.id})}">Edit</a>
+            <form th:action="@{/projects/delete/{pid}(pid=${Project.id})}"
                   method="post" style="display: inline"
                   th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${Project.id} + ')?\')'">
                 <button class="links-buttondelete" type="submit">Delete</button>

@@ -1,6 +1,7 @@
 package com.example.alphasolutionsaeproject.service;
 
 
+import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.TaskUser;
 import com.example.alphasolutionsaeproject.model.User;
@@ -71,6 +72,13 @@ public class TaskService {
 
     public List<TaskUser> getAllTasksBySubProjectId(int spid){
         return getTaskUser(spid);
+    }
+
+    public void toggleChecked(int id) {
+        Task task = taskRepository.findById(id);
+        if (task != null) {
+            taskRepository.updateChecked(id, !task.getChecked());
+        }
     }
 }
 

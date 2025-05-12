@@ -42,10 +42,6 @@ public class SubprojectController {
             return "Employee/subprojects";
         }
 
-        if (user.getRole().equals(Role.PM)){
-            return "PM/projectsPM";
-        }
-
         return "Admin/subprojectsAdmin";
     }
 
@@ -87,7 +83,7 @@ public class SubprojectController {
     }
 
     // 5. Gem ændringer på eksisterende subproject
-    @PostMapping("/projects/{pid}/subprojects/edit/{spid}/save")
+    @PostMapping("/projects/{pid}/subprojects/edit/{spid}")
     public String editSubproject(@PathVariable int pid,@PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
         subproject.setChecked(false);
         if (subproject.getPriority() > 5){

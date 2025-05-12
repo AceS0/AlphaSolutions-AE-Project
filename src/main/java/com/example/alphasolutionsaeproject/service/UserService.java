@@ -54,8 +54,8 @@ public class UserService {
         return true; // Successful registration
     }
 
-    public void updateUser(User user) {
-        userRepository.updateUser(user);
+    public void updateUser(User user, int uid) {
+        userRepository.updateUser(user, uid);
     }
 
     public User getUserById(int id){
