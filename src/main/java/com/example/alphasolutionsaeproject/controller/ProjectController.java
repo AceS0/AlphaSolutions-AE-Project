@@ -142,9 +142,10 @@ public class ProjectController {
 
     @PostMapping("/projects/toggleChecked/{pid}")
     public String toggleChecked(@PathVariable int pid) {
-        projectService.toggleChecked(pid);
-        return "redirect:/projects";  // Redirect back to the projects list
+        projectService.toggleCheckedAndCascade(pid);
+        return "redirect:/projects";
     }
+
 }
 
 

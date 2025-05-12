@@ -54,6 +54,11 @@ public class SubprojectRepository {
         return jdbcTemplate.query(sql, mapSubprojects(), id);
     }
 
+    public void updateChecked(int id, boolean newValue) {
+        String sql = "UPDATE subproject SET checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newValue, id);
+    }
+
     private RowMapper<Subproject> mapSubprojects(){
         return (rs, rowNum) -> new Subproject(
                 rs.getInt("id"),

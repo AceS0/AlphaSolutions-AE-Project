@@ -56,10 +56,14 @@ public class TaskRepository {
         jdbcTemplate.update(sql, tid);
     }
 
-
     public List<Task> getAllTasksBySpid(int spid){
         String sql = "SELECT * FROM task WHERE subprojectId = ?";
         return jdbcTemplate.query(sql, mapTasks(), spid);
+    }
+
+    public void updateChecked(int id, boolean newValue) {
+        String sql = "UPDATE task SET checked = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newValue, id);
     }
 
     private RowMapper<Task> mapTasks(){
