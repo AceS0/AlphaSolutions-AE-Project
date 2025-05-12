@@ -17,7 +17,7 @@
 </header>
 <h1 class="header1">Your Projects: </h1>
 <div class="flex-center">
-    <a class="add" href="/projects/add">Add project</a>
+    <a class="add" th:href="@{/projects/add}">Add project</a>
 </div>
 <table class="table">
     <tr>
@@ -30,7 +30,7 @@
     </tr>
     <tr th:each="Project : ${allProjects}">
         <td class="td checked">
-            <form th:action="@{'/projects/toggleChecked/' + ${Project.id}}" method="post">
+            <form th:action="@{/projects/toggleChecked/{pid}(pid=${Project.id})}" method="post">
                 <input type="checkbox"
                        name="checked"
                        th:checked="${Project.checked}"
@@ -44,9 +44,9 @@
         <td class="td duration" th:text="${Project.duration}"></td>
         <td class="td createdBy" th:text="${Project.projectManager}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${Project.id} + '/subprojects'}">Choose</a>
-            <a class="links-button" th:href="@{'/projects/edit' + ${Project.id}}">Edit</a>
-            <form th:action="@{'/projects/delete/' + ${Project.id}}"
+            <a class="links-button" th:href="@{/projects/{pid}/subprojects(pid=${Project.id})}">Choose</a>
+            <a class="links-button" th:href="@{/projects/edit/{pid}(pid=${Project.id})}">Edit</a>
+            <form th:action="@{/projects/delete/{pid}(pid=${Project.id})}"
                   method="post" style="display: inline"
                   th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${Project.id} + ')?\')'">
                 <button class="links-buttondelete" type="submit">Delete</button>

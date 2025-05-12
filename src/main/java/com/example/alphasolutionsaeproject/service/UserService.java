@@ -1,6 +1,7 @@
 package com.example.alphasolutionsaeproject.service;
 
 import com.example.alphasolutionsaeproject.model.Role;
+import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -43,21 +44,18 @@ public class UserService {
     }
 
     // Registrerer en ny bruger
-    public boolean register(String email, String username, String password) {
+    public boolean register(String email, String username, String password, String role) {
         if (userRepository.getUser(email) != null ||
                 !isUsernameValid(username) ||
                 !isEmailValid(email)) {
             return false; // Email exists or input invalid
         }
-
-        Role role = Role.EMPLOYEE;
-        userRepository.registerUser(email, username, password, role);
+        userRepository.registerUser(email, username, password, Role.valueOf(role));
         return true; // Successful registration
     }
 
-    public int getUserIdByMail(String email){
-        User user = userRepository.getUser(email);
-        return user.getId();
+    public void updateUser(User user) {
+        userRepository.updateUser(user);
     }
 
     public User getUserById(int id){

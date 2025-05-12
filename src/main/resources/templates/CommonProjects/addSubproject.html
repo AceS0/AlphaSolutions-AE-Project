@@ -19,12 +19,12 @@
 <main class="content">
   <h1>Add Subproject</h1>
 
-  <form action="#" th:action="@{'/projects/' + ${pid} + '/subprojects/save'}" th:object="${subproject}" method="post">
+  <form th:action="@{/projects/{pid}/subprojects/save(pid=${pid})}" th:object="${subproject}" method="post">
     <div th:if="${error}" style="color: red;">
       <p th:text="${error}"></p>
     </div>
     <p class="textbox">
-      <label for="title">Project name:</label>
+      <label for="title">Subproject name:</label>
       <input type="text" id="title" th:field="*{title}" placeholder="Subproject-abc" required>
     </p>
     <p class="textbox">
@@ -41,7 +41,7 @@
     </p>
 
     <div class="actions">
-      <a th:href="@{'/projects/' + ${pid} + '/subprojects'}" class="button secondary-button">Cancel</a>
+      <a th:href="@{/projects/{pid}/subprojects(pid=${pid})}" class="button secondary-button">Cancel</a>
       <button type="submit" class="button">Save</button>
     </div>
   </form>

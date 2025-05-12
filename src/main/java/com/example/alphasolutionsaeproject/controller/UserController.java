@@ -1,5 +1,6 @@
 package com.example.alphasolutionsaeproject.controller;
 
+import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.service.UserService;
@@ -21,9 +22,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("email") != null;
+    }
+
     @GetMapping("/users/login")
     public String viewLogin(){
-        return "/UserAuth/login";  // Viser login-siden
+        return "UserAuth/login";  // Viser login-siden
     }
 
     @PostMapping("/users/login")
@@ -40,40 +45,60 @@ public class UserController {
         }
 
         model.addAttribute("wrongCredentials", true);  // Fejl ved login
-        return "/UserAuth/login";  // Vender tilbage til login-siden
+        return "UserAuth/login";  // Vender tilbage til login-siden
     }
 
-    @GetMapping("/users/register")
-    public String viewRegister(){
-        return "/UserAuth/register";  // Viser registreringssiden
+    @GetMapping("/admin/users/create")
+    public String viewRegister(Model model, HttpSession session){
+        if(!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+        return "Admin/createUser";  // Viser registreringssiden
     }
 
-    @PostMapping("/users/register")
+    @PostMapping("/admin/users/create")
     public String register(@RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password,
-                           RedirectAttributes redirectAttributes){
+                           @RequestParam("role") String role, RedirectAttributes redirectAttributes){
 
         // Validerer input (email, brugernavn, password)
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
             redirectAttributes.addFlashAttribute("error", "Email isn't correct.");
-            return "redirect:/users/register";
+            return "redirect:/users/create";
         }
 
         if (username.length() < 3){
             redirectAttributes.addFlashAttribute("error", "Username is too short.");
-            return "redirect:/users/register";
+            return "redirect:/users/create";
         }
 
         if (password.length() < 8){
             redirectAttributes.addFlashAttribute("error","Password is too short.");
-            return "redirect:/users/register";
+            return "redirect:/users/create";
         }
 
-        if (!userService.register(email, username, password)) {
+        if (!userService.register(email, username, password, role)) {
             redirectAttributes.addFlashAttribute("error", "Account already exists.");
-            return "redirect:/users/register";
+            return "redirect:/users/create";
         }
 
-        return "redirect:/users/login";  // Omdirigerer til login-siden
+        return "redirect:/admin/users"  ;  // Omdirigerer til Admin siden af users.
+    }
+
+    @GetMapping("/admin/users/edit/{uid}")
+    public String showEditForm(@PathVariable int uid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+
+        User user = userService.getUserById(uid);
+        model.addAttribute("user",user);
+        return "Admin/editUser";
+    }
+
+    @PostMapping("/admin/users/edit/{uid}")
+    public String editUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/users")

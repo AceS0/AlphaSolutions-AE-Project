@@ -29,25 +29,19 @@ public class TaskRepository {
     }
 
     // Tilføj ny task
-    public void save(Task task) {
-        String sql = "INSERT INTO task (title, description, status, priority) VALUES ( ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                task.getTitle(),
-                task.getDescription(),
-                task.getStatus(),
-                task.getPriority());
+    public void save(Task task, int spid) {
+        String sql = "INSERT INTO task (subprojectId, title, description, deadline, duration, status, priority, checked)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,spid, task.getTitle(), task.getDescription(),
+                            task.getDeadline(), task.getDuration(), task.getStatus(),
+                            task.getPriority(), task.getChecked());
 
     }
 
     // Opdater eksisterende task
     public void update(Task task) {
         String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?";
-        jdbcTemplate.update(sql,
-                task.getTitle(),
-                task.getDescription(),
-                task.getStatus(),
-                task.getPriority(),
-                task.getId());
+        jdbcTemplate.update(sql, mapTasks(), task.getId());
     }
 
     // Slet task
@@ -74,8 +68,8 @@ public class TaskRepository {
                 rs.getString("description"),
                 rs.getString("deadline"),
                 rs.getInt("duration"),
-                Status.valueOf(rs.getString("status").toUpperCase()),
-                Priority.valueOf(rs.getString("priority").toUpperCase()),
+                rs.getString("status"),
+                rs.getString("priority"),
                 rs.getBoolean("checked")
         );
     }

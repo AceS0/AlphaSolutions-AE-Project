@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Subproject</title>
+    <link rel="stylesheet" th:href="@{/login.css}">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
+    </div>
+</header>
+
+<main class="content">
+    <h1>Edit Task</h1>
+
+    <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/edit(pid=${pid}, spid=${spid})}" th:object="${task}" method="post">
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
+        <p class="textbox">
+            <label for="title">Task name:</label>
+            <input type="text" id="title" th:field="*{title}" placeholder="Task-abc" required>
+        </p>
+        <p class="textbox">
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" placeholder="Task-desc-abc" required>
+        </p>
+        <p class="textbox">
+            <label for="priority">Priority:</label>
+            <input type="text" id="priority" th:field="*{priority}" placeholder="Low, Medium or High" required>
+        </p>
+        <p class="textbox">
+            <label for="deadline">Deadline:</label>
+            <input type="text" id="deadline" th:field="*{deadline}" placeholder="yyyy-MM-dd"  required>
+        </p>
+        <p class="textbox">
+            <label for="duration">Duration:</label>
+            <input type="text" id="duration" th:field="*{duration}" required>
+        </p>
+        <p class="textbox">
+            <label for="status">Status:</label>
+            <select class="textbox" id="status" th:field="*{status}"  required>
+                <option th:value="'To Do'" th:text="'To Do'"></option>
+                <option th:value="'In Progress'" th:text="'In Progress'"></option>
+                <option th:value="'Done'" th:text="'Done'"></option>
+            </select>
+        </p>
+
+
+        <div class="actions">
+            <a th:href="@{/projects/{pid}/subprojects/{spid}/tasks(pid=${pid}, spid=${spid})}" class="button secondary-button">Cancel</a>
+            <button type="submit" class="button">Save</button>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

@@ -17,7 +17,7 @@
 </header>
 <h1 class="header1">Your Subprojects: </h1>
 <div class="flex-center">
-    <a class="add" th:href="@{'/projects/' + ${pid} + '/subprojects/add'}">Add subproject</a>
+    <a class="add" th:href="@{/projects/{pid}/subprojects/add(pid=${pid})}">Add subproject</a>
 </div>
 <table class="table">
     <tr>
@@ -30,7 +30,7 @@
     </tr>
     <tr th:each="subproject : ${subprojects}">
         <td class="td checked">
-            <form th:action="@{'/projects/' + ${subproject.projectId} + '/subprojects/toggleChecked/' + ${subproject.id}}" method="post">
+            <form th:action="@{/projects/{pid}/subprojects/toggleChecked/{spid}(pid=${subproject.projectId},spid=${subproject.id})}" method="post">
                 <input type="checkbox"
                        name="checked"
                        th:checked="${subproject.checked}"
@@ -43,9 +43,9 @@
         <td class="td duration" th:text="${subproject.duration}"></td>
         <td class="td createdBy" th:text="${subproject.priority}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${pid} + '/subprojects/' + ${subproject.id} + '/tasks'}">Choose</a>
-            <a class="links-button" th:href="@{'/projects/' + ${subproject.projectId} + '/subprojects/edit/' + ${subproject.id}}">Edit</a>
-            <form th:action="@{'/projects/' + ${subproject.projectId} + '/subprojects/delete/' + ${subproject.id}}"
+            <a class="links-button" th:href="@{/projects/{pid}/subprojects/{spid}/tasks(pid=${subproject.projectId},spid=${subproject.id})}">Choose</a>
+            <a class="links-button" th:href="@{/projects/{pid}/subprojects/edit/{spid}(pid=${subproject.projectId},spid=${subproject.id})}">Edit</a>
+            <form th:action="@{/projects/{pid}/subprojects/delete/{spid}(pid=${subproject.projectId},spid=${subproject.id})}"
                   method="post" style="display: inline"
                   th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${subproject.id} + ')?\')'">
                 <button class="links-buttondelete" type="submit">Delete</button>
@@ -54,7 +54,7 @@
     </tr>
 </table>
 <div style="margin-top: 20px; text-align: left;">
-    <a class="links-button" th:href="@{'/projects'}">← Back</a>
+    <a class="links-button" th:href="@{/projects}">← Back</a>
 </div>
 </body>
 </html>

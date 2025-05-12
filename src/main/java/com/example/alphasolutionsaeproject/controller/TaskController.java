@@ -51,16 +51,20 @@ public class TaskController {
 
     // 2. Vis form for at tilføje en task
     @GetMapping("projects/{pid}/subprojects/{spid}/tasks/add")
-    public String showAddForm(@PathVariable String pid, @PathVariable String spid, Model model) {
+    public String showAddForm(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/users/login";
+        }
+
         model.addAttribute("task", new Task());
-        return "CommonProjects/addtask";
+        return "CommonProjects/addTask";
     }
 
     // 3. Gem ny task
-    @PostMapping("projects/{pid}/subprojects/{spid}/tasks/add")
-    public String addTask(@PathVariable String pid, @PathVariable String spid, @ModelAttribute Task task) {
-        taskService.addTask(task);
-        return "redirect:/tasks";
+    @PostMapping("projects/{pid}/subprojects/{spid}/tasks/save")
+    public String addTask(@ModelAttribute("task") Task task, @PathVariable int pid, @PathVariable int spid) {
+        taskService.addTask(task,spid);
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
     // 4. Vis form for at redigere en task

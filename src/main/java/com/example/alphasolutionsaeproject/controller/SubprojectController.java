@@ -76,7 +76,7 @@ public class SubprojectController {
 
     // 4. Vis form for at redigere et subproject
     @GetMapping("projects/{pid}/subprojects/edit/{spid}")
-    public String showEditForm(@PathVariable int spid, Model model, HttpSession session) {
+    public String showEditForm(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
         if (!isLoggedIn(session)){
             return "redirect:/users/login";
         }
@@ -95,8 +95,8 @@ public class SubprojectController {
             return "redirect:/projects/{pid}/subprojects/edit/{spid}";
         }
 
-        subprojectService.updateSubproject(subproject);
-        return "redirect:/subprojects";
+        subprojectService.updateSubproject(subproject,spid);
+        return "redirect:/projects/{pid}/subprojects";
     }
 
     // 6. Slet et subproject
@@ -104,5 +104,11 @@ public class SubprojectController {
     public String deleteSubproject(@PathVariable int pid, @PathVariable int spid) {
         subprojectService.deleteSubproject(spid);
         return "redirect:/projects/{pid}/subprojects";
+    }
+
+    @PostMapping("/projects/{pid}/subprojects/toggleChecked/{spid}")
+    public String toggleChecked(@PathVariable int pid, @PathVariable int spid) {
+        subprojectService.toggleChecked(spid);
+        return "redirect:/projects/{pid}/subprojects";  // Redirect back to the projects list
     }
 }

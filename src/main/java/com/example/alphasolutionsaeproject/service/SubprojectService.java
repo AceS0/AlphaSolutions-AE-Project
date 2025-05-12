@@ -27,8 +27,8 @@ public class SubprojectService {
         subprojectRepository.save(subproject);
     }
 
-    public void updateSubproject(Subproject subproject) {
-        subprojectRepository.update(subproject);
+    public void updateSubproject(Subproject subproject, int spid) {
+        subprojectRepository.update(subproject, spid);
     }
 
     public void deleteSubproject(int spid) {
@@ -38,5 +38,12 @@ public class SubprojectService {
 
     public List<Subproject> getAllSubprojectsByProjectId(int id){
         return subprojectRepository.getAllProjectsByProjectId(id);
+    }
+
+    public void toggleChecked(int id) {
+        Subproject subproject = subprojectRepository.findById(id);
+        if (subproject != null) {
+            subprojectRepository.updateChecked(id, !subproject.getChecked());
+        }
     }
 }

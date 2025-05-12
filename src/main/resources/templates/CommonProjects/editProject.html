@@ -19,7 +19,7 @@
 <main class="content">
   <h1>Edit Project</h1>
 
-  <form action="#" th:action="@{'/projects/edit/' + ${pid}}" th:object="${project}" method="post">
+  <form action="#" th:action="@{/projects/edit/{pid}(pid=${pid})}" th:object="${project}" method="post">
     <p class="textbox">
       <label for="title">Project name:</label>
       <input type="text" id="title" th:field="*{title}" placeholder="Project-abc" required>
