@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,11 +51,37 @@ public class TaskRepository {
         jdbcTemplate.update(sql, tid);
     }
 
+    public void assignUserToTask(int taskId, int userId){
+        String sql = "INSERT INTO task_user (task_id, user_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql,taskId,userId);
+    }
+
+    public void unassignUserToTask(int taskId, int userId){
+        String sql = "DELETE FROM task_user WHERE task_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql,taskId,userId);
+    }
+
+    public List<User> getUsersAssignedTo(int taskId){
+        String sql = "SELECT u.id, u.email, u.username, u.password, u.role " +
+                "FROM user u " +
+                "JOIN task_user tu ON u.id = tu.user_id " +
+                "WHERE tu.task_id = ?";
+        return jdbcTemplate.query(sql,mapUsers(),taskId);
+    }
+
+    public List<User> getUsersUnassignedTo(int taskId){
+        String sql = "SELECT u.id, u.email, u.username, u.password, u.role " +
+                "FROM user u " +
+                "WHERE u.id NOT IN (SELECT user_id FROM task_user WHERE task_id = ?)";
+        return jdbcTemplate.query(sql,mapUsers(),taskId);
+    }
+
 
     public List<Task> getAllTasksBySpid(int spid){
         String sql = "SELECT * FROM task WHERE subprojectId = ?";
         return jdbcTemplate.query(sql, mapTasks(), spid);
     }
+
 
     private RowMapper<Task> mapTasks(){
         return (rs, rowNum) -> new Task(
@@ -69,6 +96,17 @@ public class TaskRepository {
                 rs.getBoolean("checked")
         );
     }
+
+    private RowMapper<User> mapUsers(){
+        return (rs, rowNum) -> new User(
+                rs.getInt("id"),
+                rs.getString("email"),
+                rs.getString("username"),
+                rs.getString("password"),
+                Role.valueOf(rs.getString("role").toUpperCase())
+        );
+    }
+
 
 
 

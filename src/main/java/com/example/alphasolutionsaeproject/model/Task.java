@@ -11,7 +11,7 @@ public class Task {
     private String status;
     private String priority;
     private boolean checked;
-
+    private String assigned;
 
     public Task() {
     }
@@ -99,5 +99,13 @@ public class Task {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public String getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(String assigned) {
+        this.assigned = assigned;
     }
 }
