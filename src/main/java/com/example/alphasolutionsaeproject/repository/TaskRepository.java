@@ -58,10 +58,8 @@ public class TaskRepository {
     }
 
     public void assignUserToTask(int taskId, int userId){
-            // 1. Assign user to task
             jdbcTemplate.update("INSERT INTO task_user (task_id, user_id) VALUES (?, ?)", taskId, userId);
 
-            // 2. Assign user to project if not already assigned
             String sql = """
             INSERT IGNORE INTO project_user (project_id, user_id)
             SELECT p.id, ?
@@ -74,8 +72,38 @@ public class TaskRepository {
         }
 
     public void unassignUserToTask(int taskId, int userId){
+        // Unassign from the task
         String sql = "DELETE FROM task_user WHERE task_id = ? AND user_id = ?";
         jdbcTemplate.update(sql,taskId,userId);
+
+        //  Check if user is assigned to any other tasks in the same project
+        String deleteProjectUserSql = """
+        DELETE FROM project_user
+        WHERE project_id = (
+            SELECT p.id
+            FROM project p
+            JOIN subproject sp ON sp.projectId = p.id
+            JOIN task t ON t.subprojectId = sp.id
+            WHERE t.id = ?
+        )
+        AND user_id = ?
+        AND NOT EXISTS (
+            SELECT 1
+            FROM task_user tu
+            JOIN task t2 ON tu.task_id = t2.id
+            JOIN subproject sp2 ON t2.subprojectId = sp2.id
+            WHERE tu.user_id = ?
+              AND sp2.projectId = (
+                  SELECT p.id
+                  FROM project p
+                  JOIN subproject sp ON sp.projectId = p.id
+                  JOIN task t ON t.subprojectId = sp.id
+                  WHERE t.id = ?
+              )
+        )
+    """;
+
+        jdbcTemplate.update(deleteProjectUserSql, taskId, userId, userId, taskId);
     }
 
     public List<User> getUsersAssignedTo(int taskId){
