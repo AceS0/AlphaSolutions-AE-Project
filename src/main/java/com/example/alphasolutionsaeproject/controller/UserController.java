@@ -1,6 +1,5 @@
 package com.example.alphasolutionsaeproject.controller;
 
-import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.service.UserService;
@@ -28,7 +27,7 @@ public class UserController {
 
     @GetMapping("/users/login")
     public String viewLogin(){
-        return "UserAuth/login";  // Viser login-siden
+        return "UserAuth/login";
     }
 
     @PostMapping("/users/login")
@@ -53,14 +52,13 @@ public class UserController {
         if(!isLoggedIn(session)){
             return "redirect:/users/login";
         }
-        return "Admin/createUser";  // Viser registreringssiden
+        return "Admin/createUser";
     }
 
     @PostMapping("/admin/users/create")
     public String register(@RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password,
                            @RequestParam("role") String role, RedirectAttributes redirectAttributes){
 
-        // Validerer input (email, brugernavn, password)
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
             redirectAttributes.addFlashAttribute("error", "Email isn't correct.");
             return "redirect:/admin/users/create";
@@ -81,7 +79,7 @@ public class UserController {
             return "redirect:/admin/users/create";
         }
 
-        return "redirect:/admin/users"  ;  // Omdirigerer til Admin siden af users.
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/users/edit/{uid}")
@@ -113,10 +111,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/users/delete/{id}")
-    public String deleteusers(@PathVariable int id) {
-        userService.deleteusers(id);
+    public String deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
-
-
 }

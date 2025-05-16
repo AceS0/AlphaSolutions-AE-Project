@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.alphasolutionsaeproject.service.ProjectService;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.HashSet;
 import java.util.List;
@@ -46,20 +47,18 @@ public class ProjectController {
 
 
     @GetMapping("/projects")
-    public String listProjects(Model model, HttpSession session) {
+    public String listProjects(Model model, HttpSession session, SessionStatus status) {
+        status.setComplete();
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
         String mail = (String) session.getAttribute("email");
         User user  = userService.getUserByMail(mail);
-        // Projects the user created
         List<Project> createdProjects = projectService.getAllProjectsByUserId(user.getId());
 
-        // Projects the user is assigned to
         List<Project> sharedProjects = projectService.getSharedProjectsByUserId(user.getId());
 
-        // Combine both lists (optional: remove duplicates)
         Set<Project> allUserProjects = new HashSet<>();
         allUserProjects.addAll(createdProjects);
         allUserProjects.addAll(sharedProjects);
@@ -77,8 +76,8 @@ public class ProjectController {
 
         List<Project> allProjects = projectService.getAllProjects();
         for (Project project : allProjects) {
-            User projectManager = userService.getUserById(project.getCreatedBy()); // assumes createdBy is userId
-            project.setProjectManager(projectManager.getUsername()); // store creator's name in each project
+            User projectManager = userService.getUserById(project.getCreatedBy());
+            project.setProjectManager(projectManager.getUsername());
         }
         model.addAttribute("allProjects", allProjects);
 

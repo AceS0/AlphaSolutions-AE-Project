@@ -1,51 +1,44 @@
 package com.example.alphasolutionsaeproject.repository;
 import com.example.alphasolutionsaeproject.model.Project;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public class ProjectRepository {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public ProjectRepository(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Hent alle projekter
     public List<Project> findAll() {
         String sql = "SELECT * FROM project";
         return jdbcTemplate.query(sql,mapProjects());
     }
 
-    // Hent projekt baseret på ID
     public Project findById(int id) {
         String sql = "SELECT * FROM project WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, mapProjects(), id);
     }
 
-
-    // Gem et nyt projekt
     public void save(Project project) {
         String sql = "INSERT INTO project (title, description, deadline, duration, createdBy, checked) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, project.getTitle(), project.getDescription(), project.getDeadline(),
                 project.getDuration(), project.getCreatedBy(), project.getChecked());
     }
 
-    // Opdater et eksisterende projekt
     public void update(Project project, int pid) {
         String sql = "UPDATE project SET title = ?, description = ?, deadline = ?, duration = ?, createdBy = ?, checked = ? WHERE id = ?";
         jdbcTemplate.update(sql, project.getTitle(), project.getDescription(), project.getDeadline(),
                 project.getDuration(), project.getCreatedBy(), project.getChecked(),pid);
     }
 
-    // Slet et projekt
     public void deleteById(int pid) {
         String sql = "DELETE FROM project WHERE id = ?";
         jdbcTemplate.update(sql, pid);
@@ -67,17 +60,40 @@ public class ProjectRepository {
         jdbcTemplate.update(sql, newValue, id);
     }
 
+    public void updateWorkHours(int projectId, int newWorkHours) {
+        String sql = "UPDATE project SET workHours = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newWorkHours, projectId);
+    }
+
+    public int getWorkHours(int projectId) {
+        String sql = "SELECT workHours FROM project WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
+    }
+
+    public void updateEstimatedDeadline(Project project) {
+        String sql = "UPDATE project SET estDeadline = ? WHERE id = ?";
+        jdbcTemplate.update(sql, project.getEstDeadline(), project.getId());
+    }
+
 
 
     private RowMapper<Project> mapProjects(){
-        return (rs, rowNum) -> new Project(
-                rs.getInt("id"),
-                rs.getString("title"),
-            rs.getString("description"),
-            rs.getString("deadline"),
-            rs.getInt("duration"),
-            rs.getInt("createdBy"),
-                rs.getBoolean("checked")
-        );
+        return (rs, rowNum) -> {
+            LocalDate estDeadline = rs.getDate("estDeadline") != null
+                    ? rs.getDate("estDeadline").toLocalDate()
+                    : rs.getDate("deadline").toLocalDate();
+
+            return new Project(
+                    rs.getInt("id"),
+                    rs.getString("title"),
+                    rs.getString("description"),
+                    rs.getDate("deadline").toLocalDate(),
+                    estDeadline,
+                    rs.getInt("duration"),
+                    rs.getInt("workHours"),
+                    rs.getInt("createdBy"),
+                    rs.getBoolean("checked")
+            );
+        };
     }
 }

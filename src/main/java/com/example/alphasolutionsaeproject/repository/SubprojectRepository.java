@@ -1,11 +1,12 @@
 package com.example.alphasolutionsaeproject.repository;
 
 
-import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,39 +18,36 @@ public class SubprojectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Find alle subprojects
     public List<Subproject> findAll() {
         String sql = "SELECT * FROM subproject";
         return jdbcTemplate.query(sql, mapSubprojects());
     }
 
-    // Find subproject by id
     public Subproject findById(int id) {
         String sql = "SELECT * FROM subproject WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, mapSubprojects(), id);
     }
 
-    // Tilføj nyt subproject
     public void save(Subproject subproject) {
-        String sql = "INSERT INTO subproject (projectId, title, priority, deadline, duration, checked) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO subproject (projectId, title, priority, deadline, duration, workHours, checked) VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, subproject.getProjectId(), subproject.getTitle(), subproject.getPriority(),
-                subproject.getDeadline(), subproject.getDuration(), subproject.getChecked());
+                subproject.getDeadline(), subproject.getDuration(), subproject.getWorkHours(), subproject.getChecked());
     }
 
-    // Opdater eksisterende subproject
     public void update(Subproject subproject, int spid) {
-        String sql = "UPDATE subproject SET title = ?, priority = ?, deadline = ?, duration = ?, checked = ? WHERE id = ?";
-        jdbcTemplate.update(sql,  subproject.getTitle(), subproject.getPriority(),
-                subproject.getDeadline(), subproject.getDuration(), subproject.getChecked(), spid);
+        String sql = "UPDATE subproject SET title = ?, priority = ?, deadline = ?, duration = ?, checked = ?, estDeadline = ? WHERE id = ?";
+        jdbcTemplate.update(sql, subproject.getTitle(), subproject.getPriority(),
+                subproject.getDeadline(), subproject.getDuration(),
+                subproject.getChecked(), subproject.getEstDeadline(), spid);
     }
 
-    // Slet subproject
+
     public void delete(int spid) {
         String sql = "DELETE FROM subproject WHERE id = ?";
-        jdbcTemplate.update(sql,  spid);
+        jdbcTemplate.update(sql, spid);
     }
 
-    public List<Subproject> getAllProjectsByProjectId(int id){
+    public List<Subproject> getAllProjectsByProjectId(int id) {
         String sql = "SELECT * FROM subproject WHERE projectId = ?";
         return jdbcTemplate.query(sql, mapSubprojects(), id);
     }
@@ -59,15 +57,51 @@ public class SubprojectRepository {
         jdbcTemplate.update(sql, newValue, id);
     }
 
-    private RowMapper<Subproject> mapSubprojects(){
-        return (rs, rowNum) -> new Subproject(
-                rs.getInt("id"),
-                rs.getInt("projectId"),
-                rs.getString("title"),
-                rs.getInt("priority"),
-                rs.getString("deadline"),
-                rs.getInt("duration"),
-                rs.getBoolean("checked")
-        );
+    public int getWorkHours(int subprojectId) {
+        String sql = "SELECT workHours FROM subproject WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
+    }
+
+    public void updateEstimatedDeadline(Subproject subproject) {
+        String sql = "UPDATE subproject SET estDeadline = ? WHERE id = ?";
+        jdbcTemplate.update(sql, subproject.getEstDeadline(), subproject.getId());
+    }
+
+    public void updateWorkHours(int subprojectId, int newWorkHours) {
+        String sql = "UPDATE subproject SET workHours = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newWorkHours, subprojectId);
+    }
+
+    public Integer findProjectIdBySubprojectId(int subprojectId) {
+        String sql = "SELECT projectId FROM subproject WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
+    }
+
+    public int sumWorkHoursByProject(int projectId) {
+        String sql = "SELECT COALESCE(SUM(workHours), 0) FROM subproject WHERE projectId = ?";
+        Integer sum = jdbcTemplate.queryForObject(sql, Integer.class, projectId);
+        return sum != null ? sum : 0;
+    }
+
+
+    private RowMapper<Subproject> mapSubprojects() {
+        return (rs, rowNum) -> {
+            LocalDate estDeadline = rs.getDate("estDeadline") != null
+                    ? rs.getDate("estDeadline").toLocalDate()
+                    : rs.getDate("deadline").toLocalDate();  // fallback
+
+
+            return new Subproject(
+                    rs.getInt("id"),
+                    rs.getInt("projectId"),
+                    rs.getString("title"),
+                    rs.getInt("priority"),
+                    rs.getDate("deadline").toLocalDate(),
+                    estDeadline,
+                    rs.getInt("duration"),
+                    rs.getInt("workHours"),
+                    rs.getBoolean("checked")
+            );
+        };
     }
 }

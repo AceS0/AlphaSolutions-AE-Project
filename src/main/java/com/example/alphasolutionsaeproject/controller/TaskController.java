@@ -3,8 +3,6 @@ import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.TaskUser;
 import com.example.alphasolutionsaeproject.model.User;
-import com.example.alphasolutionsaeproject.repository.TaskRepository;
-import com.example.alphasolutionsaeproject.service.SubprojectService;
 import com.example.alphasolutionsaeproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -22,23 +20,30 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserService userService;
-    private final SubprojectService subprojectService;
 
-    public TaskController(TaskService taskService, UserService userService, TaskRepository taskRepository, SubprojectService subprojectService) {
+    public TaskController(TaskService taskService, UserService userService) {
         this.taskService = taskService;
         this.userService = userService;
-        this.subprojectService = subprojectService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("email") != null;
     }
 
-    // 1. Vis alle tasks
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks")
-    public String listTasks(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
+    public String listTasks(@PathVariable int pid, @PathVariable int spid,
+                            @RequestParam(value = "subprojectName", required = false) String subprojectName,
+                            @RequestParam(value = "projectName", required = false) String projectName,
+                            Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
+        }
+
+        if (projectName != null) {
+            session.setAttribute("projectName", projectName);
+        }
+        if (subprojectName != null) {
+            session.setAttribute("subprojectName", subprojectName);
         }
         String mail = (String) session.getAttribute("email");
         User user = userService.getUserByMail(mail);
@@ -51,7 +56,18 @@ public class TaskController {
             assignedUsersMap.put(taskId, assignedUsers);
         }
 
+        Map<Integer, List<Integer>> assignedUserIdsMap = new HashMap<>();
+        for (Map.Entry<Integer, List<User>> entry : assignedUsersMap.entrySet()) {
+            List<Integer> userIds = entry.getValue().stream()
+                    .map(User::getId)
+                    .toList();
+            assignedUserIdsMap.put(entry.getKey(), userIds);
+        }
 
+        model.addAttribute("projectName", session.getAttribute("projectName"));
+        model.addAttribute("subprojectName", session.getAttribute("subprojectName"));
+        model.addAttribute("assignedUserIdsMap", assignedUserIdsMap);
+        model.addAttribute("currentUser",user);
         model.addAttribute("assignedUsersMap", assignedUsersMap);
         model.addAttribute("tasks", tasks);
 
@@ -62,7 +78,6 @@ public class TaskController {
         return "CommonProjects/tasks";
     }
 
-    // 2. Vis form for at tilføje en task
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/add")
     public String showAddForm(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -73,22 +88,19 @@ public class TaskController {
         return "CommonProjects/addTask";
     }
 
-    // 3. Gem ny task
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/save")
     public String addTask(@ModelAttribute("task") Task task, @PathVariable int pid, @PathVariable int spid) {
         taskService.addTask(task, spid);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
-    // 4. Vis form for at redigere en task
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
     public String showEditForm(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, Model model) {
         Task task = taskService.getTaskById(tid);
         model.addAttribute("task", task);
-        return "CommonProjects/editTask"; // Thymeleaf side: editTask.html
+        return "CommonProjects/editTask";
     }
 
-    // 5. Gem ændringer på eksisterende task
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
     public String editTask(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, @ModelAttribute Task task) {
         task.setId(tid);
@@ -97,7 +109,6 @@ public class TaskController {
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
-    // 6. Slet en task
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}")
     public String deleteTask(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
         taskService.deleteTask(tid);
@@ -122,7 +133,7 @@ public class TaskController {
                              @PathVariable("userId") int userId,
                              @PathVariable("tid") int taskId) {
         taskService.assignUserToTask(taskId, userId);
-        return "redirect:/projects/{pid}/subprojects/{spid}/tasks"; // Redirect to the task page after assignment
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks/{tid}/assign";
     }
 
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign")
@@ -142,13 +153,21 @@ public class TaskController {
     public String unassignTask(@PathVariable int pid, @PathVariable int spid,
                              @PathVariable("userId") int userId,
                              @PathVariable("tid") int taskId) {
-        taskService.unassignUserToTask(taskId, userId);
-        return "redirect:/projects/{pid}/subprojects/{spid}/tasks"; // Redirect to the task page after assignment
+        taskService.unassignUserFromTaskAndProject(taskId, userId);
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign";
     }
 
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/toggleChecked/{tid}")
     public String toggleTasksChecked(@PathVariable int pid, @PathVariable int spid, @PathVariable int tid) {
         taskService.toggleCheckedAndCascadeUp(tid);
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
+    }
+
+    @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/updateWorkHours")
+    public String updateWorkHours(@PathVariable int pid, @PathVariable int spid,
+                                  @RequestParam int taskId,
+                                  @RequestParam int workHours){
+        taskService.updateWorkHours(taskId, workHours);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
