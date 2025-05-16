@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.controller;
+
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.User;
@@ -39,11 +40,11 @@ public class SubprojectController {
             session.setAttribute("projectName", projectName);
         }
         String mail = (String) session.getAttribute("email");
-        User user  = userService.getUserByMail(mail);
+        User user = userService.getUserByMail(mail);
         List<Subproject> subprojects = subprojectService.getAllSubprojectsByProjectId(pid);
         model.addAttribute("projectName", session.getAttribute("projectName"));
         model.addAttribute("subprojects", subprojects);
-        if (user.getRole().equals(Role.EMPLOYEE)){
+        if (user.getRole().equals(Role.EMPLOYEE)) {
             return "Employee/subprojects";
         }
 
@@ -53,7 +54,7 @@ public class SubprojectController {
 
     @GetMapping("/projects/{pid}/subprojects/add")
     public String showAddForm(@PathVariable int pid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
         model.addAttribute("subproject", new Subproject());
@@ -64,7 +65,7 @@ public class SubprojectController {
     public String addSubproject(@ModelAttribute("subproject") Subproject subproject, @PathVariable int pid, RedirectAttributes redirectAttributes) {
         subproject.setProjectId(pid);
         subproject.setChecked(false);
-        if (subproject.getPriority() > 5){
+        if (subproject.getPriority() > 5) {
             redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
             return "redirect:/projects/{pid}/subprojects/add";
         }
@@ -74,7 +75,7 @@ public class SubprojectController {
 
     @GetMapping("/projects/{pid}/subprojects/edit/{spid}")
     public String showEditForm(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
@@ -84,14 +85,14 @@ public class SubprojectController {
     }
 
     @PostMapping("/projects/{pid}/subprojects/edit/{spid}")
-    public String editSubproject(@PathVariable int pid,@PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
+    public String editSubproject(@PathVariable int pid, @PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
         subproject.setChecked(false);
-        if (subproject.getPriority() > 5){
+        if (subproject.getPriority() > 5) {
             redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
             return "redirect:/projects/{pid}/subprojects/edit/{spid}";
         }
 
-        subprojectService.updateSubproject(subproject,spid);
+        subprojectService.updateSubproject(subproject, spid);
         return "redirect:/projects/{pid}/subprojects";
     }
 

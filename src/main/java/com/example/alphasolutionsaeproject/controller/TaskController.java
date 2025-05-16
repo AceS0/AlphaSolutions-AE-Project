@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.controller;
+
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.TaskUser;
@@ -67,7 +68,7 @@ public class TaskController {
         model.addAttribute("projectName", session.getAttribute("projectName"));
         model.addAttribute("subprojectName", session.getAttribute("subprojectName"));
         model.addAttribute("assignedUserIdsMap", assignedUserIdsMap);
-        model.addAttribute("currentUser",user);
+        model.addAttribute("currentUser", user);
         model.addAttribute("assignedUsersMap", assignedUsersMap);
         model.addAttribute("tasks", tasks);
 
@@ -138,8 +139,8 @@ public class TaskController {
 
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign")
     public String showUnassignUsersForm(@PathVariable int pid, @PathVariable int spid,
-                                      @PathVariable int tid,
-                                      Model model, HttpSession session) {
+                                        @PathVariable int tid,
+                                        Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
@@ -151,8 +152,8 @@ public class TaskController {
 
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign/{userId}")
     public String unassignTask(@PathVariable int pid, @PathVariable int spid,
-                             @PathVariable("userId") int userId,
-                             @PathVariable("tid") int taskId) {
+                               @PathVariable("userId") int userId,
+                               @PathVariable("tid") int taskId) {
         taskService.unassignUserFromTaskAndProject(taskId, userId);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign";
     }
@@ -166,7 +167,7 @@ public class TaskController {
     @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/updateWorkHours")
     public String updateWorkHours(@PathVariable int pid, @PathVariable int spid,
                                   @RequestParam int taskId,
-                                  @RequestParam int workHours){
+                                  @RequestParam int workHours) {
         taskService.updateWorkHours(taskId, workHours);
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }

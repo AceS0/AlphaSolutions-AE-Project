@@ -8,7 +8,7 @@ public class User {
     private Role role;
 
 
-    public User(int id, String email, String username, String password, Role role){
+    public User(int id, String email, String username, String password, Role role) {
         this.id = id;
         this.email = email;
         this.username = username;
@@ -16,7 +16,8 @@ public class User {
         this.role = role;
     }
 
-    public User(){}
+    public User() {
+    }
 
 
     public int getId() {
@@ -39,15 +40,15 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 

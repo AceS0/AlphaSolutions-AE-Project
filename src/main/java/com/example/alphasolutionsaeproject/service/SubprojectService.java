@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.service;
+
 import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
@@ -6,6 +7,7 @@ import com.example.alphasolutionsaeproject.repository.ProjectRepository;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class SubprojectService {
     }
 
 
-    public List<Subproject> getAllSubprojectsByProjectId(int id){
+    public List<Subproject> getAllSubprojectsByProjectId(int id) {
         return subprojectRepository.getAllProjectsByProjectId(id);
     }
 

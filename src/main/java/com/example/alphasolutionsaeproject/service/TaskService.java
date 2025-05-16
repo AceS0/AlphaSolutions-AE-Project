@@ -6,6 +6,7 @@ import com.example.alphasolutionsaeproject.repository.ProjectRepository;
 import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.TaskRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class TaskService {
         updateEstimatedDeadline(task);
     }
 
-    public void deleteTask(int tid ) {
+    public void deleteTask(int tid) {
         Task task = taskRepository.findById(tid);
         taskRepository.delete(tid);
         updateAggregatedWorkHours(task);
@@ -71,18 +72,19 @@ public class TaskService {
         }
     }
 
-    public List<User> getUsersUnassignedTo(int taskId){
+    public List<User> getUsersUnassignedTo(int taskId) {
         return taskRepository.getUsersUnassignedTo(taskId);
     }
-    public List<User> getUsersAssignedTo(int taskId){
+
+    public List<User> getUsersAssignedTo(int taskId) {
         return taskRepository.getUsersAssignedTo(taskId);
     }
 
-    public List<TaskUser> getTaskUser(int spid){
+    public List<TaskUser> getTaskUser(int spid) {
         List<TaskUser> taskUserList = new ArrayList<>();
         List<Task> taskList = taskRepository.getAllTasksBySpid(spid);
 
-        for (Task task : taskList){
+        for (Task task : taskList) {
             TaskUser taskUser = new TaskUser(task,
                     taskRepository.getUsersAssignedTo(task.getId()),
                     taskRepository.getUsersUnassignedTo(task.getId()));
@@ -92,7 +94,7 @@ public class TaskService {
     }
 
 
-    public List<TaskUser> getAllTasksBySubProjectId(int spid){
+    public List<TaskUser> getAllTasksBySubProjectId(int spid) {
         return getTaskUser(spid);
     }
 
@@ -156,9 +158,6 @@ public class TaskService {
         subprojectService.updateEstimatedDeadline(subproject);
         projectService.updateEstimatedDeadline(project);
     }
-
-
-
 
 
 }

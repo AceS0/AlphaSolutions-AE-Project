@@ -12,33 +12,33 @@ import java.util.List;
 
 
 @Repository
-public class UserRepository{
+public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public UserRepository(JdbcTemplate jdbcTemplate){
+    public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public User getUser(String email){
-        try{
+    public User getUser(String email) {
+        try {
             String sql = "SELECT * FROM user WHERE email = ?";
             return jdbcTemplate.queryForObject(sql, mapUsers(), email);
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public User getUser(int id){
-        try{
+    public User getUser(int id) {
+        try {
             String sql = "SELECT * FROM user WHERE id = ?";
             return jdbcTemplate.queryForObject(sql, mapUsers(), id);
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public List<User> getAllUsers(){
-        try{
+    public List<User> getAllUsers() {
+        try {
             String sql = "SELECT * FROM user";
             return jdbcTemplate.query(sql, mapUsers());
         } catch (EmptyResultDataAccessException e) {
@@ -51,7 +51,7 @@ public class UserRepository{
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), role);
     }
 
-    public void registerUser(String eid, String uid, String pw, Role role){
+    public void registerUser(String eid, String uid, String pw, Role role) {
         String sql = "INSERT INTO USER (email, username, password, role) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, eid, uid, pw, role.name());
     }
@@ -77,7 +77,7 @@ public class UserRepository{
         return jdbcTemplate.queryForObject(sql, mapUsers(), userId);
     }
 
-    private RowMapper<User> mapUsers(){
+    private RowMapper<User> mapUsers() {
         return (rs, rowNum) -> new User(
                 rs.getInt("id"),
                 rs.getString("email"),

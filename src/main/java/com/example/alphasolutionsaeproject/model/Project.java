@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.model;
+
 import java.time.LocalDate;
 
 public class Project {

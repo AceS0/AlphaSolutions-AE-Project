@@ -38,8 +38,8 @@ public class ProjectController {
     }
 
     @GetMapping("/admin")
-    public String showAdminPage(HttpSession session){
-        if(!isLoggedIn(session)){
+    public String showAdminPage(HttpSession session) {
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
         return "Admin/adminPage";
@@ -54,7 +54,7 @@ public class ProjectController {
         }
 
         String mail = (String) session.getAttribute("email");
-        User user  = userService.getUserByMail(mail);
+        User user = userService.getUserByMail(mail);
         List<Project> createdProjects = projectService.getAllProjectsByUserId(user.getId());
 
         List<Project> sharedProjects = projectService.getSharedProjectsByUserId(user.getId());
@@ -70,7 +70,7 @@ public class ProjectController {
 
 
         model.addAttribute("projects", allUserProjects);
-        if (user.getRole().equals(Role.EMPLOYEE) || user.getRole().equals(Role.PM)){
+        if (user.getRole().equals(Role.EMPLOYEE) || user.getRole().equals(Role.PM)) {
             return "Employee/projects";
         }
 
@@ -86,11 +86,11 @@ public class ProjectController {
 
     @GetMapping("/projects/add")
     public String showAddForm(Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
         List<User> users = userService.getAllPms("PM");
-        model.addAttribute("users",users);
+        model.addAttribute("users", users);
         model.addAttribute("project", new Project());
         return "CommonProjects/addProject";
     }
@@ -107,12 +107,12 @@ public class ProjectController {
 
     @GetMapping("/projects/edit/{pid}")
     public String showEditForm(@PathVariable int pid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
         List<User> users = userService.getAllPms("PM");
-        model.addAttribute("users",users);
+        model.addAttribute("users", users);
 
         Project project = projectService.getProjectById(pid);
         model.addAttribute("project", project);

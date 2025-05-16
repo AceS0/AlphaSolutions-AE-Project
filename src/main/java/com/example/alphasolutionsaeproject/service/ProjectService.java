@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.service;
+
 import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
@@ -53,15 +54,15 @@ public class ProjectService {
         projectRepository.deleteById(pid);
     }
 
-    public List<Project> getAllProjectsByUserId(int id){
+    public List<Project> getAllProjectsByUserId(int id) {
         return projectRepository.getAllProjectsByUserId(id);
     }
 
-    public List<Project> getSharedProjectsByUserId(int id){
+    public List<Project> getSharedProjectsByUserId(int id) {
         return projectRepository.getSharedProjectsByUserId(id);
     }
 
-    public int getProjectManagerId(String getCreatedBy){
+    public int getProjectManagerId(String getCreatedBy) {
         return userRepository.getProjectManagerId(getCreatedBy);
     }
 

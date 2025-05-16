@@ -16,24 +16,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean login(String email, String paswword){
+    public boolean login(String email, String paswword) {
         User user = userRepository.getUser(email);
-        if (user != null){
+        if (user != null) {
             return checkPassword(paswword, user.getPassword());
         }
         return false;
     }
 
-    public boolean checkPassword(String enteredPassword, String storedPassword){
+    public boolean checkPassword(String enteredPassword, String storedPassword) {
         return Objects.equals(enteredPassword, storedPassword);
     }
 
-    private boolean isUsernameValid(String username){
+    private boolean isUsernameValid(String username) {
         String regex = "^[a-zA-Z0-9_ ]{3,50}$"; // minimum format abc
         return username.matches(regex);
     }
 
-    private boolean isEmailValid(String email){
+    private boolean isEmailValid(String email) {
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // format abc@mail.dk
         return email.matches(regex);
     }
@@ -52,19 +52,19 @@ public class UserService {
         userRepository.updateUser(user, uid);
     }
 
-    public User getUserById(int id){
+    public User getUserById(int id) {
         return userRepository.getUser(id);
     }
 
-    public User getUserByMail(String email){
+    public User getUserByMail(String email) {
         return userRepository.getUser(email);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
 
-    public List<User> getAllPms(String role){
+    public List<User> getAllPms(String role) {
         return userRepository.getAllUsersByRole(role);
     }
 
