@@ -1,6 +1,5 @@
 package com.example.alphasolutionsaeproject.controller;
 
-import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.service.UserService;
@@ -111,6 +110,8 @@ public class UserController {
         model.addAttribute("users", users);
         return "Admin/adminUsersPage";
     }
+
+
 
     @PostMapping("/admin/users/delete/{id}")
     public String deleteusers(@PathVariable int id) {

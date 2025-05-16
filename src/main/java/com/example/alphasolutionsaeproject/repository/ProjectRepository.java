@@ -67,7 +67,16 @@ public class ProjectRepository {
         jdbcTemplate.update(sql, newValue, id);
     }
 
+    public void assignToProject(int pid, int userId){
+        jdbcTemplate.update("INSERT INTO project_user (project_id, user_id) VALUES (?, ?)", pid, userId);
+    }
 
+
+    public void unassignFromProject(int pid, int userId) {
+
+        String sql = "DELETE FROM project_user WHERE project_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql, pid, userId);
+    }
 
     private RowMapper<Project> mapProjects(){
         return (rs, rowNum) -> new Project(

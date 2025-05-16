@@ -52,11 +52,6 @@ public class TaskRepository {
         jdbcTemplate.update(sql, tid);
     }
 
-    public void updateChecked(int id, boolean newValue) {
-        String sql = "UPDATE task SET checked = ? WHERE id = ?";
-        jdbcTemplate.update(sql, newValue, id);
-    }
-
     public void assignUserToTask(int taskId, int userId){
             jdbcTemplate.update("INSERT INTO task_user (task_id, user_id) VALUES (?, ?)", taskId, userId);
 

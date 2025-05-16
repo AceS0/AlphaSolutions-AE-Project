@@ -78,17 +78,24 @@ public class ProjectService {
         boolean newChecked = !project.getChecked();
         projectRepository.updateChecked(pid, newChecked);
 
-        // Find alle subprojekter under projektet
         List<Subproject> subprojects = subprojectRepository.getAllProjectsByProjectId(pid);
         for (Subproject sp : subprojects) {
             subprojectRepository.updateChecked(sp.getId(), newChecked);
 
-            // Find alle tasks under subprojektet
+
             List<Task> tasks = taskRepository.getAllTasksBySpid(sp.getId());
             for (Task task : tasks) {
                 taskRepository.updateChecked(task.getId(), newChecked);
             }
         }
+    }
+
+    public void assignToProject(int pid, int userId){
+        projectRepository.assignToProject(pid, userId);
+    }
+
+    public void unassignFromProject(int pid, int userId){
+        projectRepository.unassignFromProject(pid, userId);
     }
 
 

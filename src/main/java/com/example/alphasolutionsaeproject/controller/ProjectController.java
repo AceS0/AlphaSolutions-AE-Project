@@ -142,6 +142,36 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+    @GetMapping("/projects/{pid}/assign/workers")
+    public String getAllWorkers(@PathVariable int pid, Model model, HttpSession session){
+        if(session.getAttribute("email") == null){
+            return "redirect:/users/login";
+        }
+
+        List<User> AssignedEmployees = userService.getAllAssigned(pid);
+        model.addAttribute("AssignedEmployees", AssignedEmployees);
+
+
+        List<User> UnassignedEmployees = userService.getAllUnassigned(pid);
+        model.addAttribute("UnassignedEmployees", UnassignedEmployees);
+        return "Admin/assignProjectEmployees";
+    }
+
+    @PostMapping("/projects/{pid}/assign/workers/{userId}")
+    public String assignToProject(@PathVariable int pid, @PathVariable int userId)
+    {
+        projectService.assignToProject(pid, userId);
+        return "redirect:/projects/{pid}/assign/workers";
+    }
+
+    @PostMapping("/projects/{pid}/unassign/workers/{userId}")
+    public String unassignFromProject(@PathVariable int pid, @PathVariable int userId) {
+
+        projectService.unassignFromProject(pid, userId);
+        return "redirect:/projects/{pid}/assign/workers";
+    }
+
+
 }
 
 

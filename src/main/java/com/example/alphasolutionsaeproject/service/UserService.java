@@ -74,6 +74,14 @@ public class UserService {
         return userRepository.getAllUsersByRole(role);
     }
 
+    public List<User> getAllAssigned(int pid){
+        return userRepository.getAllAssigned(pid);
+    }
+
+    public List<User> getAllUnassigned(int pid){
+        return userRepository.getAllUnassigned(pid);
+    }
+
     public void deleteusers(int id) {
         userRepository.deleteById(id);
     }

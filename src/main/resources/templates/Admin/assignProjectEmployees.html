@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees List</title>
+  <link rel="stylesheet" th:href="@{/cssDesign/projects.css}">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+<header>
+  <a class="signoutbutton" th:href="@{/}">Sign out</a>
+  <div style="height: 30px" class="logo">
+    <a th:href="@{/}">
+      <img src="/img/Alphalogo.png" alt="Alpha Solutions Logo">
+    </a>
+  </div>
+</header>
+
+<h1 class="header1">Assigned</h1>
+
+
+<table class="Assigned table">
+    <tr>
+        <th class="th">Username</th>
+        <th class="th">Email</th>
+        <th class="th">Actions</th>
+    </tr>
+
+
+    <tr th:each="Assigned : ${AssignedEmployees}">
+    <td class="td" th:text="${Assigned.username}"></td>
+    <td class="td" th:text="${Assigned.email}"></td>
+    <td>
+        <form th:action="@{/projects/{pid}/unassign/workers/{userId}(pid=${pid}, userId=${Assigned.id})}" method="post">
+            <input type="hidden" name="userId" th:value="${Assigned.id}"/>
+            <button type="submit" class="links-button-assign">Assign</button>
+        </form>
+    </td>
+    </tr>
+</table>
+
+
+<div style="margin-top: 40px;">
+<h1 class="header1">Unassigned</h1>
+</div>
+
+
+<table class="Unassigned table">
+    <tr>
+        <th class="th">Username</th>
+        <th class="th">Email</th>
+        <th class="th">Actions</th>
+    </tr>
+
+    <tr th:each="Unassigned : ${UnassignedEmployees}">
+    <td class="td" th:text="${Unassigned.username}"></td>
+    <td class="td" th:text="${Unassigned.email}"></td>
+    <td>
+        <form th:action="@{/projects/{pid}/assign/workers/{userId}(pid=${pid}, userId=${Unassigned.id})}" method="post">
+            <input type="hidden" name="userId" th:value="${Unassigned.id}"/>
+            <button type="submit" class="links-buttondelete">Unassign</button>
+        </form>
+    </td>
+    </tr>
+</table>
+
+
+<div style="margin-top: 20px; text-align: left;">
+    <a class="links-button" th:href="@{/projects}">← Back</a>
+</div>
+
+
+</body>
+</html>
