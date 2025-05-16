@@ -172,5 +172,12 @@ public class TaskController {
         return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
     }
 
+    @PostMapping("/projects/{pid}/subprojects/{spid}/tasks/updateStatus")
+    public String updateStatus(@PathVariable int pid, @PathVariable int spid,
+                                  @RequestParam int taskId,
+                                  @RequestParam String status) {
+        taskService.updateStatus(taskId, status);
+        return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
+    }
 }
 

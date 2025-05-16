@@ -52,10 +52,25 @@
               style="margin: 0; display: flex; align-items: center; gap: 4px;">
             <input type="hidden" name="taskId" th:value="${taskUser.task.id}" />
             <input type="text" name="workHours" th:value="${taskUser.task.workHours}" min="0"
+                   th:disabled="${!assignedUserIdsMap[taskUser.task.id].contains(currentUser.id)}"
                    style="width: 60px; padding: 4px; font-size: 0.9rem; border: 1px solid #ccc; border-radius: 4px;"
                    onchange="this.form.submit()" />
         </form>
-        </td>        <td class="td status" th:text="${taskUser.task.status}"></td>
+        </td>
+        <td class="td status">
+            <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/updateStatus(pid=${pid}, spid=${spid})}" method="post"
+                  style="margin: 0; display: flex; align-items: center; gap: 4px;">
+                <input type="hidden" name="taskId" th:value="${taskUser.task.id}"/>
+                <select name="status"
+                        th:disabled="${!assignedUserIdsMap[taskUser.task.id].contains(currentUser.id)}"
+                        style="width: 100px; padding: 4px; font-size: 0.9rem; border: 1px solid #ccc; border-radius: 4px;"
+                        onchange="this.form.submit()">
+                    <option th:selected="${taskUser.task.status == 'To Do'}" th:value="'To Do'">To Do</option>
+                    <option th:selected="${taskUser.task.status == 'In Progress'}" th:value="'In Progress'">In Progress</option>
+                    <option th:selected="${taskUser.task.status == 'Done'}" th:value="'Done'">Done</option>
+                </select>
+            </form>
+        </td>
         <td class="td priority" th:text="${taskUser.task.priority}"></td>
         <td>
             <details class="description-container">
@@ -65,10 +80,10 @@
                         <span th:text="${user.username + ' (' + user.email + ')'}"></span>
                     </li>
                 </ul>
-            </details> -
+            </details>
         </td>
         <td>
-            -<details class="description-container">
+            <details class="description-container">
             <summary class="links-button">Description</summary>
             <p th:text="${taskUser.task.description}"></p>
         </details>

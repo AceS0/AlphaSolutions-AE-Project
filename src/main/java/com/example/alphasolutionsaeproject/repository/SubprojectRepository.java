@@ -2,6 +2,7 @@ package com.example.alphasolutionsaeproject.repository;
 
 
 import com.example.alphasolutionsaeproject.model.Subproject;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -73,8 +74,12 @@ public class SubprojectRepository {
     }
 
     public Integer findProjectIdBySubprojectId(int subprojectId) {
-        String sql = "SELECT projectId FROM subproject WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
+        try {
+            String sql = "SELECT projectId FROM subproject WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public int sumWorkHoursByProject(int projectId) {

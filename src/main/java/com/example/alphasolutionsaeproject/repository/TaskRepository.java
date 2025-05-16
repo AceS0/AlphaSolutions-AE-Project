@@ -123,6 +123,11 @@ public class TaskRepository {
         jdbcTemplate.update(sql, workHours, taskId);
     }
 
+    public void updateStatus(int taskId, String status) {
+        String sql = "UPDATE task SET status = ? WHERE id = ?";
+        jdbcTemplate.update(sql, status, taskId);
+    }
+
     public int sumWorkHoursBySubproject(int subprojectId) {
         try {
             String sql = "SELECT COALESCE(SUM(workHours), 0) FROM task WHERE subprojectId = ?";
@@ -133,7 +138,7 @@ public class TaskRepository {
     }
 
     public void updateEstimatedDeadline(int taskId, LocalDate estDeadline) {
-        String sql = "UPDAT E task SET estDeadline = ? WHERE id = ?";
+        String sql = "UPDATE task SET estDeadline = ? WHERE id = ?";
         jdbcTemplate.update(sql, estDeadline, taskId);
     }
 

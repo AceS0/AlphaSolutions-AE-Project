@@ -69,8 +69,15 @@ public class ProjectController {
         }
 
 
-        model.addAttribute("projects", allUserProjects);
-        if (user.getRole().equals(Role.EMPLOYEE) || user.getRole().equals(Role.PM)) {
+        if (user.getRole().equals(Role.EMPLOYEE)) {
+            model.addAttribute("projects", sharedProjects);
+
+            return "Employee/projects";
+        }
+
+        if (user.getRole().equals(Role.PM)) {
+            model.addAttribute("projects", createdProjects);
+
             return "Employee/projects";
         }
 
