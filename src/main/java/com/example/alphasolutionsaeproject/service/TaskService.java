@@ -122,6 +122,10 @@ public class TaskService {
         updateEstimatedDeadline(task);
     }
 
+    public void updateStatus(int taskId, String status) {
+        taskRepository.updateStatus(taskId, status);
+    }
+
     public void updateAggregatedWorkHours(Task task) {
         int taskHours = taskRepository.sumWorkHoursBySubproject(task.getSubprojectId());
         subprojectRepository.updateWorkHours(task.getSubprojectId(), taskHours);
