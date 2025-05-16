@@ -1,28 +1,32 @@
 package com.example.alphasolutionsaeproject.model;
 
+import java.time.LocalDate;
 
 public class Task {
     private int id;
     private int subprojectId;
     private String title;
     private String description;
-    private String deadline;
+    private LocalDate deadline;
+    private LocalDate estDeadline;
     private int duration;
+    private int workHours;
     private String status;
     private String priority;
     private boolean checked;
-    private String assigned;
 
     public Task() {
     }
 
-    public Task(int id, int subprojectId, String title, String description, String deadline, int duration, String status, String priority, boolean checked) {
+    public Task(int id, int subprojectId, String title, String description, LocalDate deadline, LocalDate estDeadline, int duration, int workHours, String status, String priority, boolean checked) {
         this.id = id;
         this.subprojectId = subprojectId;
         this.title = title;
         this.description = description;
         this.deadline = deadline;
+        this.estDeadline = estDeadline;
         this.duration = duration;
+        this.workHours = workHours;
         this.status = status;
         this.priority = priority;
         this.checked = checked;
@@ -61,11 +65,11 @@ public class Task {
         this.description = description;
     }
 
-    public String getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
@@ -101,11 +105,27 @@ public class Task {
         this.checked = checked;
     }
 
-    public String getAssigned() {
-        return assigned;
+    public LocalDate getEstDeadline() {
+        return estDeadline;
     }
 
-    public void setAssigned(String assigned) {
-        this.assigned = assigned;
+    public void setEstDeadline(LocalDate estDeadline) {
+        this.estDeadline = estDeadline;
+    }
+
+    public int getWorkHours() {
+        return workHours;
+    }
+
+    public void setWorkHours(int workHours) {
+        this.workHours = workHours;
+    }
+
+    public int getDifferenceInHours() {
+        return duration - workHours;
+    }
+
+    public boolean isOverWorked() {
+        return workHours > duration;
     }
 }

@@ -1,26 +1,31 @@
 package com.example.alphasolutionsaeproject.model;
 
+import java.time.LocalDate;
+
 public class Subproject {
     private int id;
     private int projectId;
     private String title;
     private int priority;
-    private String deadline;
+    private LocalDate deadline;
+    private LocalDate estDeadline;
     private int duration;
+    private int workHours;
     private boolean checked;
 
     public Subproject() {
     }
 
-
     public Subproject(int id, int projectId, String title, int priority,
-                      String deadline, int duration, boolean checked) {
+                      LocalDate deadline, LocalDate estDeadline, int duration, int workHours, boolean checked) {
         this.id = id;
         this.projectId = projectId;
         this.title = title;
         this.priority = priority;
         this.deadline = deadline;
+        this.estDeadline = estDeadline;
         this.duration = duration;
+        this.workHours = workHours;
         this.checked = checked;
     }
 
@@ -57,12 +62,20 @@ public class Subproject {
         this.priority = priority;
     }
 
-    public String getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+    }
+
+    public LocalDate getEstDeadline() {
+        return estDeadline;
+    }
+
+    public void setEstDeadline(LocalDate estDeadline) {
+        this.estDeadline = estDeadline;
     }
 
     public int getDuration() {
@@ -79,6 +92,22 @@ public class Subproject {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public int getWorkHours() {
+        return workHours;
+    }
+
+    public void setWorkHours(int workHours) {
+        this.workHours = workHours;
+    }
+
+    public int getDifferenceInHours() {
+        return duration - workHours;
+    }
+
+    public boolean isOverWorked() {
+        return workHours > duration;
     }
 }
 

@@ -15,7 +15,7 @@
     </a>
   </div>
 </header>
-<h1 class="header1">Your Tasks: </h1>
+<h1 class="header1" th:text="${subprojectName} + '\'s Tasks:'"></h1>
 <div class="flex-center">
   <a class="add" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/add(pid=${pid}, spid=${spid})}">Add task</a>
 </div>
@@ -24,7 +24,10 @@
     <th class="th">Done</th>
     <th class="th">Title</th>
     <th class="th">Deadline</th>
+    <th class="th">Est. Deadline</th>
     <th class="th">Duration</th>
+    <th class="th">→ Difference ←</th>
+    <th class="th">Worked Hours</th>
     <th class="th">Status</th>
     <th class="th">Priority</th>
     <th class="th">Assign</th>
@@ -41,19 +44,24 @@
     </td>
     <td class="td title" th:text="${taskUser.task.title}"></td>
     <td class="td deadline" th:text="${taskUser.task.deadline}"></td>
+    <td class="td deadline" th:text="${taskUser.task.estDeadline}"></td>
     <td class="td duration" th:text="${taskUser.task.duration}"></td>
+    <td class="td difference" th:text="${taskUser.task.differenceInHours}"></td>
+    <p th:if="${taskUser.task.isOverWorked()}" style="color: rebeccapurple;"
+       th:text="${taskUser.task.title} + ' has exceeded expected duration'"></p>
+    <td class="td workHours" th:text="${taskUser.task.workHours}"></td>
     <td class="td status" th:text="${taskUser.task.status}"></td>
     <td class="td priority" th:text="${taskUser.task.priority}"></td>
     <td>
       <a class="links-button-assign" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/{tid}/assign(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}">Assign</a>
-      <details class="description-container">
+      -<details class="description-container">
         <summary class="links-button">Assigned</summary>
         <ul>
           <li th:each="user : ${assignedUsersMap[taskUser.task.id]}">
             <span th:text="${user.username + ' (' + user.email + ')'}"></span>
           </li>
         </ul>
-      </details>
+      </details> -
 
       <a class="links-buttondelete" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/{tid}/unassign(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}">Unassign</a>
     </td>
@@ -61,10 +69,10 @@
       <a class="links-button" th:href="@{/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}">Edit</a>
       <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks/delete/{tid}(pid=${pid},spid=${taskUser.task.subprojectId},tid=${taskUser.task.id})}"
             method="post" style="display: inline"
-            th:onsubmit="'return confirm(\'Do you really want to delete the task: (ID: ' + ${taskUser.task.id} + ')?\')'">
+            th:onsubmit="'return confirm(\'Do you really want to delete the task: (ID: ' + ${taskUser.task.id} + ')?\')'">-
         <button class="links-buttondelete" type="submit">Delete</button>
       </form>
-      <details class="description-container">
+      -<details class="description-container">
         <summary class="links-button">Description</summary>
         <p th:text="${taskUser.task.description}"></p>
       </details>
@@ -73,7 +81,7 @@
 
 </table>
 <div style="margin-top: 20px; text-align: left;">
-  <a class="links-button" th:href="@{/projects/{pid}/subprojects(pid=${pid})}">← Back</a>
+  <a class="links-button" th:href="@{/projects/{pid}/subprojects(pid=${pid}, projectName=${projectName})}">← Back</a>
 </div>
 </body>
 </html>

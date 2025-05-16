@@ -42,6 +42,10 @@
             <input type="text" id="duration" th:field="*{duration}" required>
         </p>
         <p class="textbox">
+            <label for="workHours">Work Hours:</label>
+            <input type="text" id="workHours" th:field="*{workHours}" min="0"/>
+        </p>
+        <p class="textbox">
             <label for="status">Status:</label>
             <select class="textbox" id="status" th:field="*{status}"  required>
                 <option th:value="'To Do'" th:text="'To Do'"></option>
