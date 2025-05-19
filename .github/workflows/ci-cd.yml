@@ -11,6 +11,11 @@ jobs:
     permissions:
       contents: read  
 
+    env:
+      PROD_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+      PROD_USERNAME: ${{ secrets.PROD_USERNAME }}
+      PROD_PASSWORD: ${{ secrets.PROD_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v4
 
