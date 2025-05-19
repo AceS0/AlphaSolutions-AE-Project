@@ -1,47 +1,57 @@
-# Project Alpha Solutions in collaboration with Abdul and Enes
+# Alpha Solutions Project  
+_A collaboration between Abdul Sekerci and Enes Filikci_
 
-## Goal of the code
-This project is used to help the Alpha Solutions company manage their on-going projects, but is also useful for other companies if a simplified site is needed for new projects. Our code can help both small companies as well as bigger coorparations manage their projects in a simple way.
+![Java](https://img.shields.io/badge/Java-21-blue.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green.svg)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)
+![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)
 
-### About the Program
-There is 3 different roles:
+## Goal of the Project
+This application is developed to help Alpha Solutions efficiently manage ongoing projects. It offers a streamlined solution for project organization and task delegation, making it equally suitable for small businesses and larger enterprises in need of a simplified project management tool.
 
-Admin, Project manager and Employee. Those 3 roles have different rights and accessprivileges:
+---
 
-### The admin role has rights to:
-- Create new users
-- Add roles to the users, ex. PM or Employee
-- Delete users
-- Create a project where the Admin can choose the Project Manager.
-- Can assign a user to a project.
-- Has access to everything that PM and Employee has access to.
+## About the Program
 
-### The project manager has rights to:
-- Create new Subprojects
-  - tasks
-    - assign users to a task
-- Delete Subprojects
-  - tasks
-    - unassign users from a task
-   
-- And everything in between, as in edit subprojects, tasks etc.  
+There are **three user roles**, each with distinct responsibilities and access levels:
 
-### The employee has rights to:
-- Submit a task as done
-- Input the amount of hours worked on a task
-- Can see who is assigned to the specific task.
+### Admin
+Admins have full control and access. They can:
+- Create, delete, and manage users
+- Assign roles (Project Manager or Employee)
+- Create projects and assign Project Managers
+- Assign users to projects
+- Access everything Project Managers and Employees can
 
-## Tech stacks used:
-- Java 21
-- Spring Boot
-- Spring Web
-- MySQL 8.0
-- HTML
-- CSS
-- Thymeleaf
+### Project Manager
+Project Managers can:
+- Create and manage subprojects
+- Create, edit, and delete tasks
+- Assign/unassign users to/from tasks
+- Edit subprojects and tasks
+- View all project details
 
+### Employee
+Employees can:
+- Mark tasks as completed
+- Log hours worked on tasks
+- View task assignments
 
-## Credits:
+---
 
-- Abdulcelil Sekerci -> https://github.com/AceS0
-- Enes Zeki Filikci -> https://github.com/Enfi0001
+## Tech Stack
+- **Java 21**
+- **Spring Boot**
+- **Spring Web**
+- **MySQL 8.0**
+- **HTML**, **CSS**, **Thymeleaf**
+
+---
+
+## Credits
+This project was developed as part of a semester collaboration between:
+
+- **Abdulcelil Sekerci** –> https://github.com/AceS0
+- **Enes Zeki Filikci** –> https://github.com/Enfi0001 
+
+Special thanks to **Alpha Solutions** for providing a real-world use case and continuous feedback during development.
