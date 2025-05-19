@@ -1,3 +1,6 @@
+
+![image](https://github.com/user-attachments/assets/6b28ae59-cf0c-430f-a8d3-18a09a990ef5)
+
 # Alpha Solutions Project  
 _A collaboration between Abdul Sekerci and Enes Filikci_
 
