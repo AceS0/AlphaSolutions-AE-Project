@@ -44,7 +44,7 @@ public class ProjectService {
         project.setId(pid);
         projectRepository.update(project, pid);
         if (project.getId() == 0) {
-            Project existing = projectRepository.findById(pid); // Fetch from DB
+            Project existing = projectRepository.findById(pid);
             project.setId(existing.getId());
         }
         updateEstimatedDeadline(project);
