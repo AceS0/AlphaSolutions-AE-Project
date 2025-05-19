@@ -39,10 +39,14 @@ Employees can:
 ---
 
 ## Tech Stack
-- **Java 21**
-- **Spring Boot**
+- **Java SDK 21.0.4 (Project runs on Java 17)**
+- **IntelliJ IDEA 2024.2.2**
+- **Spring Boot 3.4.5**
 - **Spring Web**
 - **MySQL 8.0**
+- **Maven**
+- **JUnit 5.9.2 (Jupiter)**
+- **Mockito 5.3.1**
 - **HTML**, **CSS**, **Thymeleaf**
 
 ---
