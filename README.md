@@ -41,9 +41,5 @@ Admin, Project manager and Employee. Those 3 roles have different rights and acc
 - Thymeleaf
 
 
-## Made by / credits:
+## Credits:
 
-- Johan Ingemann Andersen // https://github.com/johan-Andersen
-- Bertram Kongstad Hansen // https://github.com/BertramHansen
-- Gustav Søstrøm Eriksen // https://github.com/Gustavseriksen
-- Gustav Hansen Reumert // https://github.com/gustav-hr
