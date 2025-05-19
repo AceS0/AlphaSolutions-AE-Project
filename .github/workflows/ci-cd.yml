@@ -53,7 +53,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'AlphaSolutionsAEProject'
+          app-name: 'AlphaSolutionAE'
           slot-name: 'Production'
           package: '*.jar'  
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE}} 
