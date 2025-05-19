@@ -1,5 +1,4 @@
 package com.example.alphasolutionsaeproject.repository;
-
 import com.example.alphasolutionsaeproject.model.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,16 +18,19 @@ public class TaskRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // Find alle tasks
     public List<Task> findAll() {
         String sql = "SELECT * FROM task";
         return jdbcTemplate.query(sql, mapTasks());
     }
 
+    // Find task by id
     public Task findById(int id) {
         String sql = "SELECT * FROM task WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, mapTasks(), id);
     }
 
+    // Tilføj ny task
     public void save(Task task, int spid) {
         String sql = "INSERT INTO task (subprojectId, title, description, deadline, duration, workHours, status, priority, checked)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,12 +39,14 @@ public class TaskRepository {
                 task.getPriority(), task.getChecked());
     }
 
+    // Opdater eksisterende task
     public void update(Task task) {
         String sql = "UPDATE task SET title = ?, description = ?, status = ?, priority = ?, deadline = ?, estDeadline = ?, duration = ?, workHours = ? WHERE id = ?";
         jdbcTemplate.update(sql, task.getTitle(), task.getDescription(), task.getStatus(),
                 task.getPriority(), task.getDeadline(), task.getEstDeadline(), task.getDuration(), task.getWorkHours(), task.getId());
     }
 
+    // Slet task
     public void delete(int tid) {
         String sql = "DELETE FROM task WHERE id = ?";
         jdbcTemplate.update(sql, tid);

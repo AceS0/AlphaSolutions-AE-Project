@@ -1,5 +1,4 @@
 package com.example.alphasolutionsaeproject.service;
-
 import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
@@ -27,19 +26,23 @@ public class ProjectService {
         this.taskRepository = taskRepository;
     }
 
+    // Hent alle projekter
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
+    // Hent projekt ud fra ID
     public Project getProjectById(int id) {
         return projectRepository.findById(id);
     }
 
+    // Gem et nyt projekt
     public void addProject(Project project) {
         project.setEstDeadline(project.getDeadline());
         projectRepository.save(project);
     }
 
+    // Opdater eksisterende projekt
     public void updateProject(Project project, int pid) {
         project.setId(pid);
         projectRepository.update(project, pid);
@@ -50,6 +53,7 @@ public class ProjectService {
         updateEstimatedDeadline(project);
     }
 
+    // Slet projekt
     public void deleteProject(int pid) {
         projectRepository.deleteById(pid);
     }
@@ -73,15 +77,25 @@ public class ProjectService {
         boolean newChecked = !project.getChecked();
         projectRepository.updateChecked(pid, newChecked);
 
+        // Find alle subprojekter under projektet
         List<Subproject> subprojects = subprojectRepository.getAllProjectsByProjectId(pid);
         for (Subproject sp : subprojects) {
             subprojectRepository.updateChecked(sp.getId(), newChecked);
 
+            // Find alle tasks under subprojektet
             List<Task> tasks = taskRepository.getAllTasksBySpid(sp.getId());
             for (Task task : tasks) {
                 taskRepository.updateChecked(task.getId(), newChecked);
             }
         }
+    }
+
+    public void assignToProject(int pid, int userId){
+        projectRepository.assignToProject(pid, userId);
+    }
+
+    public void unassignFromProject(int pid, int userId){
+        projectRepository.unassignFromProject(pid, userId);
     }
 
     public void updateEstimatedDeadline(Project project) {

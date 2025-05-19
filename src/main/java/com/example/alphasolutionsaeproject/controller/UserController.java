@@ -110,6 +110,8 @@ public class UserController {
         return "Admin/adminUsersPage";
     }
 
+
+
     @PostMapping("/admin/users/delete/{id}")
     public String deleteUser(@PathVariable int id) {
         userService.deleteUser(id);

@@ -77,6 +77,26 @@ public class UserRepository {
         return jdbcTemplate.queryForObject(sql, mapUsers(), userId);
     }
 
+    public List<User> getAllAssigned(int pid){
+        String sql = "SELECT u.id, u.email, u.username, u.password, u.role " +
+                "FROM user u " +
+                "JOIN project_user tu ON u.id = tu.user_id " +
+                "WHERE tu.project_id = ?";
+        return jdbcTemplate.query(sql,mapUsers(),pid);
+    }
+
+    public List<User> getAllUnassigned(int pid){
+        String sql = "SELECT u.id, u.email, u.username, u.password, u.role " +
+                "FROM user u " +
+                "WHERE u.id NOT IN (SELECT user_id FROM project_user WHERE project_id = ?)";
+        return jdbcTemplate.query(sql,mapUsers(),pid);
+    }
+
+    public void deleteById(int id) {
+        String sql = "DELETE FROM user WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     private RowMapper<User> mapUsers() {
         return (rs, rowNum) -> new User(
                 rs.getInt("id"),
@@ -85,10 +105,5 @@ public class UserRepository {
                 rs.getString("password"),
                 Role.valueOf(rs.getString("role").toUpperCase())
         );
-    }
-
-    public void deleteById(int id) {
-        String sql = "DELETE FROM user WHERE id = ?";
-        jdbcTemplate.update(sql, id);
     }
 }
