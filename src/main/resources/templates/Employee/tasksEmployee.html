@@ -74,7 +74,7 @@
         <td class="td priority" th:text="${taskUser.task.priority}"></td>
         <td>
             <details class="description-container">
-                <summary class="links-button">Assigned</summary>
+                <summary class="links-button-assigned">Assigned</summary>
                 <ul>
                     <li th:each="user : ${assignedUsersMap[taskUser.task.id]}">
                         <span th:text="${user.username + ' (' + user.email + ')'}"></span>
