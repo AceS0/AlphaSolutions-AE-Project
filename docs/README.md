@@ -4,7 +4,6 @@ _A collaboration between Abdul Sekerci and Enes Filikci_
 ![Java](https://img.shields.io/badge/Java-21-blue.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)
-![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)
 
 ## Goal of the Project
 This application is developed to help Alpha Solutions efficiently manage ongoing projects. It offers a streamlined solution for project organization and task delegation, making it equally suitable for small businesses and larger enterprises in need of a simplified project management tool.
