@@ -37,7 +37,7 @@ public class SubprojectService {
         subproject.setId(spid);
         subprojectRepository.update(subproject, spid);
         if (subproject.getProjectId() == 0) {
-            Subproject existing = subprojectRepository.findById(spid); // Fetch from DB
+            Subproject existing = subprojectRepository.findById(spid);
             subproject.setProjectId(existing.getProjectId());
         }
         updateEstimatedDeadline(subproject);
