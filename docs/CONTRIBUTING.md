@@ -4,13 +4,13 @@ AEProjects byder velkommen - Tak fordi du vil bidrage til dette projekt!
 
 ## Trin
 
-1. Fork projektet og lav din egen branch.
+1. Clone projektet og lav din egen branch.
 2. Navngiv branch korrekt og forståeligt (eks. refactor/kodeoprydning)
 3. Følg kodestil og sørg for, at alle tests passer.
 4. Lav en Pull Request med en god beskrivelse.
 
 ## Kodestil
-- Brug Java 17
+- Brug Java 17 eller nyere
 - Brug meningsfulde navne og kommentarer
 - Undgå ubrugte imports
 
