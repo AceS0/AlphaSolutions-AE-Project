@@ -90,7 +90,8 @@ h1.header1 {
 
 .links-button,
 .links-buttondelete,
-.links-button-assign {
+.links-button-assign,
+.links-button-assigned{
     display: inline-block;
     padding: 8px 14px;
     border-radius: 6px;
@@ -130,6 +131,15 @@ h1.header1 {
     background-color: #25602d;
 }
 
+.links-button-assigned {
+    background-color: #45bcba;
+    color: white;
+}
+
+.links-button-assigned:hover {
+    background-color: #319997;
+}
+
 .status-button {
     padding: 8px 14px;
     font-size: 16px;
@@ -160,7 +170,7 @@ h1.header1 {
 
 .description-container {
     display: inline-block;
-    margin-left: 6px; /* Optional spacing between buttons */
+    margin-left: 6px;
 }
 
 .description-container summary {
@@ -191,6 +201,14 @@ h1.header1 {
     border-left: 4px solid #4B3EAE;
     margin-top: 8px;
     border-radius: 6px;
+}
+
+.description-container.teal summary {
+    background-color: #45bcba;
+}
+
+.description-container.teal summary:hover {
+    background-color: #319997;
 }
 
 .logo {

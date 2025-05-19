@@ -62,9 +62,8 @@
                   method="post" style="display: inline"
                   th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${Project.id} + ')?\')'">-
                 <button class="links-buttondelete" type="submit">Delete</button>
-            </form>
-            <a class="links-button" th:href="@{/projects/{pid}/assign/workers(pid=${Projects.id})}">Assign</a>
-            <details class="description-container">
+            </form> -
+            <a class="links-button-assigned" th:href="@{/projects/{pid}/assign/workers(pid=${Project.id})}">Assign</a>
             -<details class="description-container">
                 <summary class="links-button">Description</summary>
                 <p th:text="${Project.description}"></p>
