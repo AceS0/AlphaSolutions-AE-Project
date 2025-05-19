@@ -1,4 +1,4 @@
-# Alpha Solutions Project in collaboration with Abdul and Enes
+# Project Alpha Solutions in collaboration with Abdul and Enes
 
 ## Goal of the code
 This project is used to help the Alpha Solutions company manage their on-going projects, but is also useful for other companies if a simplified site is needed for new projects. Our code can help both small companies as well as bigger coorparations manage their projects in a simple way.
