@@ -1,4 +1,4 @@
-# 🏗️ Alpha Solutions Project  
+# Alpha Solutions Project  
 _A collaboration between Abdul Sekerci and Enes Filikci_
 
 ![Java](https://img.shields.io/badge/Java-21-blue.svg)
