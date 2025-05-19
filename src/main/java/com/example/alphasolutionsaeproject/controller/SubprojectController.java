@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.controller;
+
 import com.example.alphasolutionsaeproject.model.Role;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.User;
@@ -30,15 +31,20 @@ public class SubprojectController {
     }
 
     @GetMapping("/projects/{pid}/subprojects")
-    public String listSubprojects(@PathVariable int pid, Model model, HttpSession session) {
+    public String listSubprojects(@PathVariable int pid, @RequestParam(value = "projectName", required = false) String projectName, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
+
+        if (projectName != null) {
+            session.setAttribute("projectName", projectName);
+        }
         String mail = (String) session.getAttribute("email");
-        User user  = userService.getUserByMail(mail);
+        User user = userService.getUserByMail(mail);
         List<Subproject> subprojects = subprojectService.getAllSubprojectsByProjectId(pid);
+        model.addAttribute("projectName", session.getAttribute("projectName"));
         model.addAttribute("subprojects", subprojects);
-        if (user.getRole().equals(Role.EMPLOYEE)){
+        if (user.getRole().equals(Role.EMPLOYEE)) {
             return "Employee/subprojects";
         }
 
@@ -46,23 +52,20 @@ public class SubprojectController {
     }
 
 
-    // 2. Vis form for at tilføje et subproject
     @GetMapping("/projects/{pid}/subprojects/add")
     public String showAddForm(@PathVariable int pid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
-
         model.addAttribute("subproject", new Subproject());
         return "CommonProjects/addSubproject";
     }
 
-    // 3. Gem nyt subproject
     @PostMapping("/projects/{pid}/subprojects/save")
     public String addSubproject(@ModelAttribute("subproject") Subproject subproject, @PathVariable int pid, RedirectAttributes redirectAttributes) {
         subproject.setProjectId(pid);
         subproject.setChecked(false);
-        if (subproject.getPriority() > 5){
+        if (subproject.getPriority() > 5) {
             redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
             return "redirect:/projects/{pid}/subprojects/add";
         }
@@ -70,10 +73,9 @@ public class SubprojectController {
         return "redirect:/projects/{pid}/subprojects";
     }
 
-    // 4. Vis form for at redigere et subproject
     @GetMapping("/projects/{pid}/subprojects/edit/{spid}")
     public String showEditForm(@PathVariable int pid, @PathVariable int spid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
@@ -82,38 +84,27 @@ public class SubprojectController {
         return "CommonProjects/editSubproject";
     }
 
-    // 5. Gem ændringer på eksisterende subproject
     @PostMapping("/projects/{pid}/subprojects/edit/{spid}")
-    public String editSubproject(@PathVariable int pid,@PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
+    public String editSubproject(@PathVariable int pid, @PathVariable int spid, @ModelAttribute("subproject") Subproject subproject, RedirectAttributes redirectAttributes) {
         subproject.setChecked(false);
-        if (subproject.getPriority() > 5){
+        if (subproject.getPriority() > 5) {
             redirectAttributes.addFlashAttribute("error", "Priority should be between 1-5.");
             return "redirect:/projects/{pid}/subprojects/edit/{spid}";
         }
 
-        subprojectService.updateSubproject(subproject,spid);
+        subprojectService.updateSubproject(subproject, spid);
         return "redirect:/projects/{pid}/subprojects";
     }
 
-    // 6. Slet et subproject
     @PostMapping("/projects/{pid}/subprojects/delete/{spid}")
     public String deleteSubproject(@PathVariable int pid, @PathVariable int spid) {
         subprojectService.deleteSubproject(spid);
         return "redirect:/projects/{pid}/subprojects";
     }
 
-//    @PostMapping("/projects/{pid}/subprojects/toggleChecked/{spid}")
-//    public String toggleChecked(@PathVariable int pid, @PathVariable int spid) {
-//        subprojectService.toggleChecked(spid);
-//        return "redirect:/projects/{pid}/subprojects";  // Redirect back to the projects list
-//    }
-
     @PostMapping("/projects/{pid}/subprojects/toggleChecked/{spid}")
     public String toggleSubprojectChecked(@PathVariable String pid, @PathVariable int spid) {
         subprojectService.toggleCheckedAndCascade(spid);
         return "redirect:/projects/{pid}/subprojects";
     }
-
-
-
 }

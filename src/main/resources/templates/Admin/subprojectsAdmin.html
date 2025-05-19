@@ -15,16 +15,19 @@
         </a>
     </div>
 </header>
-<h1 class="header1">Your Subprojects: </h1>
+<h1 class="header1" th:text="${projectName} + '\'s Subprojects:'"></h1>
 <div class="flex-center">
     <a class="add" th:href="@{/projects/{pid}/subprojects/add(pid=${pid})}">Add subproject</a>
 </div>
 <table class="table">
     <tr>
         <th class="th">Done</th>
-        <th class="th">Projects</th>
+        <th class="th">Subprojects</th>
         <th class="th">Deadline</th>
+        <th class="th">Est. Deadline</th>
         <th class="th">Duration</th>
+        <th class="th">→ Difference ←</th>
+        <th class="th">Worked Hours</th>
         <th class="th">Priority</th>
         <th class="th">Actions</th>
     </tr>
@@ -40,14 +43,23 @@
 
         <td class="td title" th:text="${subproject.title}"></td>
         <td class="td deadline" th:text="${subproject.deadline}"></td>
+        <td class="td deadline" th:text="${subproject.estDeadline}"></td>
         <td class="td duration" th:text="${subproject.duration}"></td>
+        <td class="td difference" th:text="${subproject.differenceInHours}"></td>
+        <p th:if="${subproject.isOverWorked()}" style="color: rebeccapurple;"
+           th:text="${subproject.title} + ' has exceeded expected duration'"></p>
+        <td class="td workHours" th:text="${subproject.workHours}"></td>
         <td class="td createdBy" th:text="${subproject.priority}"></td>
         <td>
-            <a class="links-button" th:href="@{/projects/{pid}/subprojects/{spid}/tasks(pid=${subproject.projectId},spid=${subproject.id})}">Choose</a>
+            <form th:action="@{/projects/{pid}/subprojects/{spid}/tasks(pid=${subproject.projectId},spid=${subproject.id})}" method="get"
+                  style="display: inline">
+                <input type="hidden" name="subprojectName" th:value="${subproject.title}" />
+                <button type="submit" class="links-button">Choose</button>
+            </form> -
             <a class="links-button" th:href="@{/projects/{pid}/subprojects/edit/{spid}(pid=${subproject.projectId},spid=${subproject.id})}">Edit</a>
             <form th:action="@{/projects/{pid}/subprojects/delete/{spid}(pid=${subproject.projectId},spid=${subproject.id})}"
                   method="post" style="display: inline"
-                  th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${subproject.id} + ')?\')'">
+                  th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${subproject.id} + ')?\')'">-
                 <button class="links-buttondelete" type="submit">Delete</button>
             </form>
         </td>

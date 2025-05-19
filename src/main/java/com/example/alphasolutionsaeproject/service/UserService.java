@@ -1,7 +1,6 @@
 package com.example.alphasolutionsaeproject.service;
 
 import com.example.alphasolutionsaeproject.model.Role;
-import com.example.alphasolutionsaeproject.model.Task;
 import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -20,10 +19,10 @@ public class UserService {
     // Tjekker om login er korrekt
     public boolean login(String email, String paswword){
         User user = userRepository.getUser(email);
-        if (user != null){
-            return checkPassword(paswword, user.getPassword());  // Sammenligner adgangskoder
+        if (user != null) {
+            return checkPassword(paswword, user.getPassword());
         }
-        return false;  // Hvis bruger ikke findes, returneres false
+        return false;
     }
 
     // Sammenligner to adgangskoder
@@ -58,19 +57,19 @@ public class UserService {
         userRepository.updateUser(user, uid);
     }
 
-    public User getUserById(int id){
+    public User getUserById(int id) {
         return userRepository.getUser(id);
     }
 
-    public User getUserByMail(String email){
+    public User getUserByMail(String email) {
         return userRepository.getUser(email);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
 
-    public List<User> getAllPms(String role){
+    public List<User> getAllPms(String role) {
         return userRepository.getAllUsersByRole(role);
     }
 
@@ -82,7 +81,7 @@ public class UserService {
         return userRepository.getAllUnassigned(pid);
     }
 
-    public void deleteusers(int id) {
+    public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
 }

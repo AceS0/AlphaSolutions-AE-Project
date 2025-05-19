@@ -21,16 +21,20 @@
         <th class="th">Done</th>
         <th class="th">Projects</th>
         <th class="th">Deadline</th>
+        <th class="th">Est. Deadline</th>
         <th class="th">Duration</th>
+        <th class="th">→ Difference ←</th>
+        <th class="th">Worked Hours</th>
         <th class="th">Project Manager</th>
         <th class="th">Actions</th>
     </tr>
     <tr th:each="Project : ${projects}">
         <td class="td checked">
-            <form th:action="@{'/projects/toggleChecked/' + ${Project.id}}" method="post">
+            <form th:action="@{/projects/toggleChecked/{pid}(pid=${Project.id})}" method="post">
                 <input type="checkbox"
                        name="checked"
                        th:checked="${Project.checked}"
+                       th:disabled="true"
                        onchange="this.form.submit()" />
             </form>
         </td>
@@ -38,10 +42,19 @@
 
         <td class="td title" th:text="${Project.title}"></td>
         <td class="td deadline" th:text="${Project.deadline}"></td>
+        <td class="td deadline" th:text="${Project.estDeadline}"></td>
         <td class="td duration" th:text="${Project.duration}"></td>
+        <td class="td difference" th:text="${Project.differenceInHours}"></td>
+        <p th:if="${Project.isOverWorked()}" style="color: rebeccapurple;"
+           th:text="${Project.title} + ' has exceeded expected duration'"></p>
+        <td class="td workHours" th:text="${Project.workHours}"></td>
         <td class="td createdBy" th:text="${Project.projectManager}"></td>
         <td>
-            <a class="links-button" th:href="@{'/projects/' + ${Project.id} + '/subprojects'}">Choose</a>
+            <form th:action="@{/projects/{pid}/subprojects(pid=${Project.id})}" method="get"
+                  style="display: inline">
+                <input type="hidden" name="projectName" th:value="${Project.title}" />
+                <button type="submit" class="links-button">Choose</button>
+            </form> -
             <details class="description-container">
                 <summary class="links-button">Description</summary>
                 <p th:text="${Project.description}"></p>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.alphasolutionsaeproject.service.ProjectService;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.HashSet;
 import java.util.List;
@@ -37,8 +38,8 @@ public class ProjectController {
     }
 
     @GetMapping("/admin")
-    public String showAdminPage(HttpSession session){
-        if(!isLoggedIn(session)){
+    public String showAdminPage(HttpSession session) {
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
         return "Admin/adminPage";
@@ -46,20 +47,18 @@ public class ProjectController {
 
 
     @GetMapping("/projects")
-    public String listProjects(Model model, HttpSession session) {
+    public String listProjects(Model model, HttpSession session, SessionStatus status) {
+        status.setComplete();
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
         String mail = (String) session.getAttribute("email");
-        User user  = userService.getUserByMail(mail);
-        // Projects the user created
+        User user = userService.getUserByMail(mail);
         List<Project> createdProjects = projectService.getAllProjectsByUserId(user.getId());
 
-        // Projects the user is assigned to
         List<Project> sharedProjects = projectService.getSharedProjectsByUserId(user.getId());
 
-        // Combine both lists (optional: remove duplicates)
         Set<Project> allUserProjects = new HashSet<>();
         allUserProjects.addAll(createdProjects);
         allUserProjects.addAll(sharedProjects);
@@ -70,15 +69,22 @@ public class ProjectController {
         }
 
 
-        model.addAttribute("projects", allUserProjects);
-        if (user.getRole().equals(Role.EMPLOYEE) || user.getRole().equals(Role.PM)){
+        if (user.getRole().equals(Role.EMPLOYEE)) {
+            model.addAttribute("projects", sharedProjects);
+
+            return "Employee/projects";
+        }
+
+        if (user.getRole().equals(Role.PM)) {
+            model.addAttribute("projects", createdProjects);
+
             return "Employee/projects";
         }
 
         List<Project> allProjects = projectService.getAllProjects();
         for (Project project : allProjects) {
-            User projectManager = userService.getUserById(project.getCreatedBy()); // assumes createdBy is userId
-            project.setProjectManager(projectManager.getUsername()); // store creator's name in each project
+            User projectManager = userService.getUserById(project.getCreatedBy());
+            project.setProjectManager(projectManager.getUsername());
         }
         model.addAttribute("allProjects", allProjects);
 
@@ -87,11 +93,11 @@ public class ProjectController {
 
     @GetMapping("/projects/add")
     public String showAddForm(Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
         List<User> users = userService.getAllPms("PM");
-        model.addAttribute("users",users);
+        model.addAttribute("users", users);
         model.addAttribute("project", new Project());
         return "CommonProjects/addProject";
     }
@@ -108,12 +114,12 @@ public class ProjectController {
 
     @GetMapping("/projects/edit/{pid}")
     public String showEditForm(@PathVariable int pid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
         List<User> users = userService.getAllPms("PM");
-        model.addAttribute("users",users);
+        model.addAttribute("users", users);
 
         Project project = projectService.getProjectById(pid);
         model.addAttribute("project", project);

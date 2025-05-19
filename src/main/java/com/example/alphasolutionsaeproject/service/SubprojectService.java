@@ -1,4 +1,5 @@
 package com.example.alphasolutionsaeproject.service;
+
 import com.example.alphasolutionsaeproject.model.Project;
 import com.example.alphasolutionsaeproject.model.Subproject;
 import com.example.alphasolutionsaeproject.model.Task;
@@ -7,6 +8,7 @@ import com.example.alphasolutionsaeproject.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import com.example.alphasolutionsaeproject.repository.SubprojectRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,37 +24,34 @@ public class SubprojectService {
         this.projectRepository = projectRepository;
     }
 
-    public List<Subproject> getAllSubprojects() {
-        return subprojectRepository.findAll();
-    }
-
     public Subproject getSubprojectById(int id) {
         return subprojectRepository.findById(id);
     }
 
     public void addSubproject(Subproject subproject) {
+        subproject.setEstDeadline(subproject.getDeadline());
         subprojectRepository.save(subproject);
     }
 
     public void updateSubproject(Subproject subproject, int spid) {
+        subproject.setId(spid);
         subprojectRepository.update(subproject, spid);
+        if (subproject.getProjectId() == 0) {
+            Subproject existing = subprojectRepository.findById(spid);
+            subproject.setProjectId(existing.getProjectId());
+        }
+        updateEstimatedDeadline(subproject);
     }
+
 
     public void deleteSubproject(int spid) {
         subprojectRepository.delete(spid);
     }
 
 
-    public List<Subproject> getAllSubprojectsByProjectId(int id){
+    public List<Subproject> getAllSubprojectsByProjectId(int id) {
         return subprojectRepository.getAllProjectsByProjectId(id);
     }
-
-//    public void toggleChecked(int id) {
-//        Subproject subproject = subprojectRepository.findById(id);
-//        if (subproject != null) {
-//            subprojectRepository.updateChecked(id, !subproject.getChecked());
-//        }
-//    }
 
     public void toggleCheckedAndCascade(int spid) {
         Subproject subproject = subprojectRepository.findById(spid);
@@ -61,13 +60,11 @@ public class SubprojectService {
         boolean newChecked = !subproject.getChecked();
         subprojectRepository.updateChecked(spid, newChecked);
 
-        // Opdater alle tasks under subprojektet
         List<Task> tasks = taskRepository.getAllTasksBySpid(spid);
         for (Task task : tasks) {
             taskRepository.updateChecked(task.getId(), newChecked);
         }
 
-        // Hvis subprojekt bliver unchecket, skal projektet også uncheckes
         if (!newChecked) {
             int projectId = subproject.getProjectId();
             Project project = projectRepository.findById(projectId);
@@ -77,7 +74,26 @@ public class SubprojectService {
         }
     }
 
+    public void updateEstimatedDeadline(Subproject subproject) {
+        int expected = subproject.getDuration();
+        int actual = subprojectRepository.getWorkHours(subproject.getId());
+        LocalDate baseDeadline = subproject.getDeadline();
+        LocalDate estDeadline;
 
+        if (actual > expected) {
+            int extra = actual - expected;
+            int extraDays = (int) Math.ceil(extra / 6.0);
+            estDeadline = baseDeadline.plusDays(extraDays);
+        } else {
+            estDeadline = baseDeadline;
+        }
+
+        if (estDeadline.isBefore(LocalDate.now())) {
+            estDeadline = LocalDate.now();
+        }
+        subproject.setEstDeadline(estDeadline);
+        subprojectRepository.updateEstimatedDeadline(subproject);
+    }
 
 
 }

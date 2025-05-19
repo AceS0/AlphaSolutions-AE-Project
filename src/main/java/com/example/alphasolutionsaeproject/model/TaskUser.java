@@ -8,7 +8,7 @@ public class TaskUser {
     private List<User> unassigned;
     private List<User> assigned;
 
-    public TaskUser(Task task, List<User> unassigned, List<User> assigned){
+    public TaskUser(Task task, List<User> unassigned, List<User> assigned) {
         this.task = task;
         this.unassigned = unassigned;
         this.assigned = assigned;

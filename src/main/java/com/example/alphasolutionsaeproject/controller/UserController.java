@@ -26,18 +26,18 @@ public class UserController {
     }
 
     @GetMapping("/users/login")
-    public String viewLogin(){
-        return "UserAuth/login";  // Viser login-siden
+    public String viewLogin() {
+        return "UserAuth/login";
     }
 
     @PostMapping("/users/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password,
-                        HttpSession session, Model model){
-        if (userService.login(email, password)){
+                        HttpSession session, Model model) {
+        if (userService.login(email, password)) {
             session.setAttribute("email", email); // Gemmer email i sessionen
             session.setMaxInactiveInterval(600);  // Timeout efter 10 minutter
             User user = userService.getUserByMail(email);
-            if (user.getRole().equals(Role.ADMIN)){
+            if (user.getRole().equals(Role.ADMIN)) {
                 return "redirect:/admin";
             }
             return "redirect:/projects";  // Omdirigerer til projects-siden
@@ -48,30 +48,29 @@ public class UserController {
     }
 
     @GetMapping("/admin/users/create")
-    public String viewRegister(Model model, HttpSession session){
-        if(!isLoggedIn(session)){
+    public String viewRegister(Model model, HttpSession session) {
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
-        return "Admin/createUser";  // Viser registreringssiden
+        return "Admin/createUser";
     }
 
     @PostMapping("/admin/users/create")
     public String register(@RequestParam("email") String email, @RequestParam("username") String username, @RequestParam("password") String password,
-                           @RequestParam("role") String role, RedirectAttributes redirectAttributes){
+                           @RequestParam("role") String role, RedirectAttributes redirectAttributes) {
 
-        // Validerer input (email, brugernavn, password)
-        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             redirectAttributes.addFlashAttribute("error", "Email isn't correct.");
             return "redirect:/admin/users/create";
         }
 
-        if (username.length() < 3){
+        if (username.length() < 3) {
             redirectAttributes.addFlashAttribute("error", "Username is too short.");
             return "redirect:/admin/users/create";
         }
 
-        if (password.length() < 8){
-            redirectAttributes.addFlashAttribute("error","Password is too short.");
+        if (password.length() < 8) {
+            redirectAttributes.addFlashAttribute("error", "Password is too short.");
             return "redirect:/admin/users/create";
         }
 
@@ -80,17 +79,17 @@ public class UserController {
             return "redirect:/admin/users/create";
         }
 
-        return "redirect:/admin/users"  ;  // Omdirigerer til Admin siden af users.
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/users/edit/{uid}")
     public String showEditForm(@PathVariable int uid, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
 
         User user = userService.getUserById(uid);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "Admin/editUser";
     }
 
@@ -101,8 +100,8 @@ public class UserController {
     }
 
     @GetMapping("/admin/users")
-    public String showAdminUserPage(Model model, HttpSession session){
-        if(session.getAttribute("email") == null){
+    public String showAdminUserPage(Model model, HttpSession session) {
+        if (session.getAttribute("email") == null) {
             return "redirect:/users/login";
         }
 
@@ -114,10 +113,8 @@ public class UserController {
 
 
     @PostMapping("/admin/users/delete/{id}")
-    public String deleteusers(@PathVariable int id) {
-        userService.deleteusers(id);
+    public String deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
-
-
 }
