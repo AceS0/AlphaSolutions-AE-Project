@@ -33,7 +33,7 @@
     <td>
         <form th:action="@{/projects/{pid}/unassign/workers/{userId}(pid=${pid}, userId=${Assigned.id})}" method="post">
             <input type="hidden" name="userId" th:value="${Assigned.id}"/>
-            <button type="submit" class="links-button-assign">Assign</button>
+            <button type="submit" class="links-buttondelete">Unassign</button>
         </form>
     </td>
     </tr>
@@ -58,7 +58,7 @@
     <td>
         <form th:action="@{/projects/{pid}/assign/workers/{userId}(pid=${pid}, userId=${Unassigned.id})}" method="post">
             <input type="hidden" name="userId" th:value="${Unassigned.id}"/>
-            <button type="submit" class="links-buttondelete">Unassign</button>
+            <button type="submit" class="links-button-assign">Assign</button>
         </form>
     </td>
     </tr>

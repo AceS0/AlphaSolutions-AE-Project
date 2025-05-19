@@ -43,9 +43,14 @@
             <label for="duration">Duration:</label>
             <input type="text" id="duration" th:field="*{duration}" required>
         </p>
+
         <p class="textbox">
             <label for="status">Status:</label>
-            <input type="text" id="status" th:field="*{status}" placeholder="To Do, In Progress or Done" required>
+            <select class="textbox" id="status" th:field="*{status}"  required>
+                <option th:value="'To Do'" th:text="'To Do'"></option>
+                <option th:value="'In Progress'" th:text="'In Progress'"></option>
+                <option th:value="'Done'" th:text="'Done'"></option>
+            </select>
         </p>
 
 
