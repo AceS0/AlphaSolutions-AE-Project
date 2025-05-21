@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/8257d7ab-1189-483a-ad13-3624c3ebc650)
+
+
 🤝 Sådan bidrager du  
 Velkommen til AEProjects – tak fordi du vil bidrage til dette skoleprojekt!  
 Følg venligst nedenstående retningslinjer for at sikre, at vores samarbejde bliver produktivt og behageligt for alle.  
