@@ -1,5 +1,7 @@
 package com.example.alphasolutionsaeproject.controller;
 import com.example.alphasolutionsaeproject.model.Project;
+import com.example.alphasolutionsaeproject.model.Role;
+import com.example.alphasolutionsaeproject.model.User;
 import com.example.alphasolutionsaeproject.service.ProjectService;
 import com.example.alphasolutionsaeproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -64,9 +66,13 @@ public class ProjectControllerTest {
     }
 
     @Test
-    public void testShowAdminPageLoggedInReturnAdminPage() {
+    public void testShowAdminPageLoggedInAsAdminReturnAdminPage() {
         // Arrange
         when(session.getAttribute("email")).thenReturn("test@example.com");
+
+        User mockUser = new User();
+        mockUser.setRole(Role.ADMIN);
+        when(userService.getUserByMail("test@example.com")).thenReturn(mockUser);
 
         // Act
         String viewName = projectController.showAdminPage(session);
@@ -74,6 +80,25 @@ public class ProjectControllerTest {
         // Assert
         assertEquals("Admin/adminPage", viewName);
     }
+
+
+    @Test
+    public void testShowAdminPageLoggedInAsPMReturnAdminPageFailed() {
+        // Arrange
+        when(session.getAttribute("email")).thenReturn("test@example.com");
+
+        User mockUser = new User();
+        mockUser.setRole(Role.PM);
+        when(userService.getUserByMail("test@example.com")).thenReturn(mockUser);
+
+        // Act
+        String viewName = projectController.showAdminPage(session);
+
+        // Assert
+        assertEquals("redirect:/", viewName);
+    }
+
+
 
     @Test
     public void testToggleCheckedCallServiceAndRedirect() {
