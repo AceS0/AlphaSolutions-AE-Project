@@ -31,6 +31,12 @@ public class ProjectController {
         return session.getAttribute("email") != null;
     }
 
+    private boolean redirectEmployee(HttpSession session){
+        String mail = (String) session.getAttribute("email");
+        User me = userService.getUserByMail(mail);
+        return me.getRole().equals(Role.EMPLOYEE);
+    }
+
     @GetMapping("/")
     public String showHomePage(HttpSession session) {
         session.invalidate();
@@ -41,6 +47,11 @@ public class ProjectController {
     public String showAdminPage(HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
+        }
+        String mail = (String) session.getAttribute("email");
+        User me = userService.getUserByMail(mail);
+        if (!me.getRole().equals(Role.ADMIN)) {
+        return "redirect:/";
         }
         return "Admin/adminPage";
     }
@@ -76,9 +87,9 @@ public class ProjectController {
         }
 
         if (user.getRole().equals(Role.PM)) {
-            model.addAttribute("projects", createdProjects);
+            model.addAttribute("allProjects", createdProjects);
 
-            return "Employee/projects";
+            return "PM/projects";
         }
 
         List<Project> allProjects = projectService.getAllProjects();
@@ -95,6 +106,9 @@ public class ProjectController {
     public String showAddForm(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
+        }
+        if (redirectEmployee(session)) {
+            return "redirect:/projects";
         }
         List<User> users = userService.getAllPms("PM");
         model.addAttribute("users", users);
@@ -117,7 +131,9 @@ public class ProjectController {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
-
+        if (redirectEmployee(session)) {
+            return "redirect:/projects";
+        }
         List<User> users = userService.getAllPms("PM");
         model.addAttribute("users", users);
 
@@ -136,6 +152,7 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+
     @PostMapping("/projects/delete/{pid}")
     public String deleteProject(@PathVariable int pid) {
         projectService.deleteProject(pid);
@@ -153,7 +170,9 @@ public class ProjectController {
         if(session.getAttribute("email") == null){
             return "redirect:/users/login";
         }
-
+        if (redirectEmployee(session)) {
+            return "redirect:/projects";
+        }
         List<User> AssignedEmployees = userService.getAllAssigned(pid);
         model.addAttribute("AssignedEmployees", AssignedEmployees);
 
@@ -164,15 +183,13 @@ public class ProjectController {
     }
 
     @PostMapping("/projects/{pid}/assign/workers/{userId}")
-    public String assignToProject(@PathVariable int pid, @PathVariable int userId)
-    {
+    public String assignToProject(@PathVariable int pid, @PathVariable int userId) {
         projectService.assignToProject(pid, userId);
         return "redirect:/projects/{pid}/assign/workers";
     }
 
     @PostMapping("/projects/{pid}/unassign/workers/{userId}")
     public String unassignFromProject(@PathVariable int pid, @PathVariable int userId) {
-
         projectService.unassignFromProject(pid, userId);
         return "redirect:/projects/{pid}/assign/workers";
     }
