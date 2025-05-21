@@ -30,6 +30,12 @@ public class SubprojectController {
         return session.getAttribute("email") != null;
     }
 
+    private boolean redirectEmployee(HttpSession session){
+        String mail = (String) session.getAttribute("email");
+        User me = userService.getUserByMail(mail);
+        return me.getRole().equals(Role.EMPLOYEE);
+    }
+
     @GetMapping("/projects/{pid}/subprojects")
     public String listSubprojects(@PathVariable int pid, @RequestParam(value = "projectName", required = false) String projectName, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -57,6 +63,9 @@ public class SubprojectController {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
+        if (redirectEmployee(session)) {
+            return "redirect:/projects/{pid}/subprojects";
+        }
         model.addAttribute("subproject", new Subproject());
         return "CommonProjects/addSubproject";
     }
@@ -78,6 +87,9 @@ public class SubprojectController {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
+        if (redirectEmployee(session)) {
+            return "redirect:/projects/{pid}/subprojects";
+        }
 
         Subproject subproject = subprojectService.getSubprojectById(spid);
         model.addAttribute("subproject", subproject);
@@ -97,13 +109,13 @@ public class SubprojectController {
     }
 
     @PostMapping("/projects/{pid}/subprojects/delete/{spid}")
-    public String deleteSubproject(@PathVariable int pid, @PathVariable int spid) {
+    public String deleteSubproject(@PathVariable int pid, @PathVariable int spid, HttpSession session) {
         subprojectService.deleteSubproject(spid);
         return "redirect:/projects/{pid}/subprojects";
     }
 
     @PostMapping("/projects/{pid}/subprojects/toggleChecked/{spid}")
-    public String toggleSubprojectChecked(@PathVariable String pid, @PathVariable int spid) {
+    public String toggleSubprojectChecked(@PathVariable String pid, @PathVariable int spid, HttpSession session) {
         subprojectService.toggleCheckedAndCascade(spid);
         return "redirect:/projects/{pid}/subprojects";
     }

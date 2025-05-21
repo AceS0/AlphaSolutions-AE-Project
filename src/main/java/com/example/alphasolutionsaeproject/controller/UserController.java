@@ -25,6 +25,12 @@ public class UserController {
         return session.getAttribute("email") != null;
     }
 
+    private boolean redirectEmployee(HttpSession session){
+        String mail = (String) session.getAttribute("email");
+        User me = userService.getUserByMail(mail);
+        return me.getRole().equals(Role.ADMIN);
+    }
+
     @GetMapping("/users/login")
     public String viewLogin() {
         return "UserAuth/login";
@@ -51,6 +57,9 @@ public class UserController {
     public String viewRegister(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
+        }
+        if (!redirectEmployee(session)) {
+            return "redirect:/";
         }
         return "Admin/createUser";
     }
@@ -87,6 +96,9 @@ public class UserController {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
+        if (!redirectEmployee(session)) {
+            return "redirect:/";
+        }
 
         User user = userService.getUserById(uid);
         model.addAttribute("user", user);
@@ -104,7 +116,9 @@ public class UserController {
         if (session.getAttribute("email") == null) {
             return "redirect:/users/login";
         }
-
+        if (!redirectEmployee(session)) {
+            return "redirect:/";
+        }
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "Admin/adminUsersPage";
@@ -113,7 +127,7 @@ public class UserController {
 
 
     @PostMapping("/admin/users/delete/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public String deleteUser(@PathVariable int id, HttpSession session) {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }

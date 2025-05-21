@@ -31,6 +31,12 @@ public class TaskController {
         return session.getAttribute("email") != null;
     }
 
+    private boolean redirectEmployee(HttpSession session){
+        String mail = (String) session.getAttribute("email");
+        User me = userService.getUserByMail(mail);
+        return me.getRole().equals(Role.EMPLOYEE);
+    }
+
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks")
     public String listTasks(@PathVariable int pid, @PathVariable int spid,
                             @RequestParam(value = "subprojectName", required = false) String subprojectName,
@@ -84,6 +90,9 @@ public class TaskController {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
+        if (redirectEmployee(session)) {
+            return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
+        }
 
         model.addAttribute("task", new Task());
         return "CommonProjects/addTask";
@@ -96,7 +105,13 @@ public class TaskController {
     }
 
     @GetMapping("/projects/{pid}/subprojects/{spid}/tasks/edit/{tid}")
-    public String showEditForm(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, Model model) {
+    public String showEditForm(@PathVariable String pid, @PathVariable String spid, @PathVariable int tid, Model model, HttpSession session) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/users/login";
+        }
+        if (redirectEmployee(session)) {
+            return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
+        }
         Task task = taskService.getTaskById(tid);
         model.addAttribute("task", task);
         return "CommonProjects/editTask";
@@ -123,6 +138,9 @@ public class TaskController {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
         }
+        if (redirectEmployee(session)) {
+            return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
+        }
 
         List<User> users = taskService.getUsersUnassignedTo(tid);
         model.addAttribute("users", users);
@@ -143,6 +161,10 @@ public class TaskController {
                                         Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/users/login";
+        }
+
+        if (redirectEmployee(session)) {
+            return "redirect:/projects/{pid}/subprojects/{spid}/tasks";
         }
 
         List<User> users = taskService.getUsersAssignedTo(tid);

@@ -102,7 +102,7 @@ public class SubprojectControllerTest {
         int spid = 5;
 
         // Act
-        String viewName = subprojectController.deleteSubproject(pid, spid);
+        String viewName = subprojectController.deleteSubproject(pid, spid,session);
 
         // Assert
         assertEquals("redirect:/projects/{pid}/subprojects", viewName);
