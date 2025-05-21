@@ -73,8 +73,8 @@ public class ProjectControllerIntegrationTest {
     void whenUserLoggedInProjectsPageLoads() throws Exception {
         mockMvc.perform(get("/projects").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("Employee/projects"))
-                .andExpect(model().attributeExists("projects"));
+                .andExpect(view().name("PM/projects"))
+                .andExpect(model().attributeExists("allProjects"));
     }
 
     @Test
