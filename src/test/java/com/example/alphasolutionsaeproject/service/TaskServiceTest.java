@@ -102,7 +102,7 @@ class TaskServiceTest {
         // Arrange
         Task task = new Task();
         task.setId(1);
-        task.setChecked(true);
+        task.setChecked(true); // this means that it is checked
         task.setSubprojectId(10);
 
         Subproject sub = new Subproject();
@@ -111,7 +111,7 @@ class TaskServiceTest {
         when(subprojectRepository.findById(10)).thenReturn(sub);
 
         // Act
-        taskService.toggleCheckedAndCascadeUp(1);
+        taskService.toggleCheckedAndCascadeUp(1); // This unchecks task, that unchecks subproject and project.
 
         // Assert
         verify(taskRepository).updateChecked(1, false);
