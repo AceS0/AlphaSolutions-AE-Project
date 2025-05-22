@@ -88,6 +88,12 @@ public class SubprojectRepository {
         return sum != null ? sum : 0;
     }
 
+    public boolean allSubprojectsCheckedInProject(int projectId) {
+        String sql = "SELECT COUNT(*) = SUM(CASE WHEN checked THEN 1 ELSE 0 END) FROM subproject WHERE projectId = ?";
+        return jdbcTemplate.queryForObject(sql, Boolean.class, projectId);
+    }
+
+
 
     private RowMapper<Subproject> mapSubprojects() {
         return (rs, rowNum) -> {

@@ -118,4 +118,33 @@ class TaskServiceTest {
         verify(subprojectRepository).updateChecked(10, false);
         verify(projectRepository).updateChecked(100, false);
     }
+
+    @Test
+    void toggleCheckedUp_UpdateFlagsWhenChecked() {
+        // Arrange
+        Task task = new Task();
+        task.setId(1);
+        task.setChecked(false);  // this means that it is unchecked
+        task.setSubprojectId(10);
+
+        Subproject sub = new Subproject();
+        sub.setProjectId(100);
+        sub.setChecked(false);  // this means that it is unchecked
+
+        when(taskRepository.findById(1)).thenReturn(task);
+        when(subprojectRepository.findById(10)).thenReturn(sub);
+
+        when(taskRepository.allTasksCheckedInSubproject(10)).thenReturn(true);
+        when(subprojectRepository.allSubprojectsCheckedInProject(100)).thenReturn(true);
+
+        // Act
+        taskService.toggleCheckedAndCascadeUp(1); // This checks task, that checks subproject and project.
+
+        // Assert
+        verify(taskRepository).updateChecked(1, true);
+        verify(subprojectRepository).updateChecked(10, true);
+        verify(projectRepository).updateChecked(100, true);
+    }
+
+
 }

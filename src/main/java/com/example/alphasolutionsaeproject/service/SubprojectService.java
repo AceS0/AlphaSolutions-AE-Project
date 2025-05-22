@@ -65,11 +65,17 @@ public class SubprojectService {
             taskRepository.updateChecked(task.getId(), newChecked);
         }
 
+        int projectId = subproject.getProjectId();
+
         if (!newChecked) {
-            int projectId = subproject.getProjectId();
             Project project = projectRepository.findById(projectId);
             if (project.getChecked()) {
                 projectRepository.updateChecked(projectId, false);
+            }
+        } else {
+            boolean allSubprojectsChecked = subprojectRepository.allSubprojectsCheckedInProject(projectId);
+            if (allSubprojectsChecked) {
+                projectRepository.updateChecked(projectId, true);
             }
         }
     }

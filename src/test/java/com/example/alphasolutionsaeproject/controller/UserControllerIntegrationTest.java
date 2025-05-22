@@ -40,7 +40,8 @@ public class UserControllerIntegrationTest {
         testUser.setUsername("testAdmin");
         testUser.setEmail("testAdmin@example.com");
         testUser.setRole(Role.ADMIN);
-        userRepository.registerUser(testUser.getEmail(),testUser.getUsername(),"12345678",testUser.getRole());
+        testUser.setPassword("12345678");
+        userRepository.registerUser(testUser.getEmail(),testUser.getUsername(),testUser.getPassword(),testUser.getRole());
 
         // Setup session with user email
         session = new MockHttpSession();
@@ -53,8 +54,7 @@ public class UserControllerIntegrationTest {
                         .param("email", "test@example.com")
                         .param("username", "testuser")
                         .param("password", "password123")
-                        .param("role", "ADMIN")
-                        .sessionAttr("email", testUser.getEmail())) // assuming session must have an admin logged in
+                        .param("role", "ADMIN"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/users"));
     }
@@ -68,8 +68,7 @@ public class UserControllerIntegrationTest {
                         .param("email", "test@example.com")
                         .param("username", "testuser2")
                         .param("password", "password123")
-                        .param("role", "ADMIN")
-                        .sessionAttr("email", "admin@example.com"))
+                        .param("role", "ADMIN"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/users/create"));
     }

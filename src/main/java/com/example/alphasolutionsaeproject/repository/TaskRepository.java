@@ -146,6 +146,13 @@ public class TaskRepository {
         jdbcTemplate.update(sql, estDeadline, taskId);
     }
 
+    public boolean allTasksCheckedInSubproject(int subprojectId) {
+        String sql = "SELECT COUNT(*) = SUM(CASE WHEN checked THEN 1 ELSE 0 END) FROM task WHERE subprojectId = ?";
+        return jdbcTemplate.queryForObject(sql, Boolean.class, subprojectId);
+    }
+
+
+
 
     private RowMapper<Task> mapTasks() {
         return (rs, rowNum) -> {
