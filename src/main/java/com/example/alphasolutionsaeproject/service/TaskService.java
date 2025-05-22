@@ -105,14 +105,28 @@ public class TaskService {
         boolean newChecked = !task.getChecked();
         taskRepository.updateChecked(taskId, newChecked);
 
-        if (!newChecked) {
-            int subprojectId = task.getSubprojectId();
-            subprojectRepository.updateChecked(subprojectId, false);
+        int subprojectId = task.getSubprojectId();
+        Subproject subproject = subprojectRepository.findById(subprojectId);
+        if (subproject == null) return;
 
-            int projectId = subprojectRepository.findById(subprojectId).getProjectId();
+        int projectId = subproject.getProjectId();
+
+        if (!newChecked) {
+            subprojectRepository.updateChecked(subprojectId, false);
             projectRepository.updateChecked(projectId, false);
+        } else {
+            boolean allTasksChecked = taskRepository.allTasksCheckedInSubproject(subprojectId);
+            if (allTasksChecked) {
+                subprojectRepository.updateChecked(subprojectId, true);
+
+                boolean allSubprojectsChecked = subprojectRepository.allSubprojectsCheckedInProject(projectId);
+                if (allSubprojectsChecked) {
+                    projectRepository.updateChecked(projectId, true);
+                }
+            }
         }
     }
+
 
     public void updateWorkHours(int taskId, int workHours) {
         taskRepository.updateWorkHours(taskId, workHours);
