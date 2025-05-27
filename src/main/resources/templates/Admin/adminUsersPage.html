@@ -36,7 +36,7 @@
     <td>
       <a class="links-button" th:href="@{/admin/users/edit/{uid}(uid=${user.id})}">Edit</a>
       <form th:action="@{/admin/users/delete/{userid}(userid=${user.id})}" method="post" style="display: inline"
-            th:onsubmit="'return confirm(\'Do you really want to delete the subproject -> (ID: ' + ${user.id} + ')?\')'">-
+            th:onsubmit="'return confirm(\'Do you really want to delete the user -> (ID: ' + ${user.id} + ')?\')'">-
 
         <button class="links-buttondelete" type="submit">Delete</button>
       </form>
