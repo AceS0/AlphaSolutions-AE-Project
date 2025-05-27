@@ -55,6 +55,21 @@ Employees can:
 
 ---
 
+### Installation
+
+1. Klon repo fra https://github.com/AceS0/AlphaSolutions-AE-Project.git
+2. Opret en MySQL database kaldet 'kanban_db', kør MySQL scripts fra src/main/resources/sql scripts/
+3. Setup dine environment variables så de passer til dine database credentials, eller indtast dem direkte i
+   src/main/resources/application-dev.properties og ændre active profile til dev i application.properties
+<pre>   spring.datasource.url={Url} -> Ex. jdbc:mysql://localhost:3306/kanban_db {eller deployed database}
+   spring.datasource.username={Username} -> Ex. root
+   spring.datasource.password={Password} -> Ex. password
+</pre>
+4. Byg og kør projektet.
+5. Webapplikationen vil nu kunne køres lokalt på http://localhost:8080/
+
+---
+
 ## Credits  
 This project was developed as part of a semester collaboration between:
 
