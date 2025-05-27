@@ -7,7 +7,7 @@ Følg venligst nedenstående retningslinjer for at sikre, at vores samarbejde bl
 
 ---
 
-📋 **Trin-for-trin**  
+**Trin-for-trin**  
 Clone projektet og lav din egen branch.  
 
 Navngiv din branch klart og beskrivende, fx:  
@@ -19,14 +19,14 @@ Lav en Pull Request (PR) med en god og tydelig beskrivelse.
 
 ---
 
-🎯 **Hvad vi forventer**  
+ **Hvad vi forventer**  
 - En positiv og respektfuld tone i issues, kommentarer og PRs.  
 - At du følger kodestil og navngivningskonventioner.  
 - At dine ændringer er små og fokuserede. En PR = ét formål.  
 
 ---
 
-🧠 **Kodestil**  
+ **Kodestil**  
 - Brug Java 17 eller nyere.  
 - Navngiv variabler og metoder meningsfuldt.  
 - Kommentér din kode, især hvis noget ikke er oplagt.  
@@ -35,7 +35,7 @@ Lav en Pull Request (PR) med en god og tydelig beskrivelse.
 
 ---
 
-✅ **Pull Requests**  
+ **Pull Requests**  
 - Lav én PR pr. opgave/funktion.  
 - Forklar hvorfor ændringen er lavet – ikke kun hvad og hvordan.  
 - Brug GitHub's standard branch (typisk `main`).  
@@ -44,7 +44,7 @@ Lav en Pull Request (PR) med en god og tydelig beskrivelse.
 
 ---
 
-📝 **Commit-beskeder**  
+ **Commit-beskeder**  
 Skriv gode og forklarende commit-beskeder:  
 - Kort titel - fx: opdater kode `  
 -  Skriv en præcis og forsåtelig beskrivelse

@@ -2,7 +2,7 @@
 ![image](https://github.com/user-attachments/assets/6b28ae59-cf0c-430f-a8d3-18a09a990ef5)
 
 # Alpha Solutions Project  
-_A collaboration between Abdul Sekerci and Enes Filikci_
+_A collaboration between Abdulcelil Sekerci and Enes Zeki Filikci_
 
 ![Java](https://img.shields.io/badge/Java-21-blue.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green.svg)
@@ -22,17 +22,17 @@ There are **three user roles**, each with distinct responsibilities and access l
 ### Admin  
 Admins have full control and access. They can:
 -  Create, delete, and manage users  
--  Assign roles (Project Manager or Employee)  
+-  Assign roles (Admin or Project Manager or Employee)  
 -  Create projects and assign Project Managers  
 -  Assign users to projects  
 -  Access everything Project Managers and Employees can  
 
 ### Project Manager  
 Project Managers can:
--  Create and manage subprojects  
+- manage projects
+- Create and manage subprojects  
 - Create, edit, and delete tasks  
-- Assign/unassign users to/from tasks  
-- Edit subprojects and tasks  
+- Assign/unassign users to/from projects and tasks 
 - View all project details  
 
 ### Employee  
