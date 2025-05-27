@@ -12,7 +12,7 @@ INSERT INTO user (email, username, password, role) VALUES
 -- Create projects
 INSERT INTO project (title, description, deadline, estDeadline, duration, workHours, createdBy, checked) VALUES
 ('Frontend CSS', 'Build a beatiful frontend design.', '2025-07-01', '2025-07-04', 30, 48, 1, FALSE),
-('React Development', 'Develop an app according to the frontend design.', '2025-08-15', '2025-08-10', 45, 24, 1, FALSE),
+('React Development', 'Develop an app according to the frontend design.', '2025-08-15', '2025-08-15', 45, 24, 1, FALSE),
 ('Dashboard UI', 'Build a business dashboard providing real-time data.', '2025-09-01', '2025-09-07', 40, 72, 5, FALSE);
 
 -- Create subprojects
